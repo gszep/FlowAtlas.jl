@@ -1,94 +1,87 @@
-setwd("~/Documents/code/flow-cytometry")
-
-require(flowCore)
-require(flowViz)
-require(flowAI)
+# local environment variables
+setwd("~/Documents/repos/tissue-immunology")
 source("utils.R")
-
-################################################################################  anomaly filtering
-################################################################################
-################################################################################
-
 data_path = 'data'
-file_paths <- grep("^((?!filtered).)*$", c(
 
-       Sys.glob( file.path(data_path,'*','*.fcs') ),
-       Sys.glob( file.path(data_path,'*','blood','*.fcs') )),
-
-    perl=TRUE, value=TRUE)
-
-dataSet <- read.flowSet( file_paths, transformation = FALSE, truncate_max_range = FALSE ); gc()
-setInfo <- get_metadata(dataSet,file_paths)
-
-colnames(dataSet)
-markernames(dataSet)
-
-setInfo$panel
-
-rgate <- rectangleGate("355 379/28-A"=c(1,4),"355 379/28-A"=c(1,4), filterId="Live T-Cells")
-xyplot(`355 379/28-A`~`355 515/30-A`, xlab = 'Z-UV', ylab = 'CD3', smooth=FALSE, xbin=128, 
-    data=transform("355 515/30-A"=asinh,"355 379/28-A"=asinh) %on% dataSet, filter=rgate )
-
-
-xyplot( `SSC-A`~`FSC-A`, data=dataSet, ylab = 'Side Scatter', xlab = 'Forward Scatter',
-        smooth=FALSE, xbin=128, filter=rgate)
-
-
-
-
-plot(dataSet[[1]], c("FSC-A","SSC-A","355 515/30-A","405 585/15-A"), smooth = FALSE)
-
-# for (file_path in c("data/423C/blood/Donor_Pre-Blood_023.fcs")) {
-
-#     print(file_path)
-#     flow_auto_qc(
-
-#         file_path, second_fractionFR = 0.1, pen_valueFS = 200,  folder_results = dirname(file_path),
-#         alphaFR = 10, fcs_QC = FALSE, fcs_highQ=".filtered", html_report = ".anomaly",
-#         mini_report = FALSE, output = 0); gc()
-# }
-
-################################################################################  loading filtered and metadata
+################################################################################  loading cleaned batches and metadata
 ################################################################################
 ################################################################################
 
-# file_paths <- c( Sys.glob(file.path(data_path,'*','*.filtered.fcs')), Sys.glob(file.path(data_path,'*','blood','*.filtered.fcs')) )
-dataSet <- read.flowSet( file_paths, transformation = FALSE, truncate_max_range = FALSE); gc()
-# dataSet <- Subset(dataSet, filter(dataSet, sampleFilter(size = 10000, filterId="dsFilter")))
+batches <- c()
+batch_names <- c()
 
-require(CATALYST)
-dataSet <- prepData(dataSet,panel,metadata)
-gc()
+# load patients as batches one by one 
+for (patient in grep("^((?!(412C)).)*$",
+        Sys.glob( file.path(data_path,'*') ), perl=TRUE, value=TRUE)){
+
+    file_paths <- grep("^((?!(Omentum|Oesophagus|Caecum)).)*$", c(
+
+        Sys.glob( file.path(patient,'*.cleaned.fcs') ),
+        Sys.glob( file.path(patient,'blood','*.cleaned.fcs'))
+
+    ), perl=TRUE, value=TRUE)
+
+    dataSet <- read.flowSet( file_paths, transformation = FALSE, truncate_max_range = FALSE )
+    dataSet <- Subset(dataSet,filter(dataSet, sampleFilter(size = 10000, filterId="dsFilter")))
+
+    setInfo <- get_metadata(dataSet,file_paths)
+    dataSet <- prepData(dataSet,setInfo$panel,setInfo$metadata)
+
+    batch_names <- c(batch_names, unique(setInfo$metadata$patient_id))
+    batches <- c(batches,dataSet); gc()
+
+}
+
+# merge batches into one object
+dataSet <- sce_cbind( batches, method = "intersect", exprs = c("counts", "exprs"),
+    colData_names = c("sample_id","tissue","patient_id"), batch_names = batch_names,
+    cut_off_batch = 0.01, cut_off_overall = 0.01); gc()
+
+# inherit metadata
+rowData(dataSet) <- unique(lapply(batches,rowData))[1]
 
 ################################################################################ diagnostic plots
 ################################################################################
 ################################################################################
 
-plotCounts(dataSet, color_by = "condition")
-plotExprs(dataSet, color_by = "condition")
+plotCounts(dataSet, group_by = "tissue")
+plotExprs(dataSet, color_by = "tissue")
 
-CATALYST::plotMDS(dataSet, color_by = "condition")
-plotNRS(dataSet, features = type_markers(dataSet), color_by = "condition")
+pbMDS(dataSet, label_by = "tissue", shape_by = "patient_id", color_by = "tissue")
+plotNRS(dataSet, features = type_markers(dataSet), color_by = "tissue")
 
 ################################################################################ clustering
 ################################################################################
 ################################################################################
 
 set.seed(1234)
-dataSet <- cluster(dataSet, features = type_markers(dataSet),
-                   xdim = 10, ydim = 10, maxK = 20); gc()
+
+plots = list()
+for (tissue in unique(colData(dataSet)$tissue) ){
+    tissueSet <- filterSCE( dataSet, tissue == tissue)
+
+    tissueSet <- cluster(tissueSet, features = type_markers(tissueSet), xdim = 10, ydim = 10, maxK = 20); gc()
+    heatmap <- as.ggplot(plotExprHeatmap(tissueSet, hm_pal = rev(hcl.colors(10, "YlGnBu")),
+        features = NULL, row_anno = FALSE, col_dend = FALSE,
+        by = "cluster_id" ))
+    
+    plots[[tissue]] = heatmap+labs(title=tissue)
+}
+
+pdf(paste("clustering","pdf",sep=".")) 
+for (tissue in unique(colData(dataSet)$tissue) ){
+    print(plots[[tissue]])
+}
+dev.off()
 
 cluster_labels <- data.frame( original_cluster = c(1:20),
     new_cluster = c('Debris','CD8','Th17','Thf','CD4','CD4','Treg','CD4','Thf','Thf',
                     'Debris','Thf','Th22','Th22','CD8','Debris','Debris','Debris','Debris','Debris'))
 
-dataSet@metadata$cluster_codes$label <- NULL
-dataSet <- mergeClusters(dataSet, k = "meta20", table = cluster_labels, id = "label")
-plotClusterHeatmap(dataSet, hm2 = NULL, k = "meta20", m = "label", cluster_anno = FALSE)
-
-require(ggplot2)
-require(cowplot)
-require(umap)
+tissueSet@metadata$cluster_codes$label <- NULL
+tissueSet <- mergeClusters(tissueSet, k = "meta20", table = cluster_labels, id = "label")
+plotExprHeatmap(tissueSet, hm_pal = rev(hcl.colors(10, "YlGnBu")),
+    features = "type", by = "cluster_id", m = "label")
 
 ################################################################################ dimensionality reduction
 ################################################################################
@@ -109,7 +102,7 @@ plot_grid(tsne_plot+theme(legend.position = "none")+xlab(expression('Nearest-Nei
 ################################################################################
 ################################################################################
 
-dimensionality_reduction <- plotDR(dataSet, "UMAP", color_by = "label") + facet_wrap("condition",ncol=7) + guides(color = guide_legend(override.aes = list(size = 3), title = "Cluster")) + xlab(expression('Expression Manifold Projection X'["1"])) + ylab(expression('Expression Manifold Projection X'["2"]))
+dimensionality_reduction <- plotDR(dataSet, "UMAP", color_by = "label") + facet_wrap("tissue",ncol=7) + guides(color = guide_legend(override.aes = list(size = 3), title = "Cluster")) + xlab(expression('Expression Manifold Projection X'["1"])) + ylab(expression('Expression Manifold Projection X'["2"]))
 abundances <- plotAbundances(dataSet, k = "label", by = "cluster_id") + guides(color = guide_legend(nrow = 1, label.position = 'bottom', override.aes = list(size = 0.5), title = "Tissue")) + ylab("Relative Abundance Percentage") + theme(axis.text.x = element_blank(), axis.ticks = element_blank(), legend.position="bottom")
 plot_grid( dimensionality_reduction, abundances, ncol = 1, labels = c("A", "B"))
 
@@ -118,7 +111,7 @@ plot_grid( dimensionality_reduction, abundances, ncol = 1, labels = c("A", "B"))
 ################################################################################
 ################################################################################
 
-# design <- createDesignMatrix( metadata, cols_design = c("condition", "patient_id") )
+# design <- createDesignMatrix( metadata, cols_design = c("tissue", "patient_id") )
 # contrast <- createContrast(c(0,1,0))
 
 # differential_abundance <- diffcyt( dataSet,
