@@ -19,13 +19,14 @@ require(umap)
 
 
 .check_sce <- CATALYST:::.check_sce
+.check_cd_factor <- CATALYST:::.check_cd_factor
 .check_k <- CATALYST:::.check_k
 
 .get_features <- CATALYST:::.get_features
 .agg <- CATALYST:::.agg
 
 # override prepData from catalyst package
-prepData <- function(fs, panel, md, features = NULL, transform = TRUE, cofactor = 5,
+prepData <- function(fs, panel, md, features = NULL, transform = TRUE, cofactor = 150,
     panel_cols = list(channel = "fcs_colname", antigen = "antigen", class = "marker_class"),
     md_cols = list(file = "file_name", id = "sample_id", factors = c("tissue", "patient_id")) ) {
 
@@ -230,11 +231,12 @@ get_metadata <- function(dataSet,file_paths,functional=c('CD69','CD103','HLA','P
 }
 
 # override plotClusterExprs from catalyst package
-plotClusterExprs <- function(x, 
-    k = "meta20", features = "type") {
+plotClusterExprs <- function(x, k = "meta20", features = "type", color_by = "condition") {
     
     # check validity of input arguments
     .check_sce(x, TRUE)
+    .check_cd_factor(x, color_by)
+
     k <- .check_k(x, k)
     x$cluster_id <- cluster_ids(x, k)
     features <- .get_features(x, features)
@@ -272,11 +274,10 @@ plotClusterExprs <- function(x,
     
     ggplot(df, aes_string(
         x = "expression", y = "cluster_id", 
-        col = "avg", fill = "avg")) + 
+        col = color_by)) + 
         facet_wrap(~antigen, scales = "free_x", nrow = 2) + 
         geom_density_ridges(alpha = 0.2) + 
         theme_ridges() + theme(
-            legend.position = "none",
             strip.background = element_blank(),
             strip.text = element_text(face = "bold"))
 }
