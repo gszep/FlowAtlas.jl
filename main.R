@@ -11,10 +11,10 @@ batches <- c()
 batch_names <- c()
 
 # load patients as batches one by one 
-for (patient in grep("^((?!(412C)).)*$",
+for ( patient in grep("^((?!(412C)).)*$", # patients to ignore
         Sys.glob( file.path(data_path,'*') ), perl=TRUE, value=TRUE)){
 
-    file_paths <- grep("^((?!(Omentum|Oesophagus|Caecum)).)*$", c(
+    file_paths <- grep("^((?!(Omentum|Oesophagus|Caecum|EDTA|Chest)).)*$", c( # tissues to ignore
 
         Sys.glob( file.path(patient,'*.cleaned.fcs') ),
         Sys.glob( file.path(patient,'blood','*.cleaned.fcs'))
@@ -22,7 +22,7 @@ for (patient in grep("^((?!(412C)).)*$",
     ), perl=TRUE, value=TRUE)
 
     dataSet <- read.flowSet( file_paths, transformation = FALSE, truncate_max_range = FALSE )
-    dataSet <- Subset(dataSet,filter(dataSet, sampleFilter(size = 10000, filterId="dsFilter")))
+    dataSet <- Subset(dataSet,filter(dataSet, sampleFilter(size = 10000, filterId="dsFilter"))) # subsample files
 
     setInfo <- get_metadata(dataSet,file_paths)
     dataSet <- prepData(dataSet,setInfo$panel,setInfo$metadata)
@@ -40,58 +40,75 @@ dataSet <- sce_cbind( batches, method = "intersect", exprs = c("counts", "exprs"
 # inherit metadata
 rowData(dataSet) <- unique(lapply(batches,rowData))[1]
 
+# separate out by tissue
+tissueSets = list()
+for ( tissue_name in unique(colData(dataSet)$tissue) ){
+    tissueSets[[tissue_name]] <- filterSCE( dataSet, tissue == tissue_name)
+}
+
 ################################################################################ diagnostic plots
 ################################################################################
 ################################################################################
 
-plotCounts(dataSet, group_by = "tissue")
-plotExprs(dataSet, color_by = "tissue")
-
-pbMDS(dataSet, label_by = "tissue", shape_by = "patient_id", color_by = "tissue")
-plotNRS(dataSet, features = type_markers(dataSet), color_by = "tissue")
+pdf("figures/diagnostic.pdf")
+print(plotCounts(dataSet, group_by = "tissue", color_by='patient_id'))
+print(plotNRS(dataSet, color_by = "patient_id"))
+print(pbMDS(dataSet, label_by = "tissue", shape_by = "patient_id", color_by = "tissue"))
+dev.off()
 
 ################################################################################ clustering
 ################################################################################
 ################################################################################
 
-set.seed(1234)
+set.seed(1234) # per tissue
+for ( tissue_name in unique(colData(dataSet)$tissue) ){
+    print(tissue_name)
 
-plots = list()
-for (tissue in unique(colData(dataSet)$tissue) ){
-    tissueSet <- filterSCE( dataSet, tissue == tissue)
-
-    tissueSet <- cluster(tissueSet, features = type_markers(tissueSet), xdim = 10, ydim = 10, maxK = 20); gc()
-    heatmap <- as.ggplot(plotExprHeatmap(tissueSet, hm_pal = rev(hcl.colors(10, "YlGnBu")),
-        features = NULL, row_anno = FALSE, col_dend = FALSE,
-        by = "cluster_id" ))
-    
-    plots[[tissue]] = heatmap+labs(title=tissue)
+    tissueSets[[tissue_name]] <- cluster(tissueSets[[tissue_name]],
+        features = "type", xdim = 10, ydim = 10, maxK = 20); gc()
 }
 
-pdf(paste("clustering","pdf",sep=".")) 
-for (tissue in unique(colData(dataSet)$tissue) ){
-    print(plots[[tissue]])
+pdf("figures/clustering.pdf") # export heatmaps for expert annotation
+for ( tissue_name in unique(colData(dataSet)$tissue) ){
+    print(plotClusterExprs(tissueSets[[tissue_name]],features=NULL)+labs(title=tissue_name))
 }
 dev.off()
 
-cluster_labels <- data.frame( original_cluster = c(1:20),
-    new_cluster = c('Debris','CD8','Th17','Thf','CD4','CD4','Treg','CD4','Thf','Thf',
-                    'Debris','Thf','Th22','Th22','CD8','Debris','Debris','Debris','Debris','Debris'))
+# import annotations from json
+annotations <- fromJSON(file='figures/clustering.merge.json')
+for ( tissue_name in unique(colData(dataSet)$tissue) ){
 
-tissueSet@metadata$cluster_codes$label <- NULL
-tissueSet <- mergeClusters(tissueSet, k = "meta20", table = cluster_labels, id = "label")
-plotExprHeatmap(tissueSet, hm_pal = rev(hcl.colors(10, "YlGnBu")),
-    features = "type", by = "cluster_id", m = "label")
+    cluster_ids <- c(1:20)
+    for (cluster_name in names(annotations[[tissue_name]]) ){
+
+        idx <- annotations[[tissue_name]][[cluster_name]]
+        cluster_ids[idx] <- cluster_name
+    }
+
+    tissueSets[[tissue_name]] <- mergeClusters(tissueSets[[tissue_name]], k = "meta20", id = "label", overwrite = TRUE,
+        table = data.frame( original_cluster = c(1:20), new_cluster = cluster_ids) )
+}
+
+pdf("figures/clustering.merge.pdf") # export merged clustermaps
+for ( tissue_name in unique(colData(dataSet)$tissue) ){
+    heatmap <- as.ggplot(plotExprHeatmap(tissueSets[[tissue_name]], hm_pal = rev(hcl.colors(10, "YlGnBu")),
+        features = NULL, col_clust = FALSE, col_dend = FALSE, bar= TRUE,
+        by = "cluster_id", m = "label"))
+
+    print(heatmap+labs(title=tissue_name))
+}
+dev.off()
 
 ################################################################################ dimensionality reduction
 ################################################################################
 ################################################################################
 
+
 dataSet <- runDR(dataSet, dr = "TSNE", cells = 500, features = "type")
 dataSet <- runDR(dataSet, dr = "UMAP", cells = 1e3, features = "type")
 
-tsne_plot <- plotDR(dataSet, "TSNE", color_by = "label")
-umap_plot <- plotDR(dataSet, "UMAP", color_by = "label")
+tsne_plot <- plotDR(dataSet, "TSNE", color_by = "meta8")
+umap_plot <- plotDR(dataSet, "UMAP", color_by = "meta8")
 
 plot_grid(tsne_plot+theme(legend.position = "none")+xlab(expression('Nearest-Neighbour Embedding'))+ylab(""),
           umap_plot+theme(legend.position = "none")+xlab(expression('Manifold Approximation'))+ylab(""),
@@ -102,24 +119,6 @@ plot_grid(tsne_plot+theme(legend.position = "none")+xlab(expression('Nearest-Nei
 ################################################################################
 ################################################################################
 
-dimensionality_reduction <- plotDR(dataSet, "UMAP", color_by = "label") + facet_wrap("tissue",ncol=7) + guides(color = guide_legend(override.aes = list(size = 3), title = "Cluster")) + xlab(expression('Expression Manifold Projection X'["1"])) + ylab(expression('Expression Manifold Projection X'["2"]))
-abundances <- plotAbundances(dataSet, k = "label", by = "cluster_id") + guides(color = guide_legend(nrow = 1, label.position = 'bottom', override.aes = list(size = 0.5), title = "Tissue")) + ylab("Relative Abundance Percentage") + theme(axis.text.x = element_blank(), axis.ticks = element_blank(), legend.position="bottom")
+dimensionality_reduction <- plotDR(dataSet, "UMAP", color_by = "meta8") + facet_wrap("tissue",ncol=3) + guides(color = guide_legend(override.aes = list(size = 3), title = "Cluster")) + xlab(expression('Expression Manifold Projection X'["1"])) + ylab(expression('Expression Manifold Projection X'["2"]))
+abundances <- plotAbundances(dataSet, k = "meta8", by = "cluster_id") + guides(color = guide_legend(nrow = 1, label.position = 'bottom', override.aes = list(size = 0.5), title = "Tissue")) + ylab("Relative Abundance Percentage") + theme(axis.text.x = element_blank(), axis.ticks = element_blank(), legend.position="bottom")
 plot_grid( dimensionality_reduction, abundances, ncol = 1, labels = c("A", "B"))
-
-
-################################################################################ diffcyt
-################################################################################
-################################################################################
-
-# design <- createDesignMatrix( metadata, cols_design = c("tissue", "patient_id") )
-# contrast <- createContrast(c(0,1,0))
-
-# differential_abundance <- diffcyt( dataSet,
-#                                   design = design, contrast = contrast, analysis_type = "DA",
-#                                   seed_clustering = 123 )
-
-# display table of results for top cluster-marker combinations
-# topTable(differential_abundance, format_vals = TRUE)
-
-# calculate number of significant detected clusters at 10% false discovery
-# table( topTable(differential_abundance, all = TRUE)$p_adj <=  0.1)

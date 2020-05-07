@@ -1,6 +1,8 @@
 library(SingleCellExperiment)
 library(S4Vectors)
 
+library(rjson)
+library(reshape2)
 library(magrittr) 
 library(dplyr)
 
@@ -8,11 +10,19 @@ require(flowCore)
 require(CATALYST)
 require(scMerge)
 
+require(ggridges)
 require(ggplot2)
 require(ggplotify)
 require(cowplot)
 
 require(umap)
+
+
+.check_sce <- CATALYST:::.check_sce
+.check_k <- CATALYST:::.check_k
+
+.get_features <- CATALYST:::.get_features
+.agg <- CATALYST:::.agg
 
 # override prepData from catalyst package
 prepData <- function(fs, panel, md, features = NULL, transform = TRUE, cofactor = 5,
@@ -159,9 +169,8 @@ prepData <- function(fs, panel, md, features = NULL, transform = TRUE, cofactor 
     if (transform) .transform(sce, cofactor) else sce
 }
 
-.transform <- function(x, cf, 
-    ain = "counts", aout = "exprs",
-    dir = c("forwards", "backwards")) {
+# logicale transofrmation of signals
+.transform <- function(x, cf, ain = "counts", aout = "exprs", dir = c("forwards", "backwards")) {
     dir <- match.arg(dir)
     chs <- channels(x)
     stopifnot(is.numeric(cf), cf > 0)
@@ -186,6 +195,7 @@ prepData <- function(fs, panel, md, features = NULL, transform = TRUE, cofactor 
     return(x)
 }
 
+# extract panel, tissue and patient ids
 get_metadata <- function(dataSet,file_paths,functional=c('CD69','CD103','HLA','PD') ){
 
     file_name <- pData(dataSet)$name
@@ -217,4 +227,56 @@ get_metadata <- function(dataSet,file_paths,functional=c('CD69','CD103','HLA','P
     metadata <- data.frame( file_name = file_name, sample_id, tissue, patient_id, stringsAsFactors = FALSE )
     panel <- panel[panel$marker_class!="none",]
     return(list("metadata" = metadata, "panel" = panel))
+}
+
+# override plotClusterExprs from catalyst package
+plotClusterExprs <- function(x, 
+    k = "meta20", features = "type") {
+    
+    # check validity of input arguments
+    .check_sce(x, TRUE)
+    k <- .check_k(x, k)
+    x$cluster_id <- cluster_ids(x, k)
+    features <- .get_features(x, features)
+
+    # order clusters according to hierarchical 
+    # clustering on median feature expressions 
+    ms <- t(.agg(x[features, ], "cluster_id", "median"))
+    d <- dist(ms, method="euclidean")
+    o <- hclust(d, method="average")$order
+    
+    # construct data.frame of expression matrix include cell metadata
+    cd <- colData(x)
+    es <- assay(x[features, ], "exprs")
+    df <- data.frame(t(es), cd, check.names = FALSE)
+    df <- melt(df, 
+        id.vars = names(cd),
+        variable.name = "antigen", 
+        value.name = "expression")
+    # add average across all clusters as referebce
+    df$avg <- "no"
+    avg <- df
+    avg$cluster_id <- "avg"
+    avg$avg <- "yes"
+    df <- rbind(df, avg)
+    
+    # compute cluster frequencies
+    fq <- tabulate(x$cluster_id) / ncol(x)
+    fq <- round(fq * 100, 2)
+    names(fq) <- levels(x$cluster_id)
+    
+    # reorder clusters
+    df$cluster_id <- factor(df$cluster_id, 
+        levels = rev(c("avg", levels(x$cluster_id)[o])),
+        labels = rev(c("average", paste0(names(fq), " (", fq, "%)")[o])))
+    
+    ggplot(df, aes_string(
+        x = "expression", y = "cluster_id", 
+        col = "avg", fill = "avg")) + 
+        facet_wrap(~antigen, scales = "free_x", nrow = 2) + 
+        geom_density_ridges(alpha = 0.2) + 
+        theme_ridges() + theme(
+            legend.position = "none",
+            strip.background = element_blank(),
+            strip.text = element_text(face = "bold"))
 }
