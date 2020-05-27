@@ -21,11 +21,18 @@ for ( patient in grep("^((?!(412C)).)*$", # patients to ignore
 
     ), perl=TRUE, value=TRUE)
 
-    dataSet <- read.flowSet( file_paths, transformation = FALSE, truncate_max_range = FALSE )
+    dataSet <- read.flowSet( file_paths, transformation = FALSE, truncate_max_range = FALSE ) # import as flowSet
     dataSet <- Subset(dataSet,filter(dataSet, sampleFilter(size = 10000, filterId="dsFilter"))) # subsample files
 
-    setInfo <- get_metadata(dataSet,file_paths)
-    dataSet <- prepData(dataSet,setInfo$panel,setInfo$metadata)
+    # correction for systematic error in CD4 channel
+    if ( patient==file.path(data_path,'390C') ) {
+        for ( i in seq_along(dataSet) ) {
+            dataSet[[i]]@exprs[,3] <- 0.15*dataSet[[i]]@exprs[,3]
+        }
+    }
+
+    setInfo <- get_metadata(dataSet,file_paths) # extract metadata
+    dataSet <- prepData(dataSet,setInfo$panel,setInfo$metadata,cofactor=250.0) # apply logicale transform
 
     batch_names <- c(batch_names, unique(setInfo$metadata$patient_id))
     batches <- c(batches,dataSet); gc()
@@ -35,10 +42,65 @@ for ( patient in grep("^((?!(412C)).)*$", # patients to ignore
 # merge batches into one object
 dataSet <- sce_cbind( batches, method = "intersect", exprs = c("counts", "exprs"),
     colData_names = c("sample_id","tissue","patient_id"), batch_names = batch_names,
-    cut_off_batch = 0.01, cut_off_overall = 0.01); gc()
+    cut_off_batch = 0, cut_off_overall = 0); gc()
 
 # inherit metadata
 rowData(dataSet) <- unique(lapply(batches,rowData))[1]
+
+# manual batch corrections
+expression <- assay(dataSet,"exprs")
+
+patient <- dataSet$patient_id=='390C'
+
+channel <- rownames(dataSet)=='CD3'
+assay(dataSet,"exprs")[channel,patient] <- expression[channel,patient] + 0.3
+
+channel <- rownames(dataSet)=='CD8'
+assay(dataSet,"exprs")[channel,patient] <- 0.9*expression[channel,patient]+0.5
+
+channel <- rownames(dataSet)=='CD45RA'
+assay(dataSet,"exprs")[channel,patient] <- 2*expression[channel,patient]-1
+
+channel <- rownames(dataSet)=='CD69'
+assay(dataSet,"exprs")[channel,patient] <- 1.2*expression[channel,patient]-0.5
+
+channel <- rownames(dataSet)=='CXCR3'
+assay(dataSet,"exprs")[channel,patient] <- 0.6*expression[channel,patient]-0.5
+
+patient <- dataSet$patient_id=='403C'
+
+channel <- rownames(dataSet)=='CD69'
+assay(dataSet,"exprs")[channel,patient] <- 1.2*expression[channel,patient]
+
+patient <- dataSet$patient_id=='423C'
+
+channel <- rownames(dataSet)=='HLA'
+assay(dataSet,"exprs")[channel,patient] <- 0.6*expression[channel,patient]
+
+channel <- rownames(dataSet)=='CCR4'
+assay(dataSet,"exprs")[channel,patient] <- 0.6*expression[channel,patient]
+
+channel <- rownames(dataSet)=='Helios'
+assay(dataSet,"exprs")[channel,patient] <- 0.8*expression[channel,patient]
+
+patient <- dataSet$patient_id=='428C'
+
+channel <- rownames(dataSet)=='CD8'
+assay(dataSet,"exprs")[channel,patient] <- 0.8*expression[channel,patient]+1
+
+channel <- rownames(dataSet)=='CD45RA'
+assay(dataSet,"exprs")[channel,patient] <- 1.5*expression[channel,patient]
+
+channel <- rownames(dataSet)=='Helios'
+assay(dataSet,"exprs")[channel,patient] <- expression[channel,patient]+0.25
+
+plotExprs( dataSet, color_by='tissue')
+plotExprs( filterSCE( dataSet, tissue == 'BM'), color_by='patient_id')
+
+# failed attempts to use batchnorm algorithm
+# scMerge(dataSet,batch_name="patient_id", cell_type=dataSet$tissue,
+#     ctl=c('CD3','HLA'), marker=rownames(dataSet), marker_list=rownames(dataSet),
+#     exprs="exprs",assay_name="exprs", verbose = TRUE)
 
 # separate out by tissue
 tissueSets = list()
@@ -65,12 +127,18 @@ for ( tissue_name in unique(colData(dataSet)$tissue) ){
     print(tissue_name)
 
     tissueSets[[tissue_name]] <- cluster(tissueSets[[tissue_name]],
-        features = "type", xdim = 10, ydim = 10, maxK = 20); gc()
+        features = NULL, xdim = 10, ydim = 10, maxK = 20); gc()
 }
+
+tissue_name <- 'BM'
+tissueSets[[tissue_name]] <- cluster(tissueSets[[tissue_name]],
+        features = NULL, xdim = 10, ydim = 10, maxK = 20, seed=10)
+plotClusterExprs(tissueSets[[tissue_name]],
+    features=NULL, color_by = NULL)
 
 pdf("figures/clustering.pdf") # export heatmaps for expert annotation
 for ( tissue_name in unique(colData(dataSet)$tissue) ){
-    print(plotClusterExprs(tissueSets[[tissue_name]],features=NULL)+labs(title=tissue_name))
+    print(plotClusterExprs(tissueSets[[tissue_name]],features=NULL,color_by=NULL)+labs(title=tissue_name))
 }
 dev.off()
 
@@ -103,12 +171,17 @@ dev.off()
 ################################################################################
 ################################################################################
 
+dataSet <- cluster(dataSet,
+    features = NULL, xdim = 10, ydim = 10, maxK = 20); gc()
+plotClusterExprs( filterSCE( dataSet, tissue == 'Spleen'), k='meta20',
+    features=NULL, color_by = NULL)
 
-dataSet <- runDR(dataSet, dr = "TSNE", cells = 500, features = "type")
-dataSet <- runDR(dataSet, dr = "UMAP", cells = 1e3, features = "type")
 
-tsne_plot <- plotDR(dataSet, "TSNE", color_by = "meta8")
-umap_plot <- plotDR(dataSet, "UMAP", color_by = "meta8")
+dataSet <- runDR(dataSet, dr = "TSNE", cells = 500, features = NULL)
+dataSet <- runDR(dataSet, dr = "UMAP", cells = 1e3, features = NULL)
+
+tsne_plot <- plotDR(dataSet, "TSNE", color_by = "meta20")
+umap_plot <- plotDR(dataSet, "UMAP", color_by = "meta20")
 
 plot_grid(tsne_plot+theme(legend.position = "none")+xlab(expression('Nearest-Neighbour Embedding'))+ylab(""),
           umap_plot+theme(legend.position = "none")+xlab(expression('Manifold Approximation'))+ylab(""),
