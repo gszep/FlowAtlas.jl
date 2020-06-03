@@ -11,7 +11,7 @@ batches <- c()
 batch_names <- c()
 
 # load patients as batches one by one 
-for ( patient in grep("^((?!(412C)).)*$", # patients to ignore
+for ( patient in grep("^((?!(390C)).)*$", # patients to ignore
         Sys.glob( file.path(data_path,'*') ), perl=TRUE, value=TRUE)){
 
     file_paths <- grep("^((?!(Omentum|Oesophagus|Caecum|EDTA|Chest)).)*$", c( # tissues to ignore
@@ -95,7 +95,7 @@ channel <- rownames(dataSet)=='Helios'
 assay(dataSet,"exprs")[channel,patient] <- expression[channel,patient]+0.25
 
 plotExprs( dataSet, color_by='tissue')
-plotExprs( filterSCE( dataSet, tissue == 'BM'), color_by='patient_id')
+plotExprs( filterSCE( dataSet, tissue == 'Blood'), color_by='patient_id')
 
 # failed attempts to use batchnorm algorithm
 # scMerge(dataSet,batch_name="patient_id", cell_type=dataSet$tissue,
@@ -195,3 +195,15 @@ plot_grid(tsne_plot+theme(legend.position = "none")+xlab(expression('Nearest-Nei
 dimensionality_reduction <- plotDR(dataSet, "UMAP", color_by = "meta8") + facet_wrap("tissue",ncol=3) + guides(color = guide_legend(override.aes = list(size = 3), title = "Cluster")) + xlab(expression('Expression Manifold Projection X'["1"])) + ylab(expression('Expression Manifold Projection X'["2"]))
 abundances <- plotAbundances(dataSet, k = "meta8", by = "cluster_id") + guides(color = guide_legend(nrow = 1, label.position = 'bottom', override.aes = list(size = 0.5), title = "Tissue")) + ylab("Relative Abundance Percentage") + theme(axis.text.x = element_blank(), axis.ticks = element_blank(), legend.position="bottom")
 plot_grid( dimensionality_reduction, abundances, ncol = 1, labels = c("A", "B"))
+
+
+xy <- reducedDim(dataSet,'UMAP')
+colnames(xy) <- c("x", "y")
+df <- data.frame(colData(dataSet), xy)
+df <- df[!(is.na(df$x) | is.na(df$y)), ]
+ 
+dataSet
+sce <- SingleCellExperiment(df,assay=c('exprs'))
+sce
+
+cluster(sce,features = NULL, xdim = 10, ydim = 10, maxK = 20)

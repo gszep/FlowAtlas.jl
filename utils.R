@@ -225,6 +225,7 @@ get_metadata <- function(dataSet,file_paths,functional=c('CD69','CD103','HLA','P
 
     marker_class <- factor(marker_class, levels = c("type", "state", "none"))
     panel <- data.frame( fcs_colname, antigen, marker_class, stringsAsFactors = FALSE )
+    print(panel)
     rownames(panel) <- c()
 
     # organising data into one object
