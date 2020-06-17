@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <gating:Gating-ML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gating="http://www.isac-net.org/std/Gating-ML/v2.0/gating"  xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"  xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"  xsi:schemaLocation="http://www.isac-net.org/std/Gating-ML/v2.0/gating http://www.isac-net.org/std/Gating-ML/v2.0/gating/Gating-ML.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/transformations http://www.isac-net.org/std/Gating-ML/v2.0/gating/Transformations.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/datatypes http://www.isac-net.org/std/Gating-ML/v2.0/gating/DataTypes.v2.0.xsd " >
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="178"  annoOffsetY="15"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID905476296" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="178"  annoOffsetY="15"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID905476296" gating:name="" >
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-355 820_60-A" />
      </gating:dimension>
@@ -24,7 +24,7 @@
        <gating:coordinate data-type:value="-671.8216773719" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-35"  annoOffsetY="-72"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1213616821"  gating:parent_id="ID905476296" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-35"  annoOffsetY="-72"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1213616821"  gating:parent_id="ID905476296" gating:name="CD4|CM">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -48,7 +48,7 @@
        <gating:coordinate data-type:value="46961.3578315103" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-48"  annoOffsetY="59"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID524982903"  gating:parent_id="ID905476296" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-48"  annoOffsetY="59"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID524982903"  gating:parent_id="ID905476296" gating:name="CD4|EM">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -72,7 +72,7 @@
        <gating:coordinate data-type:value="389.0886038548" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="94"  annoOffsetY="53"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2146479984"  gating:parent_id="ID905476296" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="94"  annoOffsetY="53"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2146479984"  gating:parent_id="ID905476296" gating:name="CD4|EMRA">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -96,7 +96,7 @@
        <gating:coordinate data-type:value="389.0886038548" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="88"  annoOffsetY="-84"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1777740274"  gating:parent_id="ID905476296" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="88"  annoOffsetY="-84"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1777740274"  gating:parent_id="ID905476296" gating:name="CD4|Naive">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -120,12 +120,12 @@
        <gating:coordinate data-type:value="401.7421654322" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:RectangleGate eventsInside="1"  annoOffsetX="58"  annoOffsetY="-33"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  gating:id="ID798568622"  gating:parent_id="ID905476296" >
+   <gating:RectangleGate eventsInside="1"  annoOffsetX="58"  annoOffsetY="-33"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  gating:id="ID798568622"  gating:parent_id="ID905476296" gating:name="">
      <gating:dimension gating:min="-520.5141807200824"  gating:max="292.9615171969793"  yRatio="0.5283018867924528" >
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
    </gating:RectangleGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="25"  annoOffsetY="-28"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1037611456"  gating:parent_id="ID798568622" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="25"  annoOffsetY="-28"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1037611456"  gating:parent_id="ID798568622" gating:name="CD4|Th1">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-488 715_30-A" />
      </gating:dimension>
@@ -149,7 +149,7 @@
        <gating:coordinate data-type:value="-491.9003789488" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2001211830"  gating:parent_id="ID798568622" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2001211830"  gating:parent_id="ID798568622" gating:name="CD4|Th2">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-488 715_30-A" />
      </gating:dimension>
@@ -173,7 +173,7 @@
        <gating:coordinate data-type:value="345.3540819241" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-21"  annoOffsetY="-66"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1824462977"  gating:parent_id="ID798568622" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-21"  annoOffsetY="-66"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1824462977"  gating:parent_id="ID798568622" gating:name="">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-488 715_30-A" />
      </gating:dimension>
@@ -197,7 +197,7 @@
        <gating:coordinate data-type:value="345.3540819241" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-2"  annoOffsetY="-54"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID979814653"  gating:parent_id="ID1824462977" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-2"  annoOffsetY="-54"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID979814653"  gating:parent_id="ID1824462977" gating:name="CD4|Th17">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-488 525_50-A" />
      </gating:dimension>
@@ -221,7 +221,7 @@
        <gating:coordinate data-type:value="40509.208094101" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="73"  annoOffsetY="95"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID90893651"  gating:parent_id="ID1824462977" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="73"  annoOffsetY="95"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID90893651"  gating:parent_id="ID1824462977" gating:name="CD4|Th22">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-488 525_50-A" />
      </gating:dimension>
@@ -245,7 +245,7 @@
        <gating:coordinate data-type:value="39146.3268852345" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-10"  annoOffsetY="-94"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1536046660"  gating:parent_id="ID798568622" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-10"  annoOffsetY="-94"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1536046660"  gating:parent_id="ID798568622" gating:name="CD4|Tfh">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 710_40-A" />
      </gating:dimension>
@@ -269,7 +269,7 @@
        <gating:coordinate data-type:value="389.7208563299" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID555213086"  gating:parent_id="ID905476296" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID555213086"  gating:parent_id="ID905476296" gating:name="">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-640 670_30-A" />
      </gating:dimension>
@@ -297,7 +297,7 @@
        <gating:coordinate data-type:value="-524.4360178673" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-90"  annoOffsetY="-56"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID322778938"  gating:parent_id="ID555213086" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-90"  annoOffsetY="-56"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID322778938"  gating:parent_id="ID555213086" gating:name="CD4|Treg">
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-561 585_15-A" />
      </gating:dimension>
@@ -325,7 +325,7 @@
        <gating:coordinate data-type:value="269.5678110205" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-12"  annoOffsetY="-119"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2012619686" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-12"  annoOffsetY="-119"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2012619686" gating:name="" >
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-355 820_60-A" />
      </gating:dimension>
@@ -349,7 +349,7 @@
        <gating:coordinate data-type:value="1030.0873931216" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-35"  annoOffsetY="-72"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID852914413"  gating:parent_id="ID2012619686" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-35"  annoOffsetY="-72"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID852914413"  gating:parent_id="ID2012619686" gating:name="CD8|CM" >
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -373,7 +373,7 @@
        <gating:coordinate data-type:value="48588.9365538745" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="-48"  annoOffsetY="59"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID658298217"  gating:parent_id="ID2012619686" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="-48"  annoOffsetY="59"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID658298217"  gating:parent_id="ID2012619686" gating:name="CD8|EM" >
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -397,7 +397,7 @@
        <gating:coordinate data-type:value="389.0886038548" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="94"  annoOffsetY="53"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1542225688"  gating:parent_id="ID2012619686" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="94"  annoOffsetY="53"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1542225688"  gating:parent_id="ID2012619686" gating:name="CD8|EMRA" >
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
@@ -421,7 +421,7 @@
        <gating:coordinate data-type:value="389.0886038548" />
      </gating:vertex>
    </gating:PolygonGate>
-   <gating:PolygonGate eventsInside="1"  annoOffsetX="88"  annoOffsetY="-84"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1314906502"  gating:parent_id="ID2012619686" >
+   <gating:PolygonGate eventsInside="1"  annoOffsetX="88"  annoOffsetY="-84"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1314906502"  gating:parent_id="ID2012619686" gating:name="CD8|Naive" >
      <gating:dimension>
        <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
      </gating:dimension>
