@@ -32,20 +32,20 @@
        <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
      </gating:dimension>
      <gating:vertex>
-       <gating:coordinate data-type:value="-583.5314879428" />
-       <gating:coordinate data-type:value="50256.2769136037" />
+       <gating:coordinate data-type:value="-579.917521874" />
+       <gating:coordinate data-type:value="49884.0424887797" />
      </gating:vertex>
      <gating:vertex>
-       <gating:coordinate data-type:value="-600.9365712117" />
-       <gating:coordinate data-type:value="427.7348941416" />
+       <gating:coordinate data-type:value="-602.9841163396" />
+       <gating:coordinate data-type:value="426.4008186117" />
      </gating:vertex>
      <gating:vertex>
-       <gating:coordinate data-type:value="324.2156369728" />
-       <gating:coordinate data-type:value="401.7421654322" />
+       <gating:coordinate data-type:value="326.5111246995" />
+       <gating:coordinate data-type:value="403.1132451055" />
      </gating:vertex>
      <gating:vertex>
-       <gating:coordinate data-type:value="348.6070639224" />
-       <gating:coordinate data-type:value="48588.9365538745" />
+       <gating:coordinate data-type:value="348.133448035" />
+       <gating:coordinate data-type:value="46961.3578315103" />
      </gating:vertex>
    </gating:PolygonGate>
    <gating:PolygonGate eventsInside="1"  annoOffsetX="-48"  annoOffsetY="59"  tint="#ff0000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID524982903"  gating:parent_id="ID905476296" >
