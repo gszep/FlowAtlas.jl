@@ -53,7 +53,7 @@ def load( path, patients, tissues, markers, channel_map={},
         if len(label_path) > 0 :
             labels[idx] = GatingSchema(*label_path).get_labels(plate[idx])
         else :
-            labels[idx] = Series({'label':None}, index=plate[idx].data.index, dtype='string')
+            labels[idx] = DataFrame({'label':'None'}, index=plate[idx].data.index).label
 
         n += 1
         bar.update(n)
@@ -71,25 +71,11 @@ def load( path, patients, tissues, markers, channel_map={},
         plate[idx].meta['_channel_names_'] = tuple(markers)
 
         if plate[idx].data.isna().any().any() :
-            nan_channel = plate[idx].data.columns[data.isna().all().argmax()]
+            nan_channel = plate[idx].data.columns[plate[idx].data.isna().all().argmax()]
             raise ValueError('''{} contains NaNs in {}'''.format(idx,nan_channel))
 
         n += 1
         bar.update(n)
-
-    ################################################# subsample data
-    if subsample != None :
-        for idx in plate :
-
-            sample_size = len(plate[idx].data)
-            if subsample < sample_size :
-
-                choices = choice( range(sample_size), size=subsample,replace=False )
-                mask = array([ index in choices for index in plate[idx].data.index ])
-                plate[idx].data = plate[idx].data[mask].reset_index().drop(columns=['index'])
-
-            else :
-                plate[idx].data = plate[idx].data.reset_index().drop(columns=['index'])
 
     ################################################# convert to AnnData object
     others = []
@@ -103,6 +89,13 @@ def load( path, patients, tissues, markers, channel_map={},
         antigen['type'] = types
 
         annotated_data = AnnData( plate[idx].data, obs=observations, var=antigen)
+        ################################################# subsample data
+        if subsample != None :
+            if subsample < annotated_data.n_obs :
+
+                choices = choice( range(annotated_data.n_obs), size=subsample, replace=False )
+                annotated_data = annotated_data[choices]
+
         if i == 1 : first = annotated_data
         else : others += [annotated_data]
 

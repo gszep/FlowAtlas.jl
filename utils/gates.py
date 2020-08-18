@@ -2,7 +2,7 @@ from xml.etree.cElementTree import ElementTree
 from networkx import DiGraph,draw,draw_networkx_edges,draw_networkx_labels,get_node_attributes,spring_layout
 
 from FlowCytometryTools import PolyGate
-from pandas import Series
+from pandas import DataFrame
 from numpy import array
 
 from matplotlib.pyplot import figure,show
@@ -70,7 +70,7 @@ class GatingSchema(object):
 	def get_labels(self, FCMeasurement):
 		'''apply gating tree to FCMeasurement object and return row-level labels'''
 		
-		labels = Series( {'label':None}, index=FCMeasurement.data.index, dtype='string')
+		labels = DataFrame( {'label': 'None'}, index=FCMeasurement.data.index)
 		population_ids = ( id for id in self.graph.nodes() if self.graph.out_degree(id)==0 and self.graph.in_degree(id)==1 )
 
 		for id in population_ids :
@@ -79,7 +79,7 @@ class GatingSchema(object):
 			label_index = self.apply(FCMeasurement,id).data.index
 			labels.loc[label_index] = label
 
-		return labels
+		return labels.label
 
 				
 	def show(self):
