@@ -1,0 +1,1641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <Workspace version="20.0"  modDate="Sat Aug 22 14:07:04 BST 2020"  clientTimestamp="1598101624298"  flowJoVersion="10.7.1"  drawRowBorders="1"  drawColumnBorders="1"  hideCompNodes="1"  curGroup="All Samples"  groupPaneHeight="219"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gating="http://www.isac-net.org/std/Gating-ML/v2.0/gating"  xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"  xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"  xsi:schemaLocation="http://www.isac-net.org/std/Gating-ML/v2.0/gating http://www.isac-net.org/std/Gating-ML/v2.0/gating/Gating-ML.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/transformations http://www.isac-net.org/std/Gating-ML/v2.0/gating/Transformations.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/datatypes http://www.isac-net.org/std/Gating-ML/v2.0/gating/DataTypes.v2.0.xsd "  nonAutoSaveFileName="file:/C:/Users/t-varadj/repos/tissue-immunology/data/423C.wsp" >
+   <WindowPosition x="20"  y="20"  width="518"  height="930"  displayed="1"  panelState="" />
+   <TextTraits font="SansSerif"  size="11"  name=""  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+   <Columns>
+     <TColumn width="385" >
+       <Property key="fj.appnode.prop.name" />
+     </TColumn>
+     <TColumn width="58" >
+       <Property key="fj.appnode.prop.statistic" />
+     </TColumn>
+     <TColumn width="57" >
+       <Property key="fj.appnode.prop.ncells" />
+     </TColumn>
+   </Columns>
+   <Matrices/>
+   <Cytometers>
+     <Cytometer name="DIVA"  cyt="LSRFortessa X50 (LSRFortessa)"  useFCS3="1"  extraNegs="0"  widthBasis="-100"  linMin="0"  logMin="3"  linMax="262144"  logMax="262144"  linearRescale="1"  logRescale="1"  linFromKW="1"  logFromKW="1"  useGain="0"  useTransform="1"  transformType="BIEX"  manufacturer=""  serialnumber=""  homepage="workspaces-and-samples/flowjo-and-your-cytometer/ws-cytometer-bd/"  icon="bd.PNG" >
+       <LinParams>
+         <Param>time</Param>
+       </LinParams>
+       <LogParams/>
+       <FilterParams/>
+       <TransformStore/>
+     </Cytometer>
+   </Cytometers>
+   <Groups>
+     <GroupNode name="All Samples"  annotation=""  owningGroup="All Samples"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="auto" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Subpopulations>
+         <Population name="CD4"  annotation=""  owningGroup="All Samples"  expanded="1"  sortPriority="10"  count="97239" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="1026"  y="54"  width="389"  height="565"  displayed="1"  panelState="---" />
+             </GraphEnvironment>
+           </Graph>
+           <Gate gating:id="ID1044053866" >
+             <gating:PolygonGate eventsInside="1"  annoOffsetX="129"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256" >
+               <gating:dimension>
+                 <data-type:fcs-dimension data-type:name="FJComp-355 820_60-A" />
+               </gating:dimension>
+               <gating:dimension>
+                 <data-type:fcs-dimension data-type:name="FJComp-355 560_40-A" />
+               </gating:dimension>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="461.2835002206" />
+                 <gating:coordinate data-type:value="-197.2999736496" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="476.0765096069" />
+                 <gating:coordinate data-type:value="606.7782774795" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="2028.3336308959" />
+                 <gating:coordinate data-type:value="1102.021869783" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="10471.8526686737" />
+                 <gating:coordinate data-type:value="1019.9214523683" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="10228.3873003969" />
+                 <gating:coordinate data-type:value="-557.6528371401" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="490.9775107904" />
+                 <gating:coordinate data-type:value="-597.2004201184" />
+               </gating:vertex>
+             </gating:PolygonGate>
+           </Gate>
+         </Population>
+         <Population name="CD8"  annotation=""  owningGroup="All Samples"  expanded="1"  sortPriority="10"  count="57670" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="629"  y="21"  width="769"  height="831"  displayed="0"  panelState="---" />
+             </GraphEnvironment>
+           </Graph>
+           <Gate gating:id="ID2102485294" >
+             <gating:PolygonGate eventsInside="1"  annoOffsetX="103"  annoOffsetY="-75"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256" >
+               <gating:dimension>
+                 <data-type:fcs-dimension data-type:name="FJComp-355 820_60-A" />
+               </gating:dimension>
+               <gating:dimension>
+                 <data-type:fcs-dimension data-type:name="FJComp-355 560_40-A" />
+               </gating:dimension>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="-812.1944926701" />
+                 <gating:coordinate data-type:value="72618.8657623308" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="-812.1944926701" />
+                 <gating:coordinate data-type:value="2383.5218091848" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="-354.7340441042" />
+                 <gating:coordinate data-type:value="1524.6809415771" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="208.8707674429" />
+                 <gating:coordinate data-type:value="1487.5522605045" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="417.5080742427" />
+                 <gating:coordinate data-type:value="10540.6238781431" />
+               </gating:vertex>
+               <gating:vertex>
+                 <gating:coordinate data-type:value="417.5080742427" />
+                 <gating:coordinate data-type:value="77421.1024582841" />
+               </gating:vertex>
+             </gating:PolygonGate>
+           </Gate>
+         </Population>
+       </Subpopulations>
+       <Group name="All Samples"  live="1"  role="ws.group.dlog.test"  key=""  synchronized="0"  foreground="#000000"  fontStyle="bold" >
+         <Criteria/>
+         <BlacklistedSamples>
+           <SampleRef sampleID="1" />
+           <SampleRef sampleID="3" />
+           <SampleRef sampleID="4" />
+           <SampleRef sampleID="5" />
+         </BlacklistedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="2" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="Compensation"  annotation=""  owningGroup="Compensation"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="auto" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="Compensation"  live="1"  role="ws.group.dlog.compensation"  key=""  synchronized="0"  foreground="#bc1900"  fontStyle="bold" >
+         <Criteria>
+           <Criterion connector="And"  keyword="$FIL"  function="Contains"  value="comp" />
+           <Criterion connector="Or"  keyword="$FIL"  function="Contains"  value="unstained" />
+         </Criteria>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+   </Groups>
+   <SampleList>
+     <Sample>
+       <DataSet uri="file:/C:/Users/t-varadj/repos/tissue-immunology/data/423C/Donor_Pre-Blood_023.cleaned.fcs"  sampleID="2" />
+       <Transformations>
+         <transforms:biex transforms:length="256"  transforms:maxRange="262144"  transforms:neg="0"  transforms:width="-100"  transforms:pos="4.418539922" >
+           <data-type:parameter data-type:name="FJComp-355 379_28-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="262144"  transforms:neg="0"  transforms:width="-100"  transforms:pos="4.418539922" >
+           <data-type:parameter data-type:name="FJComp-355 560_40-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="262144"  transforms:neg="0"  transforms:width="-100"  transforms:pos="4.418539922" >
+           <data-type:parameter data-type:name="FJComp-355 740_35-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="262144"  transforms:neg="0"  transforms:width="-100"  transforms:pos="4.418539922" >
+           <data-type:parameter data-type:name="FJComp-355 820_60-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="262144"  transforms:neg="0"  transforms:width="-100"  transforms:pos="4.418539922" >
+           <data-type:parameter data-type:name="FJComp-405 450_50-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="262144"  transforms:neg="0"  transforms:width="-100"  transforms:pos="4.418539922" >
+           <data-type:parameter data-type:name="FJComp-405 515_20-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-39.8107170553"  transforms:pos="3.918539922" >
+           <data-type:parameter data-type:name="FJComp-405 605_40-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="8289.7211494718"  transforms:neg="0"  transforms:width="-100"  transforms:pos="2.918539922" >
+           <data-type:parameter data-type:name="FJComp-405 670_30-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-50.1187233627"  transforms:pos="3.918539922" >
+           <data-type:parameter data-type:name="FJComp-405 710_40-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-79.4328234724"  transforms:pos="4.3" >
+           <data-type:parameter data-type:name="FJComp-405 780_60-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-10"  transforms:pos="3.918539922" >
+           <data-type:parameter data-type:name="FJComp-488 525_50-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-100"  transforms:pos="3.918539922" >
+           <data-type:parameter data-type:name="FJComp-488 715_30-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-63.095734448"  transforms:pos="3.918539922" >
+           <data-type:parameter data-type:name="FJComp-561 585_15-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-31.6227766017"  transforms:pos="4" >
+           <data-type:parameter data-type:name="FJComp-561 610_20-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-39.8107170553"  transforms:pos="3.918539922" >
+           <data-type:parameter data-type:name="FJComp-561 780_60-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897"  transforms:neg="0"  transforms:width="-39.8107170553"  transforms:pos="3.9185388139" >
+           <data-type:parameter data-type:name="FJComp-640 670_30-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="8289.7211494718"  transforms:neg="0"  transforms:width="-39.8107170553"  transforms:pos="2.918539922" >
+           <data-type:parameter data-type:name="FJComp-640 730_35-A" />
+         </transforms:biex>
+         <transforms:biex transforms:length="256"  transforms:maxRange="82897.211494718"  transforms:neg="0"  transforms:width="-31.6227766017"  transforms:pos="3.85" >
+           <data-type:parameter data-type:name="FJComp-640 780_60-A" />
+         </transforms:biex>
+       </Transformations>
+       <Keywords>
+         <Keyword name="$FIL"  value="Donor_Pre-blood_023_CD8 max range.fcs" />
+         <Keyword name="$TOT"  value="163096" />
+         <Keyword name="$PAR"  value="18" />
+         <Keyword name="$BYTEORD"  value="4,3,2,1" />
+         <Keyword name="$DATATYPE"  value="F" />
+         <Keyword name="FJ_FCS_VERSION"  value="3" />
+         <Keyword name="$BEGINANALYSIS"  value="0" />
+         <Keyword name="$BEGINSTEXT"  value="0" />
+         <Keyword name="$BTIM"  value="05:54:26" />
+         <Keyword name="$CYT"  value="LSRFortessa X50 (LSRFortessa)" />
+         <Keyword name="$DATE"  value="27-FEB-2019" />
+         <Keyword name="$ENDANALYSIS"  value="0" />
+         <Keyword name="$ENDSTEXT"  value="0" />
+         <Keyword name="$ETIM"  value="05:58:59" />
+         <Keyword name="$INST"  value=" " />
+         <Keyword name="$MODE"  value="L" />
+         <Keyword name="$NEXTDATA"  value="0" />
+         <Keyword name="$OP"  value="Administrator" />
+         <Keyword name="$SRC"  value="Donor" />
+         <Keyword name="$SYS"  value="Windows 7 6.1" />
+         <Keyword name="$TIMESTEP"  value="0.01" />
+         <Keyword name="APPLY COMPENSATION"  value="TRUE" />
+         <Keyword name="AUTOBS"  value="TRUE" />
+         <Keyword name="CREATOR"  value="BD FACSDiva Software Version 8.0.1" />
+         <Keyword name="CST BASELINE DATE"  value="2018-08-14T13:06:20-05:00" />
+         <Keyword name="CST BEADS EXPIRED"  value="False" />
+         <Keyword name="CST BEADS LOT ID"  value="72755" />
+         <Keyword name="CST PERFORMANCE EXPIRED"  value="2018-08-15T13:13:04-05:00" />
+         <Keyword name="CST REGULATORY STATUS"  value="RUO Performance Check" />
+         <Keyword name="CST SETUP DATE"  value="2018-08-14T13:13:04-05:00" />
+         <Keyword name="CST SETUP STATUS"  value="SUCCESS WITH WARNING" />
+         <Keyword name="CYTNUM"  value="H660937S4001" />
+         <Keyword name="CYTOMETER CONFIG CREATE DATE"  value="2016-03-23T11:26:38-05:00" />
+         <Keyword name="EXPERIMENT NAME"  value="270219 donor" />
+         <Keyword name="EXPORT TIME"  value="27-FEB-2019-09:23:27" />
+         <Keyword name="EXPORT USER NAME"  value="Administrator" />
+         <Keyword name="FCSversion"  value="3" />
+         <Keyword name="FILENAME"  value="Donor_Pre-Blood_023.fcs" />
+         <Keyword name="flowCore_$P10Rmax"  value="262144" />
+         <Keyword name="flowCore_$P10Rmin"  value="-111" />
+         <Keyword name="flowCore_$P11Rmax"  value="262144" />
+         <Keyword name="flowCore_$P11Rmin"  value="-111" />
+         <Keyword name="flowCore_$P12Rmax"  value="262144" />
+         <Keyword name="flowCore_$P12Rmin"  value="-111" />
+         <Keyword name="flowCore_$P13Rmax"  value="262144" />
+         <Keyword name="flowCore_$P13Rmin"  value="-111" />
+         <Keyword name="flowCore_$P14Rmax"  value="262144" />
+         <Keyword name="flowCore_$P14Rmin"  value="-111" />
+         <Keyword name="flowCore_$P15Rmax"  value="262144" />
+         <Keyword name="flowCore_$P15Rmin"  value="-111" />
+         <Keyword name="flowCore_$P16Rmax"  value="262144" />
+         <Keyword name="flowCore_$P16Rmin"  value="-111" />
+         <Keyword name="flowCore_$P17Rmax"  value="262144" />
+         <Keyword name="flowCore_$P17Rmin"  value="-111" />
+         <Keyword name="flowCore_$P18Rmax"  value="262144" />
+         <Keyword name="flowCore_$P18Rmin"  value="-111" />
+         <Keyword name="flowCore_$P19Rmax"  value="262144" />
+         <Keyword name="flowCore_$P19Rmin"  value="-111" />
+         <Keyword name="flowCore_$P1Rmax"  value="262144" />
+         <Keyword name="flowCore_$P1Rmin"  value="-111" />
+         <Keyword name="flowCore_$P20Rmax"  value="262144" />
+         <Keyword name="flowCore_$P20Rmin"  value="-111" />
+         <Keyword name="flowCore_$P21Rmax"  value="262144" />
+         <Keyword name="flowCore_$P21Rmin"  value="-111" />
+         <Keyword name="flowCore_$P22Rmax"  value="262144" />
+         <Keyword name="flowCore_$P22Rmin"  value="-111" />
+         <Keyword name="flowCore_$P23Rmax"  value="262144" />
+         <Keyword name="flowCore_$P23Rmin"  value="-111" />
+         <Keyword name="flowCore_$P24Rmax"  value="262144" />
+         <Keyword name="flowCore_$P24Rmin"  value="-111" />
+         <Keyword name="flowCore_$P25Rmax"  value="262144" />
+         <Keyword name="flowCore_$P25Rmin"  value="0" />
+         <Keyword name="flowCore_$P2Rmax"  value="262144" />
+         <Keyword name="flowCore_$P2Rmin"  value="0" />
+         <Keyword name="flowCore_$P3Rmax"  value="262144" />
+         <Keyword name="flowCore_$P3Rmin"  value="-111" />
+         <Keyword name="flowCore_$P4Rmax"  value="262144" />
+         <Keyword name="flowCore_$P4Rmin"  value="0" />
+         <Keyword name="flowCore_$P5Rmax"  value="262144" />
+         <Keyword name="flowCore_$P5Rmin"  value="-111" />
+         <Keyword name="flowCore_$P6Rmax"  value="262144" />
+         <Keyword name="flowCore_$P6Rmin"  value="-111" />
+         <Keyword name="flowCore_$P7Rmax"  value="262144" />
+         <Keyword name="flowCore_$P7Rmin"  value="-111" />
+         <Keyword name="flowCore_$P8Rmax"  value="262144" />
+         <Keyword name="flowCore_$P8Rmin"  value="-111" />
+         <Keyword name="flowCore_$P9Rmax"  value="262144" />
+         <Keyword name="flowCore_$P9Rmin"  value="-111" />
+         <Keyword name="FSC ASF"  value="0.69" />
+         <Keyword name="GUID"  value="228fbeab-0ebe-4a5e-a680-91e2f74c57b0" />
+         <Keyword name="LASER1ASF"  value="0.84" />
+         <Keyword name="LASER1DELAY"  value="0.00" />
+         <Keyword name="LASER1NAME"  value="488 Blue" />
+         <Keyword name="LASER2ASF"  value="0.80" />
+         <Keyword name="LASER2DELAY"  value="35.33" />
+         <Keyword name="LASER2NAME"  value="405 Violet" />
+         <Keyword name="LASER3ASF"  value="0.83" />
+         <Keyword name="LASER3DELAY"  value="73.51" />
+         <Keyword name="LASER3NAME"  value="355 UV" />
+         <Keyword name="LASER4ASF"  value="0.71" />
+         <Keyword name="LASER4DELAY"  value="104.52" />
+         <Keyword name="LASER4NAME"  value="640 Red" />
+         <Keyword name="LASER5ASF"  value="0.86" />
+         <Keyword name="LASER5DELAY"  value="139.09" />
+         <Keyword name="LASER5NAME"  value="561 YG" />
+         <Keyword name="ORIGINALGUID"  value="228fbeab-0ebe-4a5e-a680-91e2f74c57b0" />
+         <Keyword name="SETTINGS"  value="Cytometer" />
+         <Keyword name="THRESHOLD"  value="FSC,21000" />
+         <Keyword name="transformation"  value="applied" />
+         <Keyword name="TUBE NAME"  value="Pre-blood" />
+         <Keyword name="WINDOW EXTENSION"  value="10.00" />
+         <Keyword name="$P1B"  value="32" />
+         <Keyword name="$P1R"  value="262144" />
+         <Keyword name="$P1N"  value="FJComp-355 379_28-A" />
+         <Keyword name="$P1S"  value="CD3" />
+         <Keyword name="$P1G"  value="1" />
+         <Keyword name="$P1E"  value="0,0" />
+         <Keyword name="$P2B"  value="32" />
+         <Keyword name="$P2R"  value="262144" />
+         <Keyword name="$P2N"  value="FJComp-355 560_40-A" />
+         <Keyword name="$P2S"  value="CD8" />
+         <Keyword name="$P2G"  value="1" />
+         <Keyword name="$P2E"  value="0,0" />
+         <Keyword name="$P3B"  value="32" />
+         <Keyword name="$P3R"  value="262144" />
+         <Keyword name="$P3N"  value="FJComp-355 740_35-A" />
+         <Keyword name="$P3S"  value="CD69" />
+         <Keyword name="$P3G"  value="1" />
+         <Keyword name="$P3E"  value="0,0" />
+         <Keyword name="$P4B"  value="32" />
+         <Keyword name="$P4R"  value="82897" />
+         <Keyword name="$P4N"  value="FJComp-355 820_60-A" />
+         <Keyword name="$P4S"  value="CD4" />
+         <Keyword name="$P4G"  value="1" />
+         <Keyword name="$P4E"  value="0,0" />
+         <Keyword name="$P5B"  value="32" />
+         <Keyword name="$P5R"  value="262144" />
+         <Keyword name="$P5N"  value="FJComp-405 450_50-A" />
+         <Keyword name="$P5S"  value="CD103" />
+         <Keyword name="$P5G"  value="1" />
+         <Keyword name="$P5E"  value="0,0" />
+         <Keyword name="$P6B"  value="32" />
+         <Keyword name="$P6R"  value="262144" />
+         <Keyword name="$P6N"  value="FJComp-405 515_20-A" />
+         <Keyword name="$P6S"  value="HLA-DR" />
+         <Keyword name="$P6G"  value="1" />
+         <Keyword name="$P6E"  value="0,0" />
+         <Keyword name="$P7B"  value="32" />
+         <Keyword name="$P7R"  value="262144" />
+         <Keyword name="$P7N"  value="FJComp-405 605_40-A" />
+         <Keyword name="$P7S"  value="CCR4" />
+         <Keyword name="$P7G"  value="1" />
+         <Keyword name="$P7E"  value="0,0" />
+         <Keyword name="$P8B"  value="32" />
+         <Keyword name="$P8R"  value="26214" />
+         <Keyword name="$P8N"  value="FJComp-405 670_30-A" />
+         <Keyword name="$P8S"  value="CCR6" />
+         <Keyword name="$P8G"  value="1" />
+         <Keyword name="$P8E"  value="0,0" />
+         <Keyword name="$P9B"  value="32" />
+         <Keyword name="$P9R"  value="262144" />
+         <Keyword name="$P9N"  value="FJComp-405 710_40-A" />
+         <Keyword name="$P9S"  value="PD-1" />
+         <Keyword name="$P9G"  value="1" />
+         <Keyword name="$P9E"  value="0,0" />
+         <Keyword name="$P10B"  value="32" />
+         <Keyword name="$P10R"  value="262144" />
+         <Keyword name="$P10N"  value="FJComp-405 780_60-A" />
+         <Keyword name="$P10S"  value="CD45RA" />
+         <Keyword name="$P10G"  value="1" />
+         <Keyword name="$P10E"  value="0,0" />
+         <Keyword name="$P11B"  value="32" />
+         <Keyword name="$P11R"  value="262144" />
+         <Keyword name="$P11N"  value="FJComp-488 525_50-A" />
+         <Keyword name="$P11S"  value="CCR10" />
+         <Keyword name="$P11G"  value="1" />
+         <Keyword name="$P11E"  value="0,0" />
+         <Keyword name="$P12B"  value="32" />
+         <Keyword name="$P12R"  value="262144" />
+         <Keyword name="$P12N"  value="FJComp-488 715_30-A" />
+         <Keyword name="$P12S"  value="CXCR3" />
+         <Keyword name="$P12G"  value="1" />
+         <Keyword name="$P12E"  value="0,0" />
+         <Keyword name="$P13B"  value="32" />
+         <Keyword name="$P13R"  value="262144" />
+         <Keyword name="$P13N"  value="FJComp-561 585_15-A" />
+         <Keyword name="$P13S"  value="Foxp3-IgM" />
+         <Keyword name="$P13G"  value="1" />
+         <Keyword name="$P13E"  value="0,0" />
+         <Keyword name="$P14B"  value="32" />
+         <Keyword name="$P14R"  value="1" />
+         <Keyword name="$P14N"  value="FJComp-561 610_20-A" />
+         <Keyword name="$P14S"  value="Helios" />
+         <Keyword name="$P14G"  value="1" />
+         <Keyword name="$P14E"  value="0,0" />
+         <Keyword name="$P15B"  value="32" />
+         <Keyword name="$P15R"  value="262144" />
+         <Keyword name="$P15N"  value="FJComp-561 780_60-A" />
+         <Keyword name="$P15S"  value="CD127" />
+         <Keyword name="$P15G"  value="1" />
+         <Keyword name="$P15E"  value="0,0" />
+         <Keyword name="$P16B"  value="32" />
+         <Keyword name="$P16R"  value="1" />
+         <Keyword name="$P16N"  value="FJComp-640 670_30-A" />
+         <Keyword name="$P16S"  value="CD25" />
+         <Keyword name="$P16G"  value="1" />
+         <Keyword name="$P16E"  value="0,0" />
+         <Keyword name="$P17B"  value="32" />
+         <Keyword name="$P17R"  value="1" />
+         <Keyword name="$P17N"  value="FJComp-640 730_35-A" />
+         <Keyword name="$P17S"  value="CXCR5" />
+         <Keyword name="$P17G"  value="1" />
+         <Keyword name="$P17E"  value="0,0" />
+         <Keyword name="$P18B"  value="32" />
+         <Keyword name="$P18R"  value="82897" />
+         <Keyword name="$P18N"  value="FJComp-640 780_60-A" />
+         <Keyword name="$P18S"  value="CCR7" />
+         <Keyword name="$P18G"  value="1" />
+         <Keyword name="$P18E"  value="0,0" />
+         <Keyword name="$BEGINDATA"  value="3964" />
+         <Keyword name="$ENDDATA"  value="11746875" />
+       </Keywords>
+       <SampleNode name="Donor_Pre-blood_023_CD8 max range.fcs"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="163096"  sampleID="2" >
+         <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+           <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
+           <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="auto" />
+           <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+           <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+             <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+             <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+             <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+             <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+             <WindowPosition x="412"  y="163"  width="545"  height="675"  displayed="0"  panelState="---" />
+           </GraphEnvironment>
+         </Graph>
+         <Subpopulations>
+           <Population name="CD4"  annotation=""  owningGroup="All Samples"  expanded="1"  sortPriority="10"  count="97239" >
+             <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 585_15-A :: Foxp3-IgM"  type="Pseudocolor"  fast="1" >
+               <Axis dimension="x"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
+               <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="auto" />
+               <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+               <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                 <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+               </GraphEnvironment>
+             </Graph>
+             <Gate gating:id="ID1852571424" >
+               <gating:PolygonGate eventsInside="1"  annoOffsetX="129"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1852571424" >
+                 <gating:dimension>
+                   <data-type:fcs-dimension data-type:name="FJComp-355 820_60-A" />
+                 </gating:dimension>
+                 <gating:dimension>
+                   <data-type:fcs-dimension data-type:name="FJComp-355 560_40-A" />
+                 </gating:dimension>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="461.2835002206" />
+                   <gating:coordinate data-type:value="-197.2999736496" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="476.0765096069" />
+                   <gating:coordinate data-type:value="606.7782774795" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="2028.3336308959" />
+                   <gating:coordinate data-type:value="1102.021869783" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="10471.8526686737" />
+                   <gating:coordinate data-type:value="1019.9214523683" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="10228.3873003969" />
+                   <gating:coordinate data-type:value="-557.6528371401" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="490.9775107904" />
+                   <gating:coordinate data-type:value="-597.2004201184" />
+                 </gating:vertex>
+               </gating:PolygonGate>
+             </Gate>
+             <Subpopulations>
+               <Population name="127lo 25+"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="13044" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID52200"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID52200"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 670_30-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-561 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="380.7499561877" />
+                       <gating:coordinate data-type:value="-605.7719910283" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="372.9372768328" />
+                       <gating:coordinate data-type:value="-337.8764612573" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="412.853614647" />
+                       <gating:coordinate data-type:value="1796.6414242484" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="2466.496761642" />
+                       <gating:coordinate data-type:value="7295.5075592944" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="71895.6414438763" />
+                       <gating:coordinate data-type:value="7295.5075592944" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="71895.6414438763" />
+                       <gating:coordinate data-type:value="-548.0360399011" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+                 <Subpopulations>
+                   <Population name="Tregs"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="10199" >
+                     <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                       <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
+                       <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="auto" />
+                       <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                       <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                         <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+                       </GraphEnvironment>
+                     </Graph>
+                     <Gate gating:id="ID1095891897"  gating:parent_id="ID52200" >
+                       <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1095891897"  gating:parent_id="ID52200" >
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-561 585_15-A" />
+                         </gating:dimension>
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-561 610_20-A" />
+                         </gating:dimension>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="449.2409248657" />
+                           <gating:coordinate data-type:value="441.0971492482" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="449.2409248657" />
+                           <gating:coordinate data-type:value="15979.8053033148" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="22709.8447514425" />
+                           <gating:coordinate data-type:value="15979.8053033148" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="22709.8447514425" />
+                           <gating:coordinate data-type:value="441.0971492482" />
+                         </gating:vertex>
+                       </gating:PolygonGate>
+                     </Gate>
+                   </Population>
+                 </Subpopulations>
+               </Population>
+               <Population name="CM"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="39209" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="320"  y="47"  width="512"  height="676"  displayed="0"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID530485707"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID530485707"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-486.887022823" />
+                       <gating:coordinate data-type:value="313.8635594321" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-486.887022823" />
+                       <gating:coordinate data-type:value="33462.7413143423" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="358.9187797045" />
+                       <gating:coordinate data-type:value="33462.7413143423" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="358.9187797045" />
+                       <gating:coordinate data-type:value="313.8635594321" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="EM"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="12836" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 710_40-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="260"  y="55"  width="512"  height="676"  displayed="0"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID696825036"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID696825036"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-485.1371200424" />
+                       <gating:coordinate data-type:value="-432.6553855887" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-485.1371200424" />
+                       <gating:coordinate data-type:value="305.2982210879" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="367.4866545028" />
+                       <gating:coordinate data-type:value="305.2982210879" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="367.4866545028" />
+                       <gating:coordinate data-type:value="-403.4347042034" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="EMRA"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="598" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="620"  y="20"  width="512"  height="676"  displayed="1"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID344899943"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID344899943"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="365.119740256" />
+                       <gating:coordinate data-type:value="-358.474397957" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="365.119740256" />
+                       <gating:coordinate data-type:value="313.4916460596" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="33189.9985609898" />
+                       <gating:coordinate data-type:value="431.9152612156" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="27459.77413118" />
+                       <gating:coordinate data-type:value="-478.1835722" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="Mem"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="52045" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 710_40-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID362842243"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID362842243"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-505.1932126367" />
+                       <gating:coordinate data-type:value="-437.7525654879" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-505.1932126367" />
+                       <gating:coordinate data-type:value="35935.4497520092" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="363.2351137357" />
+                       <gating:coordinate data-type:value="35935.4497520092" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="363.2351137357" />
+                       <gating:coordinate data-type:value="-437.7525654879" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+                 <Subpopulations>
+                   <Population name="Th1"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="3947" >
+                     <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                       <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
+                       <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
+                       <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                       <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                         <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+                       </GraphEnvironment>
+                     </Graph>
+                     <Gate gating:id="ID1163552035"  gating:parent_id="ID362842243" >
+                       <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1163552035"  gating:parent_id="ID362842243" >
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-488 715_30-A" />
+                         </gating:dimension>
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-405 670_30-A" />
+                         </gating:dimension>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="702.7167790262" />
+                           <gating:coordinate data-type:value="-832.005550758" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="702.7167790262" />
+                           <gating:coordinate data-type:value="6673.9626098264" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="42094.1751350021" />
+                           <gating:coordinate data-type:value="6673.9626098264" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="42094.1751350021" />
+                           <gating:coordinate data-type:value="-832.005550758" />
+                         </gating:vertex>
+                       </gating:PolygonGate>
+                     </Gate>
+                   </Population>
+                   <Population name="Th2"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="45215" >
+                     <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                       <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
+                       <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
+                       <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                       <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                         <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+                       </GraphEnvironment>
+                     </Graph>
+                     <Gate gating:id="ID1327156695"  gating:parent_id="ID362842243" >
+                       <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1327156695"  gating:parent_id="ID362842243" >
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-488 715_30-A" />
+                         </gating:dimension>
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-405 670_30-A" />
+                         </gating:dimension>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="-1159.9404111409" />
+                           <gating:coordinate data-type:value="-844.8963841253" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="-1159.9404111409" />
+                           <gating:coordinate data-type:value="513.0146988259" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="688.6534795641" />
+                           <gating:coordinate data-type:value="513.0146988259" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="688.6534795641" />
+                           <gating:coordinate data-type:value="-844.8963841253" />
+                         </gating:vertex>
+                       </gating:PolygonGate>
+                     </Gate>
+                   </Population>
+                   <Population name="Th17_Th22"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="3094" >
+                     <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                       <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
+                       <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
+                       <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                       <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                         <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                         <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+                       </GraphEnvironment>
+                     </Graph>
+                     <Gate gating:id="ID2110846389"  gating:parent_id="ID362842243" >
+                       <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2110846389"  gating:parent_id="ID362842243" >
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-488 715_30-A" />
+                         </gating:dimension>
+                         <gating:dimension>
+                           <data-type:fcs-dimension data-type:name="FJComp-405 670_30-A" />
+                         </gating:dimension>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="-1159.9404111409" />
+                           <gating:coordinate data-type:value="513.0146988259" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="-1159.9404111409" />
+                           <gating:coordinate data-type:value="6570.2376768741" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="688.6534795641" />
+                           <gating:coordinate data-type:value="6570.2376768741" />
+                         </gating:vertex>
+                         <gating:vertex>
+                           <gating:coordinate data-type:value="688.6534795641" />
+                           <gating:coordinate data-type:value="513.0146988259" />
+                         </gating:vertex>
+                       </gating:PolygonGate>
+                     </Gate>
+                     <Subpopulations>
+                       <Population name="Th17"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="1941" >
+                         <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                           <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
+                           <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
+                           <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                           <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                             <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+                           </GraphEnvironment>
+                         </Graph>
+                         <Gate gating:id="ID1782076484"  gating:parent_id="ID2110846389" >
+                           <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1782076484"  gating:parent_id="ID2110846389" >
+                             <gating:dimension>
+                               <data-type:fcs-dimension data-type:name="FJComp-488 525_50-A" />
+                             </gating:dimension>
+                             <gating:dimension>
+                               <data-type:fcs-dimension data-type:name="FJComp-405 605_40-A" />
+                             </gating:dimension>
+                             <gating:vertex>
+                               <gating:coordinate data-type:value="-90.3331975974" />
+                               <gating:coordinate data-type:value="449.8562849259" />
+                             </gating:vertex>
+                             <gating:vertex>
+                               <gating:coordinate data-type:value="-95.601649969" />
+                               <gating:coordinate data-type:value="36318.9749726474" />
+                             </gating:vertex>
+                             <gating:vertex>
+                               <gating:coordinate data-type:value="358.1035960492" />
+                               <gating:coordinate data-type:value="36318.9749726474" />
+                             </gating:vertex>
+                             <gating:vertex>
+                               <gating:coordinate data-type:value="364.9220631013" />
+                               <gating:coordinate data-type:value="440.2502713249" />
+                             </gating:vertex>
+                           </gating:PolygonGate>
+                         </Gate>
+                       </Population>
+                       <Population name="Th22"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="521" >
+                         <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+                           <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
+                           <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
+                           <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                           <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                             <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                             <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+                           </GraphEnvironment>
+                         </Graph>
+                         <Gate gating:id="ID1393238423"  gating:parent_id="ID2110846389" >
+                           <gating:RectangleGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  percentX="0"  percentY="0"  gating:id="ID1393238423"  gating:parent_id="ID2110846389" >
+                             <gating:dimension gating:min="358.10359604923696"  gating:max="36810.98157140037" >
+                               <data-type:fcs-dimension data-type:name="FJComp-488 525_50-A" />
+                             </gating:dimension>
+                             <gating:dimension gating:min="430.77111362500807"  gating:max="36318.97497264741" >
+                               <data-type:fcs-dimension data-type:name="FJComp-405 605_40-A" />
+                             </gating:dimension>
+                           </gating:RectangleGate>
+                         </Gate>
+                       </Population>
+                     </Subpopulations>
+                   </Population>
+                 </Subpopulations>
+               </Population>
+               <Population name="Naive"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="44894" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="620"  y="20"  width="512"  height="676"  displayed="1"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID1422912218"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1422912218"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="355.7456320252" />
+                       <gating:coordinate data-type:value="308.0843532778" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="365.119740256" />
+                       <gating:coordinate data-type:value="52406.1175204732" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="29714.552270861" />
+                       <gating:coordinate data-type:value="47179.5242639827" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="21011.6384287868" />
+                       <gating:coordinate data-type:value="431.9152612156" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="Tfh"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="785" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 585_15-A :: Foxp3-IgM"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID433700651"  gating:parent_id="ID1852571424" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID433700651"  gating:parent_id="ID1852571424" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 730_35-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 710_40-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="430.4782208873" />
+                       <gating:coordinate data-type:value="1006.5348035705" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="418.0708640846" />
+                       <gating:coordinate data-type:value="30894.0338604334" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="5497.6519332537" />
+                       <gating:coordinate data-type:value="30175.5370570144" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="5663.4060763486" />
+                       <gating:coordinate data-type:value="1025.8377017299" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+             </Subpopulations>
+           </Population>
+           <Population name="CD8"  annotation=""  owningGroup="All Samples"  expanded="1"  sortPriority="10"  count="57670" >
+             <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+               <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+               <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+               <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+               <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                 <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                 <WindowPosition x="620"  y="20"  width="390"  height="582"  displayed="0"  panelState="---" />
+               </GraphEnvironment>
+             </Graph>
+             <Gate gating:id="ID2065821045" >
+               <gating:PolygonGate eventsInside="1"  annoOffsetX="103"  annoOffsetY="-75"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID2065821045" >
+                 <gating:dimension>
+                   <data-type:fcs-dimension data-type:name="FJComp-355 820_60-A" />
+                 </gating:dimension>
+                 <gating:dimension>
+                   <data-type:fcs-dimension data-type:name="FJComp-355 560_40-A" />
+                 </gating:dimension>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="-812.1944926701" />
+                   <gating:coordinate data-type:value="72618.8657623308" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="-812.1944926701" />
+                   <gating:coordinate data-type:value="2383.5218091848" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="-354.7340441042" />
+                   <gating:coordinate data-type:value="1524.6809415771" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="208.8707674429" />
+                   <gating:coordinate data-type:value="1487.5522605045" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="417.5080742427" />
+                   <gating:coordinate data-type:value="10540.6238781431" />
+                 </gating:vertex>
+                 <gating:vertex>
+                   <gating:coordinate data-type:value="417.5080742427" />
+                   <gating:coordinate data-type:value="77421.1024582841" />
+                 </gating:vertex>
+               </gating:PolygonGate>
+             </Gate>
+             <Subpopulations>
+               <Population name="CM"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="6649" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="620"  y="20"  width="512"  height="676"  displayed="1"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID1164989239"  gating:parent_id="ID2065821045" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1164989239"  gating:parent_id="ID2065821045" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-486.887022823" />
+                       <gating:coordinate data-type:value="313.8635594321" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-486.887022823" />
+                       <gating:coordinate data-type:value="33462.7413143423" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="358.9187797045" />
+                       <gating:coordinate data-type:value="33462.7413143423" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="358.9187797045" />
+                       <gating:coordinate data-type:value="313.8635594321" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="EM"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="13840" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="620"  y="20"  width="512"  height="676"  displayed="1"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID482591654"  gating:parent_id="ID2065821045" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID482591654"  gating:parent_id="ID2065821045" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-485.1371200424" />
+                       <gating:coordinate data-type:value="-432.6553855887" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="-485.1371200424" />
+                       <gating:coordinate data-type:value="305.2982210879" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="367.4866545028" />
+                       <gating:coordinate data-type:value="305.2982210879" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="367.4866545028" />
+                       <gating:coordinate data-type:value="-403.4347042034" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="EMRA"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="29037" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="620"  y="20"  width="512"  height="676"  displayed="1"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID1868974148"  gating:parent_id="ID2065821045" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID1868974148"  gating:parent_id="ID2065821045" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="362.4848169328" />
+                       <gating:coordinate data-type:value="-354.8972842297" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="362.4848169328" />
+                       <gating:coordinate data-type:value="309.7743561715" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="26516.3888407373" />
+                       <gating:coordinate data-type:value="476.8135897438" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="27617.2547946092" />
+                       <gating:coordinate data-type:value="-480.6965781376" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+               <Population name="Naive"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="8454" >
+                 <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+                   <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+                   <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+                   <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+                   <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+                     <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+                     <WindowPosition x="620"  y="20"  width="512"  height="676"  displayed="1"  panelState="---" />
+                   </GraphEnvironment>
+                 </Graph>
+                 <Gate gating:id="ID395202574"  gating:parent_id="ID2065821045" >
+                   <gating:PolygonGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  quadId="-1"  gateResolution="256"  gating:id="ID395202574"  gating:parent_id="ID2065821045" >
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-405 780_60-A" />
+                     </gating:dimension>
+                     <gating:dimension>
+                       <data-type:fcs-dimension data-type:name="FJComp-640 780_60-A" />
+                     </gating:dimension>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="350.4927655708" />
+                       <gating:coordinate data-type:value="309.7743561715" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="362.4848169328" />
+                       <gating:coordinate data-type:value="51475.9072615245" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="29959.9700780165" />
+                       <gating:coordinate data-type:value="47505.9187335579" />
+                     </gating:vertex>
+                     <gating:vertex>
+                       <gating:coordinate data-type:value="26516.3888407373" />
+                       <gating:coordinate data-type:value="494.1554285532" />
+                     </gating:vertex>
+                   </gating:PolygonGate>
+                 </Gate>
+               </Population>
+             </Subpopulations>
+           </Population>
+         </Subpopulations>
+       </SampleNode>
+     </Sample>
+   </SampleList>
+   <TableEditor title="FlowJo Tables: 423C.wsp"  current="Table" >
+     <Table name="Table"  outputFile="file:/C:/Users/t-varadj/OneDrive%20-%20Microsoft/Documents/Table"  color="#00ffffff"  isBatch="0"  quickclose="0"  destination="toDisplay"  outputFormat="fj.document.type.table" >
+       <PrintLayout flipPattern0="0"  rows="1"  columns="1"  padding="36"  header=""  footer=""  headerActive="0"  footerActive="0"  scalingMode="fj.print.scale.none"  scaling="1"  orientation="1"  width="595.2744"  height="841.8888"  imageableX="72"  imageableY="72"  imageableWidth="451.2744"  imageableHeight="697.8888" />
+       <PageSection sectionName="header" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&amp;NBSP&amp;NBSP&amp;NBSP&amp;NBSP&lt;IMG SRC=&quot;file:/C:/Program%20Files/FlowJo%2010.7.1/images/fj_icon.png&quot;&gt;&lt;/IMG&gt;&lt;br/&gt;FlowJo, LLC&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;top&quot;&gt;Page &lt;PageNumber/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
+       <PageSection sectionName="footer" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;  valign=&quot;bottom&quot;&gt;&lt;LongDate/&gt;&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;bottom&quot;&gt;&lt;Version/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
+       <Iteration iterationType="SAMPLE"  iterationValue=""  iterationKeyword=""  discriminator=""  panelSize="1"  groupName="workspaceSelection" />
+     </Table>
+   </TableEditor>
+   <LayoutEditor title="FlowJo Layouts: 423C.wsp"  current="Layout"  showGrid="0"  showPageBreaks="0"  showGuides="0"  showDebugOutput="0" >
+     <Layout name="Layout"  outputFile="file:/C:/Users/t-varadj/OneDrive%20-%20Microsoft/Documents/Layout"  color="#00ffffff"  isBatch="0"  showGrid="0"  showRulers="1"  showDebugOutput="0"  showGuides="0"  showPageBreaks="1"  scale="0.66" >
+       <PrintLayout flipPattern0="0"  rows="1"  columns="1"  padding="36"  header=""  footer=""  headerActive="0"  footerActive="0"  scalingMode="fj.print.scale.none"  scaling="2.5964523282"  orientation="0"  width="595.2744"  height="841.8888"  imageableX="72"  imageableY="72"  imageableWidth="451.2744"  imageableHeight="697.8888" />
+       <PageSection sectionName="header" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&amp;NBSP&amp;NBSP&amp;NBSP&amp;NBSP&lt;IMG SRC=&quot;file:/C:/Program%20Files/FlowJo%2010.7.1/images/fj_icon.png&quot;&gt;&lt;/IMG&gt;&lt;br/&gt;FlowJo, LLC&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;top&quot;&gt;Page &lt;PageNumber/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
+       <PageSection sectionName="footer" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;  valign=&quot;bottom&quot;&gt;&lt;LongDate/&gt;&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;bottom&quot;&gt;&lt;Version/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
+       <Iteration iterationType="OFF"  iterationValue="2"  iterationKeyword=""  discriminator=""  panelSize="1"  groupName="All Samples" />
+       <BatchSettings useCurrentGroup="1"  length="3"  name=""  order="ACROSS"  direction="COLUMNS"  append="0"  destination="toLayout"  separatePages="0"  launchApp="1"  header="0"  footer="0"  commandLineBatch="0" />
+       <FigList>
+         <ChartData x="63"  y="52"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@6da789de#1598095660984"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="0" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-355 820_60-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-355 560_40-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="620"  y="20"  width="545"  height="676"  displayed="0"  panelState="---" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@30984734#1598095660988"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@700418ba#1598095660988"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@2d958ee4#1598095660988"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@1a6fbb46#1598095660988"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path=""  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="63"  y="52"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="12"  y="342"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@42f05588#1598095660988"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="5" />
+         <ChartData x="400"  y="60"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@17a2d302#1598098588772"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="10" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatistic="Median"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@157c1d93#1598098588775"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@106fd497#1598098588775"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@64402713#1598098588773"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@6a4df98f#1598098588773"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path="CD4"  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="400"  y="60"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="349"  y="350"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@4e797de6#1598098588773"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="15" />
+         <Line x="234"  y="219"  width="158"  height="55"  lineWeight="Normal"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigLine@6aeed9a#1598099014056"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  x1="392"  y1="219"  x2="234"  y2="274"  arrow="None"  z="20" />
+         <ChartData x="758"  y="70"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@515b66f1#1598099164369"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="21" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@623d344#1598099164370"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@8f4a566#1598099164370"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@7d6564b#1598099164370"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@233157d1#1598099164370"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path="CD4/Mem"  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="758"  y="70"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="707"  y="360"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@11e3e749#1598099164370"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="26" />
+         <Line x="468"  y="237"  width="295"  height="43"  lineWeight="Normal"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigLine@196e6cf#1598099176032"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  x1="763"  y1="280"  x2="468"  y2="237"  arrow="None"  z="31" />
+         <ChartData x="1102"  y="54"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@78f09bc2#1598099216241"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="32" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="1"  panelState="+--" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@79f3333e#1598099216242"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@5b0f6e8f#1598099216242"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@373d1ca9#1598099216241"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@7082c526#1598099216241"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path="CD4/Mem/Th17_Th22"  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="1102"  y="54"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="1051"  y="344"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@767a8493#1598099216242"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="37" />
+         <Line x="845"  y="93"  width="251"  height="19"  lineWeight="Normal"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigLine@6884eda#1598099261593"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  x1="1096"  y1="93"  x2="845"  y2="112"  arrow="None"  z="42" />
+         <ChartData x="56"  y="732"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@47902c89#1598099683616"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="43" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 585_15-A :: Foxp3-IgM"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-640 670_30-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-561 780_60-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@67c0786#1598099683617"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@2b689c12#1598099683618"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@6ab002c2#1598099683616"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@6d6cfc25#1598099683616"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path="CD4"  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="56"  y="732"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="5"  y="1022"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@5e6e6af9#1598099683617"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="48" />
+         <ChartData x="415"  y="731"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@73a1cee7#1598099691805"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="53" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@287e7687#1598099691806"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@6e262672#1598099691806"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@310db722#1598099691805"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@78c1135f#1598099691806"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path="CD4/127lo 25+"  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="415"  y="731"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="364"  y="1021"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@7c874331#1598099691806"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="58" />
+         <Line x="168"  y="271"  width="63"  height="471"  lineWeight="Normal"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigLine@282bd506#1598099744485"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  x1="168"  y1="742"  x2="231"  y2="271"  arrow="None"  z="63" />
+         <Line x="313"  y="780"  width="100"  height="4"  lineWeight="Normal"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigLine@b5b318a#1598099767182"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  x1="413"  y1="780"  x2="313"  y2="784"  arrow="None"  z="64" />
+         <Line x="231"  y="271"  width="150"  height="132"  lineWeight="Normal"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigLine@6854ed46#1598101415397"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  x1="381"  y1="403"  x2="231"  y2="271"  arrow="None"  z="65" />
+         <ChartData x="402"  y="395"  width="0"  height="0"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartBox@2621d5c2#1598101420746"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  dependents="1"  showSampleName="1"  showFullPath="1"  showFreq="0"  showCount="1"  showPopulationName="1"  showGraphTitle="0"  showMedians="0"  useShortName="1"  showKeyword="0"  keyword=""  showStatistic="0"  statistic=""  offsetHistograms="0"  offsetX="0"  offsetY="0"  flipH="0"  flipV="0"  showAdjunctHistograms="0"  scaleH="1"  scaleV="1"  panelIndex="-1"  z="66" >
+           <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 585_15-A :: Foxp3-IgM"  type="Pseudocolor"  fast="1" >
+             <Axis dimension="x"  name="FJComp-405 710_40-A"  label=""  auto="auto" />
+             <Axis dimension="y"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
+             <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="8000"  tint="le.chartfill.tinted.40"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+             <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="1"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+               <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+               <WindowPosition x="781"  y="3"  width="571"  height="854"  displayed="0"  panelState="+--" />
+             </GraphEnvironment>
+           </Graph>
+           <Annotation lineWeight="NoLine"  fill="#ffffff"  stroke="#808080"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartAnnotation@331b0fe3#1598101420751"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  autoFitContents="0"  autoMinimumSize="1"  padding="5,5,5,5" >
+             <Content>&amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.samplename%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CAnno+name%3D%22fj.anno.popname%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;      &amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;    &amp;lt;p style=&amp;quot;margin-top:0; text-align:left;&amp;quot;&amp;gt;&amp;#xA;      &amp;lt;font face=&amp;quot;SansSerif&amp;quot; color=&amp;quot;#000000&amp;quot; style=&amp;quot;font-size:11pt;&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;fjml&amp;quot; value=&amp;quot;%3CStatistic+name%3D%22Count%22++id%3D%22%22++ancestor%3D%22%22+%2F%3E&amp;quot; style=&amp;quot;font-family:SansSerif; color:#000000; font-weight:normal; font-style:;&amp;quot;&amp;gt;&amp;#xA;&amp;lt;/font&amp;gt;    &amp;lt;/p&amp;gt;&amp;#xA;</Content>
+             <WindowPosition x="0"  y="340"  width="221"  height="61"  displayed="0"  panelState="" />
+           </Annotation>
+           <Legend lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.legend.FigLegend@119c482e#1598101420752"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  rows="3"  columns="4"  drawGrid="1"  autoFitContents="0"  showHeader="1" >
+             <RowSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+             </RowSizes>
+             <ColSizes>
+               <Size index="0"  value="15" />
+               <Size index="1"  value="15" />
+               <Size index="2"  value="15" />
+               <Size index="3"  value="15" />
+             </ColSizes>
+             <WindowPosition x="280"  y="0"  width="60"  height="45"  displayed="0"  panelState="" />
+             <Columns>
+               <Anno name="fj.anno.samplename" />
+               <Anno name="fj.anno.popname" />
+               <Statistic name="Count"  id=""  ancestor="" />
+             </Columns>
+           </Legend>
+           <Ancestry lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartRow@7dca5f03#1598101420747"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  backgating="0"  horizontal="0"  backgatingLargeDots="0"  backgatingContours="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+           </Ancestry>
+           <Multigraph lineWeight="NoLine"  fill="#00ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="1"  alpha="1"  figID="com.treestar.flowjo.charting.FigChartGrid@1ea08f6c#1598101420747"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  annoOffsetX="0"  annoOffsetY="0"  type="NONE"  displayType="DotPlot"  rows="0"  columns="0" >
+             <WindowPosition x="0"  y="0"  width="0"  height="1"  displayed="0"  panelState="" />
+             <Parameters/>
+           </Multigraph>
+           <PopModelList>
+             <DataLayer path="CD4"  panelValue="1"  discriminatorValue=""  sampleGMID="0"  sampleID="2" >
+               <LegendSpec color="#000000"  text=""  chartFill="le.chartfill.tinted.40"  lineWeight="Normal"  lineStyle="Solid"  control="0" />
+             </DataLayer>
+           </PopModelList>
+           <WindowPosition x="402"  y="395"  width="256"  height="256"  displayed="1"  panelState="" />
+         </ChartData>
+         <FigColorLegend x="351"  y="685"  width="70"  height="12"  lineWeight="Hairline"  fill="#ffffff"  stroke="#000000"  lineStyle="Solid"  gradientColor="#808080"  gradientStyle="le.gradientstyle.none"  enabled="1"  xScale="1"  yScale="1"  aspectRatioLock="0"  alpha="1"  figID="com.treestar.layout.presentation.FigHeatmapStatAxis@3b8334ca#1598101420747"  rotation="0"  lock="0"  sizeLock="0"  contentLock="0"  wantsDrops="0"  colorMapName="Default (blue,green,yellow,red)"  z="71" />
+       </FigList>
+     </Layout>
+     <WindowPosition x="510"  y="20"  width="1011"  height="917" />
+   </LayoutEditor>
+   <Scripts>
+     <Script lang="text/javascript"  name="New Script 		 " />
+   </Scripts>
+   <Exports/>
+   <SOPS/>
+   <experiment/>
+   <weights/>
+ </Workspace>
