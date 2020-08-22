@@ -48,7 +48,7 @@ def load( path, patients, tissues, markers, channel_map={},
     for idx in plate :
 
         tissue,patient = idx
-        label_path = glob(join('data',patient,'*_'+tissue+'_*.xml'))
+        label_path = glob(join('data',patient,'*'+tissue+'*.xml'))
 
         if len(label_path) > 0 :
             labels[idx] = GatingSchema(*label_path).get_labels(plate[idx])
@@ -65,10 +65,18 @@ def load( path, patients, tissues, markers, channel_map={},
         channel_differences = set(plate[idx].data.columns)-set(markers)
 
         if len(channel_differences) > 0 :
+            print('Tissue: {}\tPatient: {}'.format(*idx))
+            print(plate[idx].meta['_channels_'])
             raise ValueError('''{}\nChannel names not in markers. Change marker list or use channel_map'''.format(channel_differences))
 
-        plate[idx].data = plate[idx].data.reindex(columns=markers)
-        plate[idx].meta['_channel_names_'] = tuple(markers)
+        try :
+            plate[idx].data = plate[idx].data.reindex(columns=markers)
+            plate[idx].meta['_channel_names_'] = tuple(markers)
+
+        except :
+            print('Tissue: {}\tPatient: {}'.format(*idx))
+            print(plate[idx].meta['_channels_'])
+            raise ValueError('Channel renaming failed')
 
         if plate[idx].data.isna().any().any() :
             nan_channel = plate[idx].data.columns[plate[idx].data.isna().all().argmax()]
