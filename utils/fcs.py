@@ -7,7 +7,7 @@ filterwarnings('ignore', category=MatplotlibDeprecationWarning)
 
 from progressbar import ProgressBar
 from FlowCytometryTools import FCPlate
-from .gates import GatingSchema
+from .workspace import Workspace
 
 from pandas import Series,DataFrame,Index
 from scanpy import AnnData
@@ -44,16 +44,12 @@ def load( path, patients, tissues, markers, channel_map={},
     n = 0
 
     ################################################ load labels
+    workspace_path = glob(join('data','*.wsp'))[0]
+    workspace = Workspace(workspace_path,uri_parser=parser)
+
     labels = {}
     for idx in plate :
-
-        tissue,patient = idx
-        label_path = glob(join('data',patient,'*'+tissue+'*.xml'))
-
-        if len(label_path) > 0 :
-            labels[idx] = GatingSchema(*label_path).get_labels(plate[idx])
-        else :
-            labels[idx] = DataFrame({'label':'None'}, index=plate[idx].data.index).label
+        labels[idx] = workspace.get_labels(plate[idx],idx)
 
         n += 1
         bar.update(n)
