@@ -6,15 +6,17 @@ from matplotlib.patches import Polygon,PathPatch
 import fcsparser
 
 from pandas import DataFrame,MultiIndex,SparseDtype,concat
-from numpy import array,unique,roll,any,linspace
-from re import search
+from numpy import array,unique,roll,any,linspace,arange,arcsinh
+from numpy.random import choice
 
 import mpl_scatter_density
 from matplotlib.scale import SymmetricalLogTransform
 from matplotlib.colors import LinearSegmentedColormap,LogNorm
 
-from matplotlib.pyplot import figure,show,subplot,axes,get_cmap,register_cmap
+from matplotlib.pyplot import figure,show,subplot,axes,get_cmap,register_cmap,setp
 from networkx.drawing.nx_pydot import graphviz_layout
+from matplotlib.collections import PolyCollection
+from seaborn import violinplot
 
 ################################################# add transparency to colormaps
 color_array = get_cmap('hot_r')(range(256))
@@ -35,7 +37,7 @@ class Workspace(object):
 		"datatypes" : "http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"
 	}
 
-	def __init__(self, path=str, channels={}, condition_parser = lambda x : {}):
+	def __init__(self, path=str, channels={}, condition_parser = lambda x : {}) :
 		
 		# parse samples from workspace
 		parent_dir = str(Path(path).parent)
@@ -103,11 +105,6 @@ class Workspace(object):
 				self.frame.index.levels[level].astype('category'),
 				level=level, inplace=True)
 
-		for level in range(self.frame.columns.nlevels) :
-			self.frame.columns.set_levels(
-				self.frame.columns.levels[level].astype('category'),
-				level=level, inplace=True)
-
 		for level in range(self.metadata.index.nlevels) :
 			self.metadata.index.set_levels(
 				self.metadata.index.levels[level].astype('category'),
@@ -116,6 +113,10 @@ class Workspace(object):
 		self.frame.sort_index(inplace=True,level=range(self.frame.index.nlevels-1))
 		self.metadata.sort_index(inplace=True)
 		self.index = self.metadata.index
+
+		############################## transform one-hot encoded labels to multilabels
+		self.labels = self.frame.labels.melt(ignore_index=False,var_name='label')
+		self.labels = self.labels[self.labels.value].drop(columns='value').sort_index()
 
 		############################################################################ verifications
 		assert ncells == self.frame.shape[0], 'cells missing after concatination'
@@ -162,7 +163,7 @@ class Workspace(object):
 		return graph
 
 
-	def gate(self, data, gating, id):
+	def gate(self, data, gating, id) :
 		'''apply gate to DataFrame from node[id]'''
 
 		node = gating.nodes[id]
@@ -182,7 +183,7 @@ class Workspace(object):
 		return data
 
 
-	def apply(self, data, gating):
+	def apply(self, data, gating) :
 		'''apply gating tree DataFrame and return boolean one-hot array'''
 
 		roots = [ id for id in gating if gating.in_degree(id)==0 ]
@@ -196,9 +197,23 @@ class Workspace(object):
 		labels.columns = [ ('labels',column) for column in labels.columns ]
 		return labels   #.astype(SparseDtype(bool, fill_value=False))
 
-				
+	
+	def sample(self, n=4000) :
+		'''return random subsample of size n per group'''
+
+		subsample = self.frame.groupby(self.frame.index.names[:-1]).apply(
+			lambda x:                zip( *(           n*[name] for name in x.name), choice(arange(x.index.size),size=n,replace=False))
+			if x.index.size > n else zip( *(x.index.size*[name] for name in x.name), arange(x.index.size)) )
+
+		indexes = []
+		for idx in subsample :
+			indexes += list(idx)
+			
+		return self.frame.loc[indexes]
+
+
 	def show(self, id, xlim=(-1e3,3e3), ylim=(-1e3,3e3), vmin=1, vmax=100,
-			 linthresh=1e3, linscale=0.5, plot_size = 0.08):
+			 linthresh=1e3, linscale=0.5, plot_size = 0.08) :
 		'''display gating heirarchy'''
 
 		scale = SymmetricalLogTransform(base=10, linthresh=linthresh, linscale=linscale).transform
@@ -268,3 +283,96 @@ class Workspace(object):
 
 		ax.axis('off')
 		show()
+
+	
+	def violinplot(self, x='tissue', hue='patient', sample=4000,
+				   linthresh=1e3, linscale=0.5) :
+		'''violon plots of channel intensities'''
+
+		fig = figure(figsize=(15,30))
+		scale = SymmetricalLogTransform(base=10, linthresh=linthresh, linscale=linscale).transform
+		data = self.sample(sample).data.apply(scale)
+
+		if x == 'label' :
+			data = data.join(self.labels)
+
+		for i,channel in enumerate(self.frame.data.columns) :
+			ax = subplot(self.frame.data.columns.size,1,i+1)
+			
+			violinplot(x=x, y=channel, hue=hue, data=data.reset_index().drop(columns='cell'),
+					scale='width',inner=None, color='gray',linewidth=1, ax=ax)
+
+			ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
+			ax.yaxis.label.set_size(7)
+			
+			for element in ax.get_children():
+				if isinstance(element,PolyCollection):
+					path, = element.get_paths()
+					
+					try :
+						vertices = path.vertices[path.vertices[:,1]>0]
+						ax.add_collection(PolyCollection(vertices[None,...],facecolor='green',alpha=0.25))
+					except :
+						pass
+					
+					try :
+						vertices = path.vertices[path.vertices[:,1]<0]
+						ax.add_collection(PolyCollection(vertices[None,...],facecolor='red',alpha=0.25))
+					except :
+						pass
+			
+			ax.yaxis.tick_right()
+			handles,ticklabels = ax.get_legend_handles_labels()
+			ax.grid(False)
+
+		fig.subplots_adjust(hspace=0)
+		ax.get_shared_x_axes().join(*fig.axes)
+		setp([ ax.get_xticklabels() for ax in fig.axes[:-1]], visible=False)
+
+		if hue != None :
+			[ ax.get_legend().remove() for ax in fig.axes ]
+			fig.legend(handles, ticklabels, loc = (0.300,0.93), ncol=5, title=hue)
+
+		show()
+
+
+if __name__ == "__main__":
+	channels = {
+		# laser channel to marker maps
+		'FJComp-355 379_28-A': 'CD3', 
+		'FJComp-355 560_40-A': 'CD8', 
+		'FJComp-355 740_35-A': 'CD69', 
+		'FJComp-355 820_60-A': 'CD4',
+		'FJComp-355 670_30-A': 'CD4',
+		'FJComp-405 450_50-A': 'CD103', 
+		'FJComp-405 515_20-A': 'HLA-DR', 
+		'FJComp-405 605_40-A': 'CCR4', 
+		'FJComp-405 670_30-A': 'CCR6', 
+		'FJComp-405 710_40-A': 'PD-1', 
+		'FJComp-405 780_60-A': 'CD45RA', 
+		'FJComp-488 525_50-A': 'CCR10', 
+		'FJComp-488 715_30-A': 'CXCR3', 
+		'FJComp-561 585_15-A': 'Foxp3', 
+		'FJComp-561 610_20-A': 'Helios', 
+		'FJComp-561 780_60-A': 'CD127', 
+		'FJComp-640 670_30-A': 'CD25', 
+		'FJComp-640 730_35-A': 'CXCR5', 
+		'FJComp-640 780_60-A': 'CCR7',
+
+		# renaming maps
+		'Foxp3-IgM': 'Foxp3',
+		'CD3-IgD':'CD3',
+	}
+
+	def parser(file_path) :
+		'''get tissue and patient id from filepath'''
+		from re import search
+		
+		tissue = search('_(.+?)_',file_path).group()
+		if 'Blood' in tissue : tissue = '_Blood_'
+
+		patient = search('/[0-9]+C/',file_path).group()
+		return {'patient':patient[1:-1],'tissue':tissue[1:-1]}
+
+	workspace = Workspace( 'data/workspace.wsp', channels = channels, condition_parser = parser)
+	workspace.violinplot()
