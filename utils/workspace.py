@@ -6,11 +6,24 @@ from matplotlib.patches import Polygon,PathPatch
 import fcsparser
 
 from pandas import DataFrame,MultiIndex,SparseDtype,concat
-from numpy import array,unique,roll,any
+from numpy import array,unique,roll,any,linspace
 from re import search
 
-from matplotlib.pyplot import figure,show,subplot,axes
+import mpl_scatter_density
+from matplotlib.scale import SymmetricalLogTransform
+from matplotlib.colors import LinearSegmentedColormap,LogNorm
+
+from matplotlib.pyplot import figure,show,subplot,axes,get_cmap,register_cmap
 from networkx.drawing.nx_pydot import graphviz_layout
+
+################################################# add transparency to colormaps
+color_array = get_cmap('hot_r')(range(256))
+color_array[:,-1] = linspace(1.0,0.0,256)[::-1]
+register_cmap(cmap=LinearSegmentedColormap.from_list(name='hot_r',colors=color_array))
+
+color_array = get_cmap('Blues')(range(256))
+color_array[:,-1] = linspace(1.0,0.0,256)[::-1]
+register_cmap(cmap=LinearSegmentedColormap.from_list(name='Blues',colors=color_array))
 
 class Workspace(object):
 	"""Parses FlowJo workspace file, metadata and gating strategy"""
@@ -141,7 +154,7 @@ class Workspace(object):
 
 				vertexes = array(vertexes).astype(float).reshape(-1,2)
 				graph.add_node( id, parent_id=parent_id, gate_name=name, channels=channels,
-					gate = Polygon(vertexes,fill=False,edgecolor='gold') )
+					gate = Polygon(vertexes,fill=False,edgecolor='midnightblue') )
 
 				if parent_id is not None :
 					graph.add_edge(parent_id,id)
@@ -184,9 +197,12 @@ class Workspace(object):
 		return labels   #.astype(SparseDtype(bool, fill_value=False))
 
 				
-	def show(self, id, xlim=(-1e3,1e5), ylim=(-1e3,1e5),
+	def show(self, id, xlim=(-1e3,3e3), ylim=(-1e3,3e3), vmin=1, vmax=100,
 			 linthresh=1e3, linscale=0.5, plot_size = 0.08):
 		'''display gating heirarchy'''
+
+		scale = SymmetricalLogTransform(base=10, linthresh=linthresh, linscale=linscale).transform
+		norm = LogNorm(vmin=vmin,vmax=vmax)
 
 		data,metadata =  self.frame.xs(id), self.metadata.xs(id)
 		positions = graphviz_layout(metadata.gating, prog='dot')
@@ -197,7 +213,7 @@ class Workspace(object):
 
 		transform =  fig.transFigure.inverted().transform
 		draw_networkx_edges(metadata.gating, positions, ax=ax,
-				edge_color='gold', width=5, arrowsize=1)
+				edge_color='cornflowerblue', width=5, arrowsize=1)
 
 		for id in metadata.gating:
 
@@ -208,29 +224,35 @@ class Workspace(object):
 			gate = node['gate']
 
 			x,y = transform(ax.transData.transform(positions[id])) # axes coordinates
-			gate_axes = axes([x-plot_size/2.0,y-plot_size/2.0,plot_size,plot_size])
+			gate_axes = axes([x-plot_size/2.0,y-plot_size/2.0,plot_size,plot_size],projection='scatter_density')
 
 			gate_axes.set_aspect('equal')
 			gate_axes.set_title(name)
 
 			################################################################### gate
+			gate.xy = scale(gate.xy).reshape(-1,2)
 			gate_axes.add_patch(gate)
 
 			################################################################### populations
+			gate_mask = data.labels[name]
 			if metadata.gating.in_degree(id)==0 : # whole population
-				gate_axes.scatter(data.data[xchannel],data.data[ychannel],color='gray',s=1)
+
+				gate_axes.scatter(        scale(data.data[xchannel][~gate_mask]),scale(data.data[ychannel][~gate_mask]), color='gold', s=0.1, zorder=-1)
+				if len(data.data[xchannel][~gate_mask]) > 0 :
+					gate_axes.scatter_density(scale(data.data[xchannel][~gate_mask]),scale(data.data[ychannel][~gate_mask]), cmap='hot_r', norm=norm, zorder=1)
 
 			else : # parent populations
 				for parent in metadata.gating.predecessors(id) :
-					mask = data.labels[metadata.gating.nodes[parent]['gate_name'].lstrip('__gate__')]
-					gate_axes.scatter(data.data[xchannel][mask],data.data[ychannel][mask],color='gray',s=1)
+					mask = data.labels[metadata.gating.nodes[parent]['gate_name'].lstrip('__gate__')] & (~gate_mask)
+
+					gate_axes.scatter(        scale(data.data[xchannel][mask]),scale(data.data[ychannel][mask]), color='gold', s=0.1, zorder=-1)
+					if len(data.data[xchannel][mask]) > 0 :
+						gate_axes.scatter_density(scale(data.data[xchannel][mask]),scale(data.data[ychannel][mask]), cmap='hot_r', norm=norm, zorder=1)
 
 			# gated population
-			mask = data.labels[name]
-			gate_axes.scatter(data.data[xchannel][mask],data.data[ychannel][mask],color='gold',s=1)
-
-			gate_axes.set_xscale('symlog',linthresh=linthresh,linscale=linscale)
-			gate_axes.set_yscale('symlog',linthresh=linthresh,linscale=linscale)
+			gate_axes.scatter(        scale(data.data[xchannel][gate_mask]),scale(data.data[ychannel][gate_mask]), color='cornflowerblue', s=0.1, zorder=-1)
+			if len(data.data[xchannel][gate_mask]) > 0 :
+				gate_axes.scatter_density(scale(data.data[xchannel][gate_mask]),scale(data.data[ychannel][gate_mask]), cmap='Blues', norm=norm, zorder=1)
 
 			gate_axes.set_xlim(*xlim)
 			gate_axes.set_ylim(*ylim)
