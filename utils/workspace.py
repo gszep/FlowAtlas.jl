@@ -5,18 +5,20 @@ from pathlib import Path
 from matplotlib.patches import Polygon,PathPatch
 import fcsparser
 
-from pandas import DataFrame,MultiIndex,SparseDtype,concat
-from numpy import array,unique,roll,any,linspace,arange,arcsinh
+from pandas import DataFrame,MultiIndex,SparseDtype,concat,read_csv
+from numpy import array,unique,roll,any,linspace,arange
 from numpy.random import choice
 
 import mpl_scatter_density
+import warnings
+
 from matplotlib.scale import SymmetricalLogTransform
 from matplotlib.colors import LinearSegmentedColormap,LogNorm
+from matplotlib.pyplot import figure,savefig,close,show,subplot,axes,get_cmap,register_cmap,setp
 
-from matplotlib.pyplot import figure,show,subplot,axes,get_cmap,register_cmap,setp
 from networkx.drawing.nx_pydot import graphviz_layout
 from matplotlib.collections import PolyCollection
-from seaborn import violinplot
+from seaborn import violinplot,stripplot
 
 ################################################# add transparency to colormaps
 color_array = get_cmap('hot_r')(range(256))
@@ -37,8 +39,15 @@ class Workspace(object):
 		"datatypes" : "http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"
 	}
 
-	def __init__(self, path=str, channels={}, condition_parser = lambda x : {}) :
+	def __init__( self, path, channels, condition_parser,
+				  thresholds=None ) :
 		
+		# load thresholds
+		if thresholds != None :
+			self.thresholds = read_csv(thresholds,index_col=[0,1])
+		else :
+			self.thresholds = None
+
 		# parse samples from workspace
 		parent_dir = str(Path(path).parent)
 		samples,metadatas = [],[]
@@ -61,7 +70,11 @@ class Workspace(object):
 			uri = str(Path(*path_parts[truncate_index:]))
 
 			############################################################ import data
-			_,data = fcsparser.parse(path=uri,channel_naming='$PnN',dtype='float64')
+			try :
+				_,data = fcsparser.parse(path=uri,channel_naming='$PnN',dtype='float64')
+			except :
+				print('file specified in workspace not found:\n{}'.format(uri))
+				continue
 
 			# get labels from gating
 			gating = self.__gating__(sample)
@@ -154,8 +167,7 @@ class Workspace(object):
 					vertexes.append( vertex.get("{%s}value" % self.namespaces['datatypes']) )
 
 				vertexes = array(vertexes).astype(float).reshape(-1,2)
-				graph.add_node( id, parent_id=parent_id, gate_name=name, channels=channels,
-					gate = Polygon(vertexes,fill=False,edgecolor='midnightblue') )
+				graph.add_node( id, parent_id=parent_id, gate_name=name, channels=channels, gate = Polygon(vertexes) )
 
 				if parent_id is not None :
 					graph.add_edge(parent_id,id)
@@ -213,7 +225,7 @@ class Workspace(object):
 
 
 	def show(self, id, xlim=(-1e3,3e3), ylim=(-1e3,3e3), vmin=1, vmax=100,
-			 linthresh=1e3, linscale=0.5, plot_size = 0.08) :
+			 linthresh=1e3, linscale=0.5, plot_size = 0.05) :
 		'''display gating heirarchy'''
 
 		scale = SymmetricalLogTransform(base=10, linthresh=linthresh, linscale=linscale).transform
@@ -245,29 +257,31 @@ class Workspace(object):
 			gate_axes.set_title(name)
 
 			################################################################### gate
-			gate.xy = scale(gate.xy).reshape(-1,2)
-			gate_axes.add_patch(gate)
+			gate_axes.add_patch(Polygon(scale(gate.xy).reshape(-1,2),fill=False,edgecolor='midnightblue'))
 
 			################################################################### populations
-			gate_mask = data.labels[name]
-			if metadata.gating.in_degree(id)==0 : # whole population
+			with warnings.catch_warnings():
+				warnings.simplefilter("ignore")
 
-				gate_axes.scatter(        scale(data.data[xchannel][~gate_mask]),scale(data.data[ychannel][~gate_mask]), color='gold', s=0.1, zorder=-1)
-				if len(data.data[xchannel][~gate_mask]) > 0 :
-					gate_axes.scatter_density(scale(data.data[xchannel][~gate_mask]),scale(data.data[ychannel][~gate_mask]), cmap='hot_r', norm=norm, zorder=1)
+				gate_mask = data.labels[name]
+				if metadata.gating.in_degree(id)==0 : # whole population
 
-			else : # parent populations
-				for parent in metadata.gating.predecessors(id) :
-					mask = data.labels[metadata.gating.nodes[parent]['gate_name'].lstrip('__gate__')] & (~gate_mask)
+					gate_axes.scatter(        scale(data.data[xchannel][~gate_mask]),scale(data.data[ychannel][~gate_mask]), color='gold', s=0.1, zorder=-1)
+					if len(data.data[xchannel][~gate_mask]) > 0 :
+						gate_axes.scatter_density(scale(data.data[xchannel][~gate_mask]),scale(data.data[ychannel][~gate_mask]), cmap='hot_r', norm=norm, zorder=1)
 
-					gate_axes.scatter(        scale(data.data[xchannel][mask]),scale(data.data[ychannel][mask]), color='gold', s=0.1, zorder=-1)
-					if len(data.data[xchannel][mask]) > 0 :
-						gate_axes.scatter_density(scale(data.data[xchannel][mask]),scale(data.data[ychannel][mask]), cmap='hot_r', norm=norm, zorder=1)
+				else : # parent populations
+					for parent in metadata.gating.predecessors(id) :
+						mask = data.labels[metadata.gating.nodes[parent]['gate_name'].lstrip('__gate__')] & (~gate_mask)
 
-			# gated population
-			gate_axes.scatter(        scale(data.data[xchannel][gate_mask]),scale(data.data[ychannel][gate_mask]), color='cornflowerblue', s=0.1, zorder=-1)
-			if len(data.data[xchannel][gate_mask]) > 0 :
-				gate_axes.scatter_density(scale(data.data[xchannel][gate_mask]),scale(data.data[ychannel][gate_mask]), cmap='Blues', norm=norm, zorder=1)
+						gate_axes.scatter(        scale(data.data[xchannel][mask]),scale(data.data[ychannel][mask]), color='gold', s=0.1, zorder=-1)
+						if len(data.data[xchannel][mask]) > 0 :
+							gate_axes.scatter_density(scale(data.data[xchannel][mask]),scale(data.data[ychannel][mask]), cmap='hot_r', norm=norm, zorder=1)
+
+				# gated population
+				gate_axes.scatter(        scale(data.data[xchannel][gate_mask]),scale(data.data[ychannel][gate_mask]), color='cornflowerblue', s=0.1, zorder=-1)
+				if len(data.data[xchannel][gate_mask]) > 0 :
+					gate_axes.scatter_density(scale(data.data[xchannel][gate_mask]),scale(data.data[ychannel][gate_mask]), cmap='Blues', norm=norm, zorder=1)
 
 			gate_axes.set_xlim(*xlim)
 			gate_axes.set_ylim(*ylim)
@@ -285,25 +299,33 @@ class Workspace(object):
 		show()
 
 	
-	def violinplot(self, x='tissue', hue='patient', sample=4000,
-				   linthresh=1e3, linscale=0.5) :
+	def violinplot(self, x='tissue', hue='patient', channels=None,
+				   sample=4000, linthresh=1e3, linscale=0.5) :
 		'''violon plots of channel intensities'''
 
 		fig = figure(figsize=(15,30))
 		scale = SymmetricalLogTransform(base=10, linthresh=linthresh, linscale=linscale).transform
+
 		data = self.sample(sample).data.apply(scale)
+		if self.thresholds is not None :
+			data -= self.thresholds.apply(scale)
+		data /= linthresh
 
 		if x == 'label' :
 			data = data.join(self.labels)
 
-		for i,channel in enumerate(self.frame.data.columns) :
-			ax = subplot(self.frame.data.columns.size,1,i+1)
-			
+		if channels is None :
+			channels = self.frame.data.columns
+
+		for i,channel in enumerate(channels) :
+			ax = subplot(len(channels),1,i+1)
+
 			violinplot(x=x, y=channel, hue=hue, data=data.reset_index().drop(columns='cell'),
-					scale='width',inner=None, color='gray',linewidth=1, ax=ax)
+					scale='width', inner=None, color='gray',linewidth=1, ax=ax)
 
 			ax.set_xticklabels(ax.get_xticklabels(), rotation=90)
 			ax.yaxis.label.set_size(7)
+			ax.set_ylim(-2.5,2.5)
 			
 			for element in ax.get_children():
 				if isinstance(element,PolyCollection):
@@ -322,7 +344,7 @@ class Workspace(object):
 						pass
 			
 			ax.yaxis.tick_right()
-			handles,ticklabels = ax.get_legend_handles_labels()
+			handles,labels = ax.get_legend_handles_labels()
 			ax.grid(False)
 
 		fig.subplots_adjust(hspace=0)
@@ -330,49 +352,8 @@ class Workspace(object):
 		setp([ ax.get_xticklabels() for ax in fig.axes[:-1]], visible=False)
 
 		if hue != None :
+			n_hues = data.reset_index()[hue].nunique()
 			[ ax.get_legend().remove() for ax in fig.axes ]
-			fig.legend(handles, ticklabels, loc = (0.300,0.93), ncol=5, title=hue)
+			fig.legend(handles[:n_hues], labels[:n_hues], loc = (0.300,0.93), ncol=5, title=hue)
 
 		show()
-
-
-if __name__ == "__main__":
-	channels = {
-		# laser channel to marker maps
-		'FJComp-355 379_28-A': 'CD3', 
-		'FJComp-355 560_40-A': 'CD8', 
-		'FJComp-355 740_35-A': 'CD69', 
-		'FJComp-355 820_60-A': 'CD4',
-		'FJComp-355 670_30-A': 'CD4',
-		'FJComp-405 450_50-A': 'CD103', 
-		'FJComp-405 515_20-A': 'HLA-DR', 
-		'FJComp-405 605_40-A': 'CCR4', 
-		'FJComp-405 670_30-A': 'CCR6', 
-		'FJComp-405 710_40-A': 'PD-1', 
-		'FJComp-405 780_60-A': 'CD45RA', 
-		'FJComp-488 525_50-A': 'CCR10', 
-		'FJComp-488 715_30-A': 'CXCR3', 
-		'FJComp-561 585_15-A': 'Foxp3', 
-		'FJComp-561 610_20-A': 'Helios', 
-		'FJComp-561 780_60-A': 'CD127', 
-		'FJComp-640 670_30-A': 'CD25', 
-		'FJComp-640 730_35-A': 'CXCR5', 
-		'FJComp-640 780_60-A': 'CCR7',
-
-		# renaming maps
-		'Foxp3-IgM': 'Foxp3',
-		'CD3-IgD':'CD3',
-	}
-
-	def parser(file_path) :
-		'''get tissue and patient id from filepath'''
-		from re import search
-		
-		tissue = search('_(.+?)_',file_path).group()
-		if 'Blood' in tissue : tissue = '_Blood_'
-
-		patient = search('/[0-9]+C/',file_path).group()
-		return {'patient':patient[1:-1],'tissue':tissue[1:-1]}
-
-	workspace = Workspace( 'data/workspace.wsp', channels = channels, condition_parser = parser)
-	workspace.violinplot()
