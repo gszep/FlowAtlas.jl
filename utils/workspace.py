@@ -6,7 +6,7 @@ from matplotlib.patches import Polygon,PathPatch
 import fcsparser
 
 from pandas import DataFrame,MultiIndex,SparseDtype,concat,read_csv
-from numpy import array,unique,roll,any,linspace,arange
+from numpy import array,roll,any,linspace,arange
 from numpy.random import choice
 
 import mpl_scatter_density
@@ -41,12 +41,6 @@ class Workspace(object):
 
 	def __init__( self, path, channels, condition_parser,
 				  thresholds=None ) :
-		
-		# load thresholds
-		if thresholds != None :
-			self.thresholds = read_csv(thresholds,index_col=[0,1])
-		else :
-			self.thresholds = None
 
 		# parse samples from workspace
 		parent_dir = str(Path(path).parent)
@@ -82,6 +76,7 @@ class Workspace(object):
 
 			####################################### rename channels according to provided map
 			data.rename(columns=channels,inplace=True)
+			data = data.reindex( columns = unique([ value for value in channels.values()]) )
 			set_node_attributes(gating,{ id: [ channels[key][-1] for key in gating.nodes[id]['channels'] ] for id in gating },'channels')
 
 			metadata = DataFrame({'gating':[gating]})
@@ -112,15 +107,26 @@ class Workspace(object):
 		self.frame = concat(samples,copy=False)
 		self.metadata = concat(metadatas,copy=False)
 
+		# load thresholds
+		self.thresholds = read_csv(thresholds,                                       \
+			index_col = list(range(len(condition_parser(uri).keys())))).reindex(     \
+			columns   = unique([ value[-1] for value in channels.values()]) ) if thresholds != None else None
+
 		############################## converting indexes to category types for efficiency
 		for level in range(self.frame.index.nlevels-1) :
+
 			self.frame.index.set_levels(
 				self.frame.index.levels[level].astype('category'),
 				level=level, inplace=True)
 
 		for level in range(self.metadata.index.nlevels) :
+
 			self.metadata.index.set_levels(
 				self.metadata.index.levels[level].astype('category'),
+				level=level, inplace=True)
+
+			self.thresholds.index.set_levels(
+				self.thresholds.index.levels[level].astype('category'),
 				level=level, inplace=True)
 
 		self.frame.sort_index(inplace=True,level=range(self.frame.index.nlevels-1))
@@ -224,14 +230,14 @@ class Workspace(object):
 		return self.frame.loc[indexes]
 
 
-	def show(self, id, xlim=(-1e3,3e3), ylim=(-1e3,3e3), vmin=1, vmax=100,
+	def show(self, id, filter=None, xlim=(-1e3,3e3), ylim=(-1e3,3e3), vmin=1, vmax=100,
 			 linthresh=1e3, linscale=0.5, plot_size = 0.05) :
 		'''display gating heirarchy'''
 
 		scale = SymmetricalLogTransform(base=10, linthresh=linthresh, linscale=linscale).transform
 		norm = LogNorm(vmin=vmin,vmax=vmax)
 
-		data,metadata =  self.frame.xs(id), self.metadata.xs(id)
+		data,metadata = (self.frame.xs(id),self.metadata.xs(id)) if filter is None else (self.frame.loc[filter].xs(id),self.metadata.loc[filter].xs(id).iloc[0])
 		positions = graphviz_layout(metadata.gating, prog='dot')
 
 		fig = figure(figsize=(30,30))
@@ -357,3 +363,20 @@ class Workspace(object):
 			fig.legend(handles[:n_hues], labels[:n_hues], loc = (0.300,0.93), ncol=5, title=hue)
 
 		show()
+
+
+def unique(l):
+    '''order preserving version of unique'''
+
+    s = set()
+    n = 0
+
+    for x in l:
+        if x not in s:
+
+            s.add(x)
+            l[n] = x
+            n += 1
+
+    del l[n:]
+    return l
