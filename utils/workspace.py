@@ -39,8 +39,8 @@ class Workspace(object):
 		"datatypes" : "http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"
 	}
 
-	def __init__( self, path, channels, condition_parser,
-				  thresholds=None ) :
+	def __init__( self, path, channels, condition_parser, thresholds=None ) :
+		assert type(channels) is dict, "channels must be a dictionary of type { 'channel name' : 'marker name' ... }"
 
 		# parse samples from workspace
 		parent_dir = str(Path(path).parent)
@@ -58,6 +58,7 @@ class Workspace(object):
 	
 			# truncate paths to parent folder level
 			uri = sample.find('DataSet').get('uri')
+			assert type(condition_parser(uri)) is dict, "condition_parser must be a function returning a dictionary { 'condition name' : 'condition value' ... } from an FCS filepath"
 			path_parts = list(Path(uri).parts)
 
 			truncate_index = path_parts.index(parent_dir)
@@ -75,7 +76,9 @@ class Workspace(object):
 			labels = self.apply( data, gating )
 
 			####################################### rename channels according to provided map
+			assert set(data.columns).issubset(set(channels.keys())), 'channels {} need names'.format(set(data.columns)-set(channels.keys()))
 			data.rename(columns=channels,inplace=True)
+
 			data = data.reindex( columns = unique([ value for value in channels.values()]) )
 			set_node_attributes(gating,{ id: [ channels[key][-1] for key in gating.nodes[id]['channels'] ] for id in gating },'channels')
 
@@ -125,15 +128,17 @@ class Workspace(object):
 				self.metadata.index.levels[level].astype('category'),
 				level=level, inplace=True)
 
-			self.thresholds.index.set_levels(
-				self.thresholds.index.levels[level].astype('category'),
-				level=level, inplace=True)
+			if thresholds != None :
+				self.thresholds.index.set_levels(
+					self.thresholds.index.levels[level].astype('category'),
+					level=level, inplace=True)
 
 		self.frame.sort_index(inplace=True,level=range(self.frame.index.nlevels-1))
 		self.metadata.sort_index(inplace=True)
 		self.index = self.metadata.index
 
 		############################## transform one-hot encoded labels to multilabels
+		assert self.frame.labels.isna().sum().sum() == 0, 'inconsistent population labels {}'.format(self.frame.labels.columns[self.frame.labels.isna().sum()>0].values)
 		self.labels = self.frame.labels.melt(ignore_index=False,var_name='label')
 		self.labels = self.labels[self.labels.value].drop(columns='value').sort_index()
 
