@@ -39,12 +39,23 @@ class Workspace(object):
 		"datatypes" : "http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"
 	}
 
-	def __init__( self, path, channels, condition_parser, thresholds=None ) :
+	def __init__( self, path, channels, condition_parser, thresholds ) :
+
 		assert type(channels) is dict, "channels must be a dictionary of type { 'channel name' : 'marker name' ... }"
+		try : condition_parser('')
+		except : raise Exception('condition_parser must return NaN values if no patterns found')
+	
+		self.condition_parser = condition_parser
+		self.channelmap = dict(channels)
 
 		# parse samples from workspace
 		parent_dir = str(Path(path).parent)
 		samples,metadatas = [],[]
+
+		# load thresholds
+		self.thresholds = read_csv(thresholds,                                       \
+			index_col = list(range(len(condition_parser('').keys())))).reindex(     \
+			columns   = unique(list(channels.values())) )
 
 		# record dimensions for verification
 		num_channels,num_labels = [],[]
@@ -110,11 +121,6 @@ class Workspace(object):
 		self.frame = concat(samples,copy=False)
 		self.metadata = concat(metadatas,copy=False)
 
-		# load thresholds
-		self.thresholds = read_csv(thresholds,                                       \
-			index_col = list(range(len(condition_parser(uri).keys())))).reindex(     \
-			columns   = unique([ value[-1] for value in channels.values()]) ) if thresholds != None else None
-
 		############################## converting indexes to category types for efficiency
 		for level in range(self.frame.index.nlevels-1) :
 
@@ -128,10 +134,9 @@ class Workspace(object):
 				self.metadata.index.levels[level].astype('category'),
 				level=level, inplace=True)
 
-			if thresholds != None :
-				self.thresholds.index.set_levels(
-					self.thresholds.index.levels[level].astype('category'),
-					level=level, inplace=True)
+			self.thresholds.index.set_levels(
+				self.thresholds.index.levels[level].astype('category'),
+				level=level, inplace=True)
 
 		self.frame.sort_index(inplace=True,level=range(self.frame.index.nlevels-1))
 		self.metadata.sort_index(inplace=True)
@@ -166,22 +171,35 @@ class Workspace(object):
 			parent_id = Gate.get("{%s}parent_id" % self.namespaces['gating'])
 
 			for gate in Gate :
-				assert 'PolygonGate' in str(gate), '{} not supported'.format(
-					str(gate).replace('{'+self.namespaces['gating']+'}','gating:'))
 				
 				channels = []
 				for dimension in gate.findall('gating:dimension/datatypes:fcs-dimension',self.namespaces) :
 					channels.append( dimension.get("{%s}name" % self.namespaces['datatypes']) )
 
-				vertexes = []
-				for vertex in gate.findall('gating:vertex/gating:coordinate',self.namespaces) :
-					vertexes.append( vertex.get("{%s}value" % self.namespaces['datatypes']) )
+				if 'threshold' not in name :
+					assert 'PolygonGate' in str(gate), '{} not supported for population labels'.format(
+						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'))
 
-				vertexes = array(vertexes).astype(float).reshape(-1,2)
-				graph.add_node( id, parent_id=parent_id, gate_name=name, channels=channels, gate = Polygon(vertexes) )
+					vertexes = []
+					for vertex in gate.findall('gating:vertex/gating:coordinate',self.namespaces) :
+						vertexes.append( vertex.get("{%s}value" % self.namespaces['datatypes']) )
 
-				if parent_id is not None :
-					graph.add_edge(parent_id,id)
+					vertexes = array(vertexes).astype(float).reshape(-1,2)
+					graph.add_node( id, parent_id=parent_id, gate_name=name, channels=channels, gate = Polygon(vertexes) )
+
+					if parent_id is not None :
+						graph.add_edge(parent_id,id)
+
+				else : # update thresholds if supplied in populations
+					assert 'RectangleGate' in str(gate), '{} not supported for threshold definitions'.format(
+						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'))
+					assert len(gate.findall('gating:dimension',self.namespaces)) == 1 and len(channels) == 1, 'one threshold per channel per file only'
+
+					threshold = float(gate.find('gating:dimension',self.namespaces).get("{%s}max" % self.namespaces['gating']))
+					condition = tuple(self.condition_parser(sample.find('DataSet').get('uri')).values())
+
+					channel = self.channelmap[channels[0]]
+					self.thresholds.loc[condition,channel] = threshold
 
 		return graph
 
