@@ -177,8 +177,9 @@ class Workspace(object):
 					channels.append( dimension.get("{%s}name" % self.namespaces['datatypes']) )
 
 				if 'threshold' not in name :
-					assert 'PolygonGate' in str(gate), '{} not supported for population labels'.format(
-						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'))
+					assert 'PolygonGate' in str(gate), '{} not supported for label <{}> in sample {}'.format(
+						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'),
+						name.replace('__gate__',''),sample.find('DataSet').get('uri'))
 
 					vertexes = []
 					for vertex in gate.findall('gating:vertex/gating:coordinate',self.namespaces) :
