@@ -177,9 +177,9 @@ class Workspace(object):
 					channels.append( dimension.get("{%s}name" % self.namespaces['datatypes']) )
 
 				if 'threshold' not in name :
-					assert 'PolygonGate' in str(gate), '{} not supported for label <{}> in sample {}'.format(
+					assert 'PolygonGate' in str(gate), '{} not supported for population label <{}> in sample {}'.format(
 						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'),
-						name.replace('__gate__',''),sample.find('DataSet').get('uri'))
+						population.get('name'),sample.find('DataSet').get('uri'))
 
 					vertexes = []
 					for vertex in gate.findall('gating:vertex/gating:coordinate',self.namespaces) :
@@ -192,8 +192,8 @@ class Workspace(object):
 						graph.add_edge(parent_id,id)
 
 				else : # update thresholds if supplied in populations
-					assert 'RectangleGate' in str(gate), '{} not supported for threshold definitions'.format(
-						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'))
+					assert 'RectangleGate' in str(gate), '{} not supported for threshold definition <{}> in sample {}'.format(
+						str(gate).replace('{'+self.namespaces['gating']+'}','gating:'),population.get('name'),sample.find('DataSet').get('uri'))
 					assert len(gate.findall('gating:dimension',self.namespaces)) == 1 and len(channels) == 1, 'one threshold per channel per file only'
 
 					threshold = float(gate.find('gating:dimension',self.namespaces).get("{%s}max" % self.namespaces['gating']))
