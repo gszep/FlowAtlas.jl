@@ -9,17 +9,37 @@ begin
 	import Pkg
 	Pkg.activate(".")
 	Pkg.instantiate()
-		
+
 	using AbstractPlotting.MakieLayout
 	using WGLMakie,AbstractPlotting,LaTeXStrings
-	using GraphRecipes,Plots
-	
+
 	AbstractPlotting.inline!(true)
-	using PolygonOps,StaticArrays,LightGraphs,MetaGraphs,EzXML
-	include("lib/utils.jl")
+	using JSServe,JSServe.DOM
+	using JSServe: @js_str
 	
-	using GigaSOM,GigaScatter
-	using Images,DataFrames
+	style = DOM.style("""
+
+		div { 
+			font-family: "Alegreya Sans", sans-serif;
+			font-weight: 400;
+			font-size:   1em;
+			color:       hsl(0, 0%, 25%);
+		}
+		
+		div > * {
+			vertical-align: middle;
+			horizontal-align: middle;
+		    display:        inline-block;
+		}
+	
+	""",type="text/css")
+
+	using Plots: default
+	using GraphRecipes
+
+	include("lib/utils.jl")
+	using GigaSOM,Images,GigaScatter
+	using MetaGraphs,DataFrames
 end
 
 # ╔═╡ ba294c1c-43ab-11eb-0695-1147232dc62a
@@ -55,18 +75,20 @@ begin
 	fcsdata
 end
 
+# ╔═╡ 12e279d2-4477-11eb-0f4e-510c1329a935
+begin
+	using MetaGraphs: nv
+	default(size=(500,500))
+
+	graphplot(gating,method=:tree,nodeshape=:rect,
+		names=[ get_prop(gating,k,:name) for k ∈ 1:nv(gating)],
+		fontsize=6,nodesize=0.12,linewidth=3,markercolor=:lightblue)
+end
+
 # ╔═╡ 10458cda-450c-11eb-2a3f-c168e35db194
 md"""
 The gating strategy is stored as a directed graph with each vertex having `:polygon` attribute which stores the ``\mathrm{arcsinh}`` transformed vertecies of the gating polygons in the chosen `:channels` and `:name` storing the name of each sub/population.
 """
-
-# ╔═╡ 12e279d2-4477-11eb-0f4e-510c1329a935
-begin	
-	default(size=(2000, 2000))
-	graphplot(gating,method=:tree,nodeshape=:rect,
-		names=[ get_prop(gating,k,:name) for k ∈ 1:nv(gating)],
-		fontsize=24,nodesize=0.01,linewidth=5)
-end
 
 # ╔═╡ 199c6556-4525-11eb-154b-034d1b0e0692
 md"""
@@ -76,54 +98,75 @@ The gating graph is then applied to the imported data `fcsdata` and we obtain a 
 # ╔═╡ 81118ba6-4522-11eb-3de4-7f385efb6375
 begin
 	labels = gate(fcsdata,gating)
-	select!(labels,
-		Not(["CD4","CD8","Memory","Th17 | Th22","CD127- CD25+","non-Tregs"]))
+	select!(labels, Not(["CD4","CD8","Memory","Th17 | Th22",
+				         "CD127- CD25+","non-Tregs"]) )
 end
 
-# ╔═╡ 1973cde6-4523-11eb-3739-f9a9f97f197e
+# ╔═╡ 48d505a4-469b-11eb-35b5-397a9a5498c2
+begin ######## convert one-hot encoding to string labels
+# 	labels.cell, fcsdata.cell = 1:size(fcsdata,1), 1:size(fcsdata,1)
+# 	populations = stack(labels,Not(:cell),:cell,variable_name=:label)
+	
+# 	filter!(:value => x->x, populations)
+# 	select!(populations,[:cell,:label])
+	
+# 	categorical!(populations,:label,compress=true)
+# 	sort!(populations,:cell)
+end
+
+# ╔═╡ 20596a96-4708-11eb-0b61-539eba64e3fd
+begin
+	#################### train self-organised map
+	som = initGigaSOM(fcsdata,20,20)
+	som = trainGigaSOM(som,fcsdata)
+	
+	######################## extract clusters and embedding
+	clusters = mapToGigaSOM(som,fcsdata) 
+	embedding = embedGigaSOM(som,fcsdata)
+
+	embedding .-= 10
+	println("Training Self-organised Map : Done")
+end
+
+# ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
 md"""
 #### Cluster Exploration
-In progress....
+We can explore the clusters in the embedded space given by `EmbedSOM`. We can colour clusters by expression levels or labels to verify the identity of known clusters and discover novel clusters
 """
 
 # ╔═╡ aae5b128-436a-11eb-092b-0fc350961437
-begin
-	channels = ("CD45RA","CCR7")
+begin ###################################################### scene construction
+
+	channels = names(fcsdata)
+	channel = Observable(first(channels))
+	fluorescence = Observable(false)
 	
-	###################################################### scene construction
+	populations = names(labels)
+	colors = Dict([ name=> Observable("#EEEEEE") for name ∈ populations ])
+	
 	scene, layout = layoutscene(resolution = (500,500))
-	ax = layout[1,1] = LAxis(scene,
-		
-		xpanlock = true, xzoomlock = true,
-		ypanlock = true, yzoomlock = true,
-		
-		xlabel=first(channels), ylabel=last(channels) )
+	ax = layout[1,1] = LAxis(scene, 
+		title="Self-organised Map Embedding")
 
 	empty!(scene.events.mousedrag.listeners)
 	mouseevents = MakieLayout.addmouseevents!(ax.scene)
-	population = fcsdata[labels[!,"CD4 | EMRA"],:]
-
-	AbstractPlotting.scatter!( ax,
-		population[!,first(channels)], population[!,last(channels)],
-		color=:darkred, markersize=1 )
 	
-	population = fcsdata[labels[!,"CD4 | Naive"],:]
-
-	AbstractPlotting.scatter!( ax,
-		population[!,first(channels)], population[!,last(channels)],
-		color=:gold, markersize=1 )
+	for name ∈ populations
+		scatter!( ax, embedding[labels[!,name],:], markersize=1,
+			color=@lift( $fluorescence ? "#ABCDEF" : $(colors[name]) ) )
+	end
+		
+	# @lift( colorview(RGBA, expressionColors(
+	# 	  scaleNorm(fcsdata[:,$channel]), expressionPalette(10, alpha=1/4)
+	# 		)))
 	
-	population = fcsdata[labels[!,"CD4 | EM"],:]
 
-	AbstractPlotting.scatter!( ax,
-		population[!,first(channels)], population[!,last(channels)],
-		color=:lightblue, markersize=1 )
-	
-	population = fcsdata[labels[!,"CD4 | CM"],:]
 
-	AbstractPlotting.scatter!( ax,
-		population[!,first(channels)], population[!,last(channels)],
-		color=:darkblue, markersize=1 )
+	# leg = layout[1, end+1] = LLegend(scene, 
+	# [line1, scat1, line2, scat2], ["True", "Measured", "True", "Measured"])
+
+	#layout[1,2] = LColorbar(scene,sc,width=10,height=Relative(1))
+
 	
 # 	###################################################### bind input events	
 # 	on(scene.events.keyboardbuttons) do button
@@ -137,32 +180,41 @@ begin
 # 	end
 	
     RecordEvents( scene, "output" )
-    scene
+	println("Rendering Done")
 end
 
-# ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
-md"""
-#### Dimensionality Reduction
-Sample dimensionality reduction using `EmbedSOM` Colour by `CD4` channel
-"""
-
-# ╔═╡ 8b928400-43b4-11eb-1882-8b4d1ceff395
+# ╔═╡ 7cdadea8-4715-11eb-220c-475f60a98543
 begin
-	som = initGigaSOM(fcsdata, 20, 20)    # random initialization of the SOM codebook
-	som = trainGigaSOM(som, fcsdata)      # SOM training
-	clusters = mapToGigaSOM(som, fcsdata) # extraction of per-cell cluster IDs
-	e = embedGigaSOM(som, fcsdata)        # EmbedSOM projection to 2D
-
-	raster = rasterize( (900, 900), Matrix{Float64}(e'),
-		expressionColors(
+	JSServe.with_session() do session, request
+		return DOM.div( style,
 			
-			scaleNorm(Array{Float64}(fcsdata[!,"CD4"])),
-			expressionPalette(10, alpha=0.25)
+			########################## embedding scatterplot
+			DOM.div(scene),
+			
+			######################################### population color interactions
+			DOM.div( DOM.label("Populations"), DOM.br(),
+			[ ( DOM.input(type="color",name=name,id=name,value=colors[name].val,
+								
+					onchange=js"update_obs(($colors)[name],this.value)"),
+			    DOM.label(name), DOM.br() ) for name ∈ populations ]),
+		
+			
+			######################################## channel intensity
+			DOM.div( DOM.input(type="checkbox",
+				onchange=js"update_obs($fluorescence,this.checked);"),
+			
+			DOM.label("Fluorescence Intensity"), DOM.select(DOM.option.(channels),
+			onchange=js"update_obs($channel,this.options[this.selectedIndex].text)"),
+			)
 		)
-	)
-	
-	colorview(RGBA,rasterKernelCircle(1,raster))
+	end
 end
+
+# ╔═╡ 1973cde6-4523-11eb-3739-f9a9f97f197e
+md"""
+#### Cluster Exploration
+In progress....
+"""
 
 # ╔═╡ Cell order:
 # ╟─c49493f2-4366-11eb-2969-b3fff0c37e7b
@@ -175,7 +227,9 @@ end
 # ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
 # ╠═81118ba6-4522-11eb-3de4-7f385efb6375
-# ╟─1973cde6-4523-11eb-3739-f9a9f97f197e
-# ╟─aae5b128-436a-11eb-092b-0fc350961437
+# ╠═48d505a4-469b-11eb-35b5-397a9a5498c2
+# ╟─20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
-# ╟─8b928400-43b4-11eb-1882-8b4d1ceff395
+# ╠═aae5b128-436a-11eb-092b-0fc350961437
+# ╠═7cdadea8-4715-11eb-220c-475f60a98543
+# ╟─1973cde6-4523-11eb-3739-f9a9f97f197e
