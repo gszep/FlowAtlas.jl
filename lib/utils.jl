@@ -2,6 +2,10 @@ using GigaSOM,EzXML,DataFrames
 using LightGraphs,MetaGraphs
 using PolygonOps,StaticArrays
 
+using DataFrames: CategoricalValue
+import Base: show # display categorical types neatly
+show(io::IO, ::MIME"text/html", x::CategoricalValue) = print(io, get(x))
+
 function load(path::String; gating=nothing, cofactor=250, kwargs...)
 
     params, data = loadFCS(path; kwargs...)
