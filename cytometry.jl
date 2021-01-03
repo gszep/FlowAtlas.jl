@@ -101,6 +101,14 @@ begin
 				         "CD127- CD25+","non-Tregs"]) )
 end
 
+# ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
+md"""
+#### Cluster Exploration
+We can explore the clusters in the embedded space given by `EmbedSOM`. **Select colours for each population label** from the right-hand pannel or colour cells by fluoresence intensity of a **selected channel from the dropwon menu**. Verify the identity of known populations and discover novel ones.
+
+**Note:**  Calculating the embedding takes a couple of minutes. The scatter plot will display once the cell below has finished executing. Feel free to drink more tea!
+"""
+
 # ╔═╡ 20596a96-4708-11eb-0b61-539eba64e3fd
 begin
 	#################### train self-organised map
@@ -175,12 +183,6 @@ begin ###################################################### scene construction
 	end
 	nothing
 end
-
-# ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
-md"""
-#### Cluster Exploration
-We can explore the clusters in the embedded space given by `EmbedSOM`. **Select colours for each population label** from the right-hand pannel or colour cells by fluoresence intensity of a **selected channel from the dropwon menu**. Verify the identity of known populations and discover novel ones.
-"""
 
 # ╔═╡ 7cdadea8-4715-11eb-220c-475f60a98543
 begin
@@ -307,9 +309,9 @@ end
 # ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
 # ╠═81118ba6-4522-11eb-3de4-7f385efb6375
-# ╟─20596a96-4708-11eb-0b61-539eba64e3fd
-# ╟─aae5b128-436a-11eb-092b-0fc350961437
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
+# ╠═20596a96-4708-11eb-0b61-539eba64e3fd
+# ╟─aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
 # ╟─24a08ba4-4a15-11eb-1107-2dc357228e44
 # ╟─9be70f5e-4a14-11eb-3635-bd9fef2ea09a
