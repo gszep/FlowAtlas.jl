@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.17
+# v0.12.18
 
 using Markdown
 using InteractiveUtils
@@ -112,6 +112,7 @@ begin
 	embedding = embedGigaSOM(som,fcsdata)
 
 	embedding .-= 10
+	rename!(clusters,"index"=>"cluster")
 	println("Training Self-organised Map : Done")
 end
 
@@ -183,7 +184,7 @@ We can explore the clusters in the embedded space given by `EmbedSOM`. **Select 
 
 # ╔═╡ 7cdadea8-4715-11eb-220c-475f60a98543
 begin
-	JSServe.with_session() do session, request
+	JSServe.App() do session, request
 		return DOM.div( style=style,
 			
 		######################################## channel intensity
@@ -273,6 +274,28 @@ md"""
 * category columns must be parsed from workspace groups
 """
 
+# ╔═╡ af681848-4da2-11eb-0607-1d22b3763245
+begin
+	labels.cell, clusters.cell = 1:size(labels,1), 1:size(clusters,1)
+	multilabels = stack(labels,Not(:cell),:cell,variable_name=:label)
+	
+	filter!(:value => x->x, multilabels)
+	select!(multilabels,[:cell,:label])
+	
+	categorical!(multilabels,:label,compress=true)
+	sort!(multilabels,:cell)
+	
+	overlap = combine(
+		groupby(leftjoin(multilabels,clusters,on=:cell),Not(:cell)),
+		nrow => :cells)
+	
+	sort!(overlap,:label)
+	overlap = unstack(overlap,:label,:cluster,:cells)
+	transform!(overlap, ["1","2"] .=> (x->x/sum(skipmissing(x))) .=> ["1","2"] )
+	select!(overlap,"2")
+	# skipmissing(x)/sum(skipmissing(x))
+end
+
 # ╔═╡ Cell order:
 # ╟─c49493f2-4366-11eb-2969-b3fff0c37e7b
 # ╟─ba294c1c-43ab-11eb-0695-1147232dc62a
@@ -293,3 +316,4 @@ md"""
 # ╠═21033346-4a17-11eb-22fe-8b938ed61ece
 # ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
 # ╟─0867a38c-4a15-11eb-0583-21b96f8009c3
+# ╟─af681848-4da2-11eb-0607-1d22b3763245
