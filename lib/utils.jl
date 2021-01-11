@@ -6,7 +6,7 @@ using DataFrames: CategoricalValue
 import Base: show # display categorical types neatly
 show(io::IO, ::MIME"text/html", x::CategoricalValue) = print(io, get(x))
 
-function load(path::String; gating=nothing, cofactor=250, kwargs...)
+function load(path::String; workspace=nothing, cofactor=250, kwargs...)
 
     params, data = loadFCS(path; kwargs...)
     params = getMetaData(params)
@@ -14,23 +14,23 @@ function load(path::String; gating=nothing, cofactor=250, kwargs...)
     data = DataFrame(data, "S" ∈ names(params) ? params.S : params.N)
     @. data = asinh(data/cofactor)
 
-    if isnothing(gating)
+    if isnothing(workspace)
         return data
 
     else 
-		return data, gatingGraph(path,gating; params= "S" ∈ names(params) ? params : nothing,
+		return data, gatingGraph(path,workspace; params= "S" ∈ names(params) ? params : nothing,
 			cofactor=cofactor)
     end
 end
 
-function gatingGraph(path::String,gating::String; params=nothing,cofactor=250)
+function gatingGraph(path::String,workspace::String; params=nothing,cofactor=250)
 
 	channelmap = isnothing(params) ? nothing : Dict([ N=>S for (N,S) ∈ zip(params.N,params.S) ])
-    workspace = root(readxml(gating))
+    workspace = root(readxml(workspace))
 
 	############################################## population names
 	populations = findall("//DataSet[contains(@uri,'$path')]/..//Population",workspace)
-	@assert( length(populations)>0, "gating not found in workspace $gating for sample\n$path")
+	@assert( length(populations)>0, "gating not found in workspace for sample\n$path")
 
 	graph = MetaDiGraph{Int64,Bool}() ############# store strategy in graph
 	set_props!(graph,Dict(:sample=>path))

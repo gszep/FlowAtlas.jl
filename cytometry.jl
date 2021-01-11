@@ -10,6 +10,7 @@ begin
 	Pkg.activate(".")
 	Pkg.instantiate()
 
+	using Serialization: serialize,deserialize
 	using AbstractPlotting.MakieLayout
 	using WGLMakie,AbstractPlotting,LaTeXStrings
 
@@ -70,7 +71,7 @@ end
 
 # ╔═╡ 477abee2-4367-11eb-003d-792fed6546ca
 begin
-	fcsdata,gating = load(path; gating=workspace, cofactor=cofactor)
+	fcsdata,gating = load(path; workspace=workspace, cofactor=cofactor)
 	fcsdata
 end
 
@@ -106,17 +107,24 @@ md"""
 #### Cluster Exploration
 We can explore the clusters in the embedded space given by `EmbedSOM`. **Select colours for each population label** from the right-hand pannel or colour cells by fluoresence intensity of a **selected channel from the dropwon menu**. Verify the identity of known populations and discover novel ones.
 
-**Note:**  Calculating the embedding takes a couple of minutes. The scatter plot will display once the cell below has finished executing. Feel free to drink more tea!
+**Note:**  Calculating the embedding for the first time takes a couple of minutes. Once, calculated it will be stored in as a `.som` file. The scatter plot will display once the cell below has finished executing. Feel free to drink more tea!
 """
 
 # ╔═╡ 20596a96-4708-11eb-0b61-539eba64e3fd
 begin
-	#################### train self-organised map
-	som = initGigaSOM(fcsdata,20,20)
-	som = trainGigaSOM(som,fcsdata)
-	
+	######### load self-organised map
+	somPath = first(splitext(path))*".som"
+	if isfile(somPath)
+		som = deserialize(somPath)
+
+	else #################### train self-organised map
+		som = initGigaSOM(fcsdata,20,20)
+		som = trainGigaSOM(som,fcsdata)
+		serialize(somPath,som)
+	end
+
 	######################## extract clusters and embedding
-	clusters = mapToGigaSOM(som,fcsdata) 
+	clusters = mapToGigaSOM(som,fcsdata)
 	embedding = embedGigaSOM(som,fcsdata)
 
 	embedding .-= 10
@@ -127,7 +135,7 @@ end
 # ╔═╡ aae5b128-436a-11eb-092b-0fc350961437
 begin ###################################################### scene construction
 
-	channels, populations = names(fcsdata),names(labels)
+	channels, populations = names(fcsdata),names(labels)	
 	channel = Observable(first(channels))
 	fluorescence = Observable(true)
 	
