@@ -19,5 +19,5 @@ create_sysimage([
     :WGLMakie    
     ],
 
-sysimage_path="cytometry.so",
+sysimage_path="build/cytometry.so",
 precompile_execution_file=["lib/utils.jl","cytometry.jl"])
