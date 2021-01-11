@@ -102,14 +102,6 @@ begin
 				         "CD127- CD25+","non-Tregs"]) )
 end
 
-# ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
-md"""
-#### Cluster Exploration
-We can explore the clusters in the embedded space given by `EmbedSOM`. **Select colours for each population label** from the right-hand pannel or colour cells by fluoresence intensity of a **selected channel from the dropwon menu**. Verify the identity of known populations and discover novel ones.
-
-**Note:**  Calculating the embedding for the first time takes a couple of minutes. Once, calculated it will be stored in as a `.som` file. The scatter plot will display once the cell below has finished executing. Feel free to drink more tea!
-"""
-
 # ╔═╡ 20596a96-4708-11eb-0b61-539eba64e3fd
 begin
 	######### load self-organised map
@@ -132,12 +124,26 @@ begin
 	println("Training Self-organised Map : Done")
 end
 
+# ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
+md"""
+#### Cluster Exploration
+We can explore the clusters in the embedded space given by `EmbedSOM`. **Select colours for each population label** from the right-hand pannel or colour cells by fluoresence intensity of a **selected channel from the dropwon menu**. Verify the identity of known populations and discover novel ones.
+
+**Note:**  Calculating the embedding for the first time takes a couple of minutes. Once, calculated it will be stored in as a `.som` file. The scatter plot will display once the cell below has finished executing. Feel free to drink more tea!
+"""
+
 # ╔═╡ aae5b128-436a-11eb-092b-0fc350961437
 begin ###################################################### scene construction
 
 	channels, populations = names(fcsdata),names(labels)	
 	channel = Observable(first(channels))
 	fluorescence = Observable(true)
+	
+	markersize = JSServe.Slider(range(1,20,length=100))
+	markeralpha = JSServe.Slider(range(0,1,length=100))
+	
+	markersize.value[] = 1.0
+	markeralpha.value[] = 1.0
 	
 	########################################### transformation to unit interval
 	function channelTransform(x::AbstractArray)
@@ -148,19 +154,20 @@ begin ###################################################### scene construction
 			for col ∈ names(fcsdata) ] )
 	
 	################################################## colormaps
-	colors = Dict([ name=> Observable("#EEEEEE") for name ∈ populations ])
+	colors = Dict([ name=> Observable("#EEEEEE00") for name ∈ populations ])	
 	fluorescenceMap = Dict([
-		name => @lift( colorview(RGBA, expressionColors(
+			
+		name => @lift( colorview(RGBA, expressionColors(	
+			scaled[labels[!,name],$channel],
 						
-			scaled[labels[!,name],$channel], $fluorescence ?
-			expressionPalette(10,alpha=1/4) : 
-						[parse(RGBA,$(colors[name]))]
+			$fluorescence ? expressionPalette(10,alpha=$markeralpha) : 
+				[parse(RGBA,$(colors[name]))]
 		)))
 	for name ∈ populations ])
 	
 	####################################################
 	embedScatter, embedScatterLayout = layoutscene(resolution = (500,500))
-	embedScatterAx = embedScatterLayout[1,1] = LAxis(embedScatter,
+	embedScatterAx = embedScatterLayout[1,1] = AbstractPlotting.Axis(embedScatter,
 		title="Self-organised Map Embedding")
 
 	empty!(embedScatter.events.mousedrag.listeners)
@@ -169,18 +176,49 @@ begin ###################################################### scene construction
 	#################################################### scatterplot	
 	for name ∈ populations
 		scatter!( embedScatterAx, embedding[labels[!,name],:],
-			color=fluorescenceMap[name], markersize=1 )
+			color=fluorescenceMap[name], markersize=markersize )
 	end
 	
 	#################################################### polygon selection
-	polygon = Node([ SVector(0.0,0.0),SVector(5.0,0.0),SVector(5.0,5.0) ])
-	closedPolygon = @lift([$polygon; [first($polygon)]])
-	lines!(embedScatterAx, closedPolygon, color=RGBA(1/2,1,1/2,1))
+	polygonLeftSelected,polygonRightSelected = Observable(false),Observable(false)
+
+	polygonLeft =  Node([ SVector(0.0,0.0),SVector(5.0,0.0),SVector(5.0,5.0) ])
+	polygonRight = Node([ SVector(0.0,0.0),SVector(-5.0,0.0),SVector(-5.0,-5.0) ])
+	
+	closedPolygonLeft = @lift([$polygonLeft;   [first($polygonLeft)]])
+	closedPolygonRight = @lift([$polygonRight; [first($polygonRight)]])
+
+	lines!(embedScatterAx, closedPolygonLeft,
+		color=@lift( $polygonLeftSelected ? RGBA(1/2,1,1/2,1) : RGBA(1/2,1,1/2,0) ))
+	
+	scatter!( embedScatterAx, polygonLeft,
+		marker=:cross, markersize=10,
+		color=RGBA(1/2,1,1/2,1) )
+	
+	lines!(embedScatterAx, closedPolygonRight,
+		color=@lift( $polygonRightSelected ? RGBA(1,1/4,0,1) : RGBA(1,1/4,0,0) ))
+	
+	on(polygonLeftSelected) do selection
+		polygonLeft[] = [ SVector(0.0,0.0),SVector(5.0,0.0),SVector(5.0,5.0) ]
+	end
+	
+	on(polygonRightSelected) do selection
+		polygonRight[] = [ SVector(0.0,0.0),SVector(-5.0,0.0),SVector(-5.0,-5.0) ]
+	end
 	
 	on(embedScatterAx.scene.events.mousebuttons) do buttons
 	   if ispressed(embedScatterAx.scene, Mouse.left)
-		   polygon[] = push!(polygon[], mouseevents.obs.val.data)
+		   polygonLeft[] = push!(polygonLeft[], mouseevents.obs.val.data)
 	   end
+	end
+	
+	########################################### update gates with polygon
+	on(embedScatter.events.keyboardbuttons) do button
+		if ispressed(button, Keyboard.enter)
+			
+			mouseevents.obs.val.data
+			
+		end
 	end
 	
 	############################################### zoom constraint
@@ -203,30 +241,36 @@ begin
 
 		DOM.label("Fluorescence Intensity"), DOM.select(DOM.option.(channels),
 		onchange=js"update_obs($channel,this.options[this.selectedIndex].text)")),
+			
+		DOM.div( style="margin-top: 10px;",
+			DOM.label("Marker: Size"), markersize,
+			DOM.label("Opacity"), markeralpha,
+		),
 
 		########################## embedding scatterplot
 		DOM.div(style=style,embedScatter),
 
 		######################################### interactive population legend
-		DOM.div(style=style, DOM.label("Populations"), DOM.br(),
-		[ ( DOM.input(type="color",name=name,id=name,value=colors[name].val,
-
+		DOM.div(style=style,
+			DOM.label("Populations"), DOM.br(),
+				
+			[( DOM.input(type="color",name=name,id=name,value="#EEEEEE",
 				onchange=js"update_obs(($colors)[name],this.value)"),
-			DOM.label(name), DOM.br() ) for name ∈ populations ]),
-		)
+				DOM.label(name), DOM.br() ) for name ∈ populations ],
+				
+			DOM.br(), DOM.label("Gates"), DOM.br(),
+
+			[( DOM.input(type="checkbox", checked=false,
+				onchange=js"update_obs($polygonLeftSelected,this.checked);"),
+				DOM.label("Left"), DOM.br()),
+				
+			 ( DOM.input(type="checkbox", checked=false,
+				onchange=js"update_obs($polygonRightSelected,this.checked);"),
+				DOM.label("Right") )
+			]
+		))
 	end
 end
-
-# ╔═╡ 24a08ba4-4a15-11eb-1107-2dc357228e44
-md"""
-* constran zoom so that user does not fly off plot
-* sliders for zoom, markersize, markeralpha
-"""
-
-# ╔═╡ 9be70f5e-4a14-11eb-3635-bd9fef2ea09a
-md"""
-Fluorescence distributions of selected populations can be compared across conditions. The conditions are extracted from groups defined in the FlowJo workspace.
-"""
 
 # ╔═╡ 21033346-4a17-11eb-22fe-8b938ed61ece
 channelRange = range(-2,7,length=50)
@@ -234,48 +278,68 @@ channelRange = range(-2,7,length=50)
 # ╔═╡ b2a63c7a-49f7-11eb-300d-b7e283639a39
 begin
 	#################################################### density estimation	
-	selected = @lift(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-		$closedPolygon; in=true,on=false,out=false),
-		embedding[:,1], embedding[:,2] ),:])
+	selectedLeft = @lift( $polygonLeftSelected ?
+		fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+		$closedPolygonLeft; in=true,on=false,out=false),
+		embedding[:,1], embedding[:,2] ),:] : fcsdata )
 	
-	#################################################### group definition
-	groups = ["CD4 | EMRA","CD4 | Tfh","CD8 | EMRA"]
-	selectedLabels = @lift(labels[ map( (x,y)->inpolygon(SVector(x,y),
-		$closedPolygon; in=true,on=false,out=false),
-		embedding[:,1], embedding[:,2] ),:])
+	selectedRight = @lift( $polygonRightSelected ? 
+		fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+		$closedPolygonRight; in=true,on=false,out=false),
+		embedding[:,1], embedding[:,2] ),:] : fcsdata )
 	
 	density(x::AbstractVector) = kde(x,channelRange).density
-	violins,violinsLayout = layoutscene(resolution = (700,700))
+	densitiesLeft = @lift(combine( $selectedLeft,
+			[ x => density => x for x ∈ channels ]) )
+
+	densitiesRight = @lift(combine( $selectedRight,
+			[ x => density => x for x ∈ channels ]) )
+	########## todo maybe not the most efficient way to select.......
 	
-	###################################################### violin plots per group
-	for (n,groupName) ∈ enumerate(groups)
+	###################################################### violin plot
+	violins,violinsLayout = layoutscene(resolution = (700,250))
+	violinsAx = violinsLayout[1,1] = AbstractPlotting.Axis(violins,
 		
-		densities = @lift(combine(
-				$selected, #[$selectedLabels[:,groupName],:]
-				[ x => density => x for x ∈ channels ]) )
+		xgridvisible=false, ygridvisible=false, 
+		xticks = (1:length(channels),channels) )
 
-		violinsAx = violinsLayout[1,n] = LAxis(violins,
-			width=500.0/length(groups), xticks = ([],[]), ygridvisible=false,
-			yticks = n>1 ? ([],[]) : (1:length(channels),channels) )
-		
-		violinsLayout[2,n] = LText(violins, groupName, rotation = pi/2)
+	violinsAx.xticklabelrotation = Float32(π/2)
+	violinsAx.xticklabelalign = (:top,:center)
 
-		####################################### per channel
-		for (k,channel) ∈ enumerate(channels)
-			maxDensity = @lift( 5/2*maximum(x->x[1], $densities[!,channel]) )
+	####################################### per channel
+	for (k,channel) ∈ enumerate(channels)
 
-			band!( violinsAx, channelRange,
-				@lift(k.-$densities[!,channel]/$maxDensity),
-				@lift(k.+$densities[!,channel]/$maxDensity),
-				color=RGBA(0,1,0,0.2) )
-		end
+		########################## left split
+		maxDensityLeft = @lift( 5/2*maximum(x->x[1], $densitiesLeft[:,channel]) )
+		pointsLeft = @lift( map( Point,
+			k .- $densitiesLeft[:,channel]/$maxDensityLeft, channelRange ) )
+
+		violinMeshLeft = @lift(AbstractPlotting.triangle_mesh($pointsLeft))
+		mesh!( violinsAx, violinMeshLeft; shading=false,
+			color=@lift($polygonLeftSelected ?
+				RGBA(0,1,0,0.2) : RGBA(1/2,1/2,1/2,1)))
+
+		########################## right split
+		maxDensityRight = @lift( 5/2*maximum(x->x[1], $densitiesRight[:,channel]) )
+		pointsRight = @lift( map( Point,
+			k .+ $densitiesRight[:,channel]/$maxDensityRight, channelRange ) )
+
+		violinMeshRight = @lift(AbstractPlotting.triangle_mesh($pointsRight))
+		mesh!( violinsAx, violinMeshRight; shading=false,
+			color=@lift($polygonRightSelected ?
+				RGBA(1,1/4,0,0.2) : RGBA(1/2,1/2,1/2,1)))
 	end
-	
+
 	#################################### remove mouse interactions
 	empty!(violins.events.mousedrag.listeners)
 	empty!(violins.events.scroll.listeners)
 	violins
 end
+
+# ╔═╡ 9be70f5e-4a14-11eb-3635-bd9fef2ea09a
+md"""
+Fluorescence distributions of selected populations can be compared across conditions. The conditions are extracted from groups defined in the FlowJo workspace.
+"""
 
 # ╔═╡ 0867a38c-4a15-11eb-0583-21b96f8009c3
 md"""
@@ -288,6 +352,7 @@ md"""
 begin
 	labels.cell, clusters.cell = 1:size(labels,1), 1:size(clusters,1)
 	multilabels = stack(labels,Not(:cell),:cell,variable_name=:label)
+	select!(labels,Not(:cell))
 	
 	filter!(:value => x->x, multilabels)
 	select!(multilabels,[:cell,:label])
@@ -317,13 +382,12 @@ end
 # ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
 # ╠═81118ba6-4522-11eb-3de4-7f385efb6375
+# ╟─20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
-# ╠═20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
-# ╟─24a08ba4-4a15-11eb-1107-2dc357228e44
-# ╟─9be70f5e-4a14-11eb-3635-bd9fef2ea09a
-# ╠═21033346-4a17-11eb-22fe-8b938ed61ece
 # ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
+# ╟─21033346-4a17-11eb-22fe-8b938ed61ece
+# ╟─9be70f5e-4a14-11eb-3635-bd9fef2ea09a
 # ╟─0867a38c-4a15-11eb-0583-21b96f8009c3
 # ╟─af681848-4da2-11eb-0607-1d22b3763245
