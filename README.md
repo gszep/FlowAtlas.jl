@@ -17,3 +17,4 @@ git clone https://github.com/gszep/flow-explorer.git # create new folder and dow
 cd flow-explorer # navigate to new folder
 julia run.jl # launch Flow Explorer
 ```
+The script will build a system image `build/cytometry.so` first time you launch it which may take up to 30mins. This only needs to be built once; subsequent executions of `julia run.jl` will open a browser window instantly.
