@@ -2,6 +2,7 @@ using GigaSOM,EzXML,DataFrames
 using LightGraphs,MetaGraphs
 using PolygonOps,StaticArrays
 
+using Glob: GlobMatch
 using DataFrames: CategoricalValue
 import Base: show # display categorical types neatly
 show(io::IO, ::MIME"text/html", x::CategoricalValue) = print(io, get(x))
@@ -17,11 +18,49 @@ function load(path::String; workspace=nothing, cofactor=250, kwargs...)
     if isnothing(workspace)
         return data
 
-    else 
-		return data, gatingGraph(path,workspace; params= "S" ∈ names(params) ? params : nothing,
-			cofactor=cofactor)
+	else 
+		gating = gatingGraph(path,workspace; params= "S" ∈ names(params) ? params : nothing, cofactor=cofactor)
+
+		workspaceXML = root(readxml(workspace))
+		sampleID = findfirst("//DataSet[contains(@uri,'$path')]",workspaceXML)["sampleID"]
+
+		groups = DataFrame([ (group["name"]=>fill(true,size(data,1))) for group ∈ 
+			findall("//SampleRefs/SampleRef[contains(@sampleID,'$sampleID')]/../..",workspaceXML)
+				if  group["name"] ≠ "All Samples" ])
+
+		labels = gate(data,gating)
+		return data,labels, groups,gating
     end
 end
+
+
+function load(pattern::GlobMatch; workspace=nothing, cofactor=250, channelMap::Dict=Dict(), kwargs...)
+
+	data,labels,groups = DataFrame(),DataFrame(),DataFrame()
+	gatings = Dict()
+	
+	for path ∈ readdir(pattern)
+		fcs,label,group,gating = load(path; workspace=workspace, cofactor=cofactor, kwargs...)
+		
+		channelNames = Dict([ key=>channelMap[key] for key ∈ keys(channelMap) if key ∈ names(fcs) ])
+		if length(channelNames) > 0 rename!(fcs,channelNames) end
+		
+		append!(data,fcs)
+		append!(labels,label)
+
+		append!(groups,group,cols=:union)
+		gatings[path] = gating
+		
+	end
+
+	for name ∈ names(groups)
+		replace!(groups[!,name],missing=>false)
+	end
+
+	disallowmissing!(groups)
+	return data,labels, groups,gatings
+end
+
 
 function gatingGraph(path::String,workspace::String; params=nothing,cofactor=250)
 
