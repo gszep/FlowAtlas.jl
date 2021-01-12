@@ -5,6 +5,10 @@ printstyled(color=:cyan,"[pkg] ")
 printstyled("Installing/updating julia package dependencies...\n")
 
 Pkg.instantiate()
+Pkg.update()
+
+# packages kept back
+pkg"add JSServe@1.0.1"
 
 if ~isfile("build/cytometry.so")
     printstyled(color=:yellow,"[sysimage] ")
