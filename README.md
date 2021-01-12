@@ -13,7 +13,7 @@ To install Flow Explorer you need Julia 1.5+. Follow [your platform specific ins
 [Open a command line / terminal in the folder](https://www.groovypost.com/howto/open-command-window-terminal-window-specific-folder-windows-mac-linux) that you want to install Flow Explorer in, then type
 
 ```bash
-git clone https://github.com/gszep/flow-explorer.git
-cd flow-explorer
-julia run.jl
+git clone https://github.com/gszep/flow-explorer.git # create new folder and download
+cd flow-explorer # navigate to new folder
+julia run.jl # launch Flow Explorer
 ```
