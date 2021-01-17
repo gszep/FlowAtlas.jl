@@ -36,7 +36,9 @@ begin
 	using Plots: default
 	using GraphRecipes
 
+	include("lib/gates.jl")
 	include("lib/utils.jl")
+
 	using GigaSOM,Images,GigaScatter
 	using MetaGraphs,DataFrames
 	
@@ -112,18 +114,21 @@ begin
 	fcsdata,labels,groups,gating = load(pattern;
 		workspace=workspace, cofactor=cofactor, channelMap=channelMap)
 
-	fcsdata
+	select!( labels, Not([
+		"CD4","CD8","Memory","Th17 | Th22", "CD127- CD25+","non-Tregs"]) )
+
+	nothing
 end
 
 # ╔═╡ 12e279d2-4477-11eb-0f4e-510c1329a935
 begin
 	using MetaGraphs: nv
 	default(size=(500,500))
+	exampleStrategy = last(first(gating))
 
-	graphplot(last(first(gating)),method=:tree,nodeshape=:rect,
-		names=[ get_prop(last(first(gating)),k,:name)
-			for k ∈ 1:nv(last(first(gating)))],
-		fontsize=6,nodesize=0.12,linewidth=3,markercolor=:lightblue)
+	graphplot( exampleStrategy, method=:tree, nodeshape=:rect,
+		names=[ get_prop(exampleStrategy,k,:name) for k ∈ 1:nv(exampleStrategy) ],
+		fontsize=6, nodesize=0.12, linewidth=3, markercolor=:lightblue)
 end
 
 # ╔═╡ 10458cda-450c-11eb-2a3f-c168e35db194
@@ -136,17 +141,8 @@ md"""
 The gating graph is applied to the imported data `fcsdata` and we obtain a boolean dataframe `labels` that tells us whether a cell has been labelled by the gate and its parents or not. We can drop columns representing intermediate gates with `select!` and only view final populations
 """
 
-# ╔═╡ 81118ba6-4522-11eb-3de4-7f385efb6375
-begin
-	select!(labels, Not(["CD4","CD8","Memory","Th17 | Th22",
-				         "CD127- CD25+","non-Tregs"]) )
-end
-
 # ╔═╡ 232bb380-5439-11eb-0bf0-517df30fd027
 md"Group information is also parsed from the workspace file to the variable `groups` . The user should use FlowJo sample groups to specify patient ids and condition names. These are used in interactive plots"
-
-# ╔═╡ 31a606b6-5439-11eb-187a-f9c5b731c09d
-groups
 
 # ╔═╡ 0b758ce0-4528-11eb-1df4-e97707ec4f1c
 md"""
@@ -232,58 +228,61 @@ begin ###################################################### scene construction
 	end
 	
 	#################################################### polygon selection
-	polygonLeftSelected,polygonRightSelected = Observable(false),Observable(false)
+	left = Gate([
+		SVector(0.0,0.0),SVector(1.5,1.5),
+		SVector(3,1.5), SVector(2.0,-1.0)
+	])
 
-	polygonLeft =  Node([
-			SVector(0.0,0.0),SVector(1.5,1.5),
-			SVector(3,1.5), SVector(2.0,-1.0)
+	right = Gate([
+		SVector(6.0,-1.5),SVector(5.0,1.0),
+		SVector(3,1.5), SVector(2.0,-1.0)
 	])
-	polygonRight = Node([
-			SVector(6.0,-1.5),SVector(5.0,1.0),
-			SVector(3,1.5), SVector(2.0,-1.0)
-	])
+
+	lines!(embedScatterAx, left.polygon,
+		color=@lift( $(left.selected) ? RGBA(1/2,1,1/2,1) : RGBA(1/2,1,1/2,0) ))
 	
-	closedPolygonLeft = @lift([$polygonLeft;   [first($polygonLeft)]])
-	closedPolygonRight = @lift([$polygonRight; [first($polygonRight)]])
-
-	lines!(embedScatterAx, closedPolygonLeft,
-		color=@lift( $polygonLeftSelected ? RGBA(1/2,1,1/2,1) : RGBA(1/2,1,1/2,0) ))
+	# lines!(embedScatterAx, polygonRight,
+	# 	color=@lift( $right.selected ? RGBA(1,1/4,0,1) : RGBA(1,1/4,0,0) ))
 	
 	# scatter!( embedScatterAx, polygonLeft,
 	# 	marker=:cross, markersize=10,
 	# 	color=RGBA(1/2,1,1/2,1) )
 	
-	lines!(embedScatterAx, closedPolygonRight,
-		color=@lift( $polygonRightSelected ? RGBA(1,1/4,0,1) : RGBA(1,1/4,0,0) ))
+# 	on(polygonLeftSelected) do selection
+# 		polygonLeft[] = [
+# 			SVector(0.0,0.0),SVector(1.5,1.5),
+# 			SVector(3,1.5), SVector(2.0,-1.0)
+# 		]
+# 	end
 	
-	on(polygonLeftSelected) do selection
-		polygonLeft[] = [
-			SVector(0.0,0.0),SVector(1.5,1.5),
-			SVector(3,1.5), SVector(2.0,-1.0)
-		]
-	end
+# 	on(polygonRightSelected) do selection
+# 		polygonRight[] = [
+# 			SVector(6.0,-1.5),SVector(5.0,1.0),
+# 			SVector(3,1.5), SVector(2.0,-1.0)
+# 		]
+# 	end
 	
-	on(polygonRightSelected) do selection
-		polygonRight[] = [
-			SVector(6.0,-1.5),SVector(5.0,1.0),
-			SVector(3,1.5), SVector(2.0,-1.0)
-		]
-	end
-	
-	on(embedScatterAx.scene.events.mousebuttons) do buttons
-	   if ispressed(embedScatterAx.scene, Mouse.left)
-		   polygonLeft[] = push!(polygonLeft[], mouseevents.obs.val.data)
-	   end
+	on(mouseevents.obs) do events
+		if ispressed(embedScatterAx.scene, Mouse.left)
+			
+			if inpolygon( mouseevents.obs.val.data,
+					left.polygon[]; in=true,on=true,out=false)
+				
+				println("!")
+
+				
+			end
+		end
 	end
 	
 	########################################### update gates with polygon
-	on(embedScatter.events.keyboardbuttons) do button
-		if ispressed(button, Keyboard.enter)
+# 	on(embedScatter.events.keyboardbuttons) do button
+# 		if ispressed(button, Keyboard.enter)
 			
-			mouseevents.obs.val.data
+# 			mouseevents.obs.val.data
 			
-		end
-	end
+# 		end
+# 	end
 	
 	############################################### zoom constraint
 	on(embedScatterAx.scene.events.scroll) do scroll
@@ -325,11 +324,11 @@ begin
 			DOM.br(), DOM.label("Gates"), DOM.br(),
 
 			[( DOM.input(type="checkbox", checked=false,
-				onchange=js"update_obs($polygonLeftSelected,this.checked);"),
+				onchange=js"update_obs($(left.selected),this.checked);"),
 				DOM.label("Left"), DOM.br()),
 				
 			 ( DOM.input(type="checkbox", checked=false,
-				onchange=js"update_obs($polygonRightSelected,this.checked);"),
+				onchange=js"update_obs($(right.selected),this.checked);"),
 				DOM.label("Right") )
 			]
 		),
@@ -351,14 +350,14 @@ channelRange = range(-2,7,length=50)
 # ╔═╡ b2a63c7a-49f7-11eb-300d-b7e283639a39
 begin
 	#################################################### density estimation	
-	selectedLeft = @lift( $polygonLeftSelected ?
+	selectedLeft = @lift( $(left.selected) ?
 		fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-		$closedPolygonLeft; in=true,on=false,out=false),
+		$(left.polygon); in=true,on=false,out=false),
 		embedding[:,1], embedding[:,2] ),:] : fcsdata )
 	
-	selectedRight = @lift( $polygonRightSelected ? 
+	selectedRight = @lift( $(right.selected) ? 
 		fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-		$closedPolygonRight; in=true,on=false,out=false),
+		$(right.polygon); in=true,on=false,out=false),
 		embedding[:,1], embedding[:,2] ),:] : fcsdata )
 	
 	density(x::AbstractVector) = kde(x,channelRange).density
@@ -389,7 +388,7 @@ begin
 
 		violinMeshLeft = @lift(AbstractPlotting.triangle_mesh($pointsLeft))
 		mesh!( violinsAx, violinMeshLeft; shading=false,
-			color=@lift($polygonLeftSelected ?
+			color=@lift($(left.selected) ?
 				RGBA(0,1,0,0.2) : RGBA(1/2,1/2,1/2,1)))
 
 		########################## right split
@@ -399,7 +398,7 @@ begin
 
 		violinMeshRight = @lift(AbstractPlotting.triangle_mesh($pointsRight))
 		mesh!( violinsAx, violinMeshRight; shading=false,
-			color=@lift($polygonRightSelected ?
+			color=@lift($(right.selected) ?
 				RGBA(1,1/4,0,0.2) : RGBA(1/2,1/2,1/2,1)))
 	end
 
@@ -416,6 +415,10 @@ Fluorescence distributions of selected populations can be compared across condit
 
 # ╔═╡ 0867a38c-4a15-11eb-0583-21b96f8009c3
 md"""
+* use checkboxes next to population names for filtering in violins
+* click drag on 6 vertex polygons
+* select polygons
+
 * dropdown menues for filter and group by (tissue,label,patient)
 * displaying stacked violin plots
 * category columns must be parsed from workspace groups
@@ -458,19 +461,17 @@ end
 # ╠═b7ff517c-450c-11eb-2054-61f8572bbccf
 # ╟─8110ec1e-54a9-11eb-05fb-d7e5281f6236
 # ╟─0f376f9a-5437-11eb-0640-35b9e2e1e0cd
-# ╟─477abee2-4367-11eb-003d-792fed6546ca
+# ╠═477abee2-4367-11eb-003d-792fed6546ca
 # ╟─10458cda-450c-11eb-2a3f-c168e35db194
 # ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
-# ╠═81118ba6-4522-11eb-3de4-7f385efb6375
 # ╟─232bb380-5439-11eb-0bf0-517df30fd027
-# ╟─31a606b6-5439-11eb-187a-f9c5b731c09d
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
 # ╟─20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─1811f6f6-5439-11eb-33a5-11a16ce5ce76
-# ╟─aae5b128-436a-11eb-092b-0fc350961437
+# ╠═aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
-# ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
+# ╠═b2a63c7a-49f7-11eb-300d-b7e283639a39
 # ╟─21033346-4a17-11eb-22fe-8b938ed61ece
 # ╟─9be70f5e-4a14-11eb-3635-bd9fef2ea09a
 # ╟─0867a38c-4a15-11eb-0583-21b96f8009c3
