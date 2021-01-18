@@ -43,7 +43,7 @@ begin
 	using MetaGraphs,DataFrames
 	
 	using StaticArrays,PolygonOps
-	using KernelDensity
+	using LinearAlgebra,KernelDensity
 end
 
 # ╔═╡ ba294c1c-43ab-11eb-0695-1147232dc62a
@@ -214,9 +214,6 @@ begin ###################################################### scene construction
 	embedScatter, embedScatterLayout = layoutscene(resolution = (500,500))
 	embedScatterAx = embedScatterLayout[1,1] = AbstractPlotting.Axis(embedScatter,
 		title="Self-organised Map Embedding")
-
-	empty!(embedScatter.events.mousedrag.listeners)
-	mouseevents = MakieLayout.addmouseevents!(embedScatterAx.scene)
 	
 	#################################################### scatterplot	
 	for name ∈ populations#, condition ∈ conditions
@@ -229,64 +226,98 @@ begin ###################################################### scene construction
 	
 	#################################################### polygon selection
 	left = Gate([
-		SVector(0.0,0.0),SVector(1.5,1.5),
-		SVector(3,1.5), SVector(2.0,-1.0)
+		MVector(0.0,0.0),MVector(1.5,1.5),MVector(3,1.5),
+		MVector(2.0,-1.0),MVector(1.0,-1.8),MVector(0.0,-2.0)
 	])
 
 	right = Gate([
-		SVector(6.0,-1.5),SVector(5.0,1.0),
-		SVector(3,1.5), SVector(2.0,-1.0)
+		MVector(6.0,-1.5),MVector(7.0,0.0),MVector(5.0,1.0),
+		MVector(3,1.5),MVector(2.0,-1.0),MVector(4.0,-2.0)
 	])
+	
+	gates = [left,right]
+	selectedLeft = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+				left.polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ),:])
+	
+	selectedRight = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+				right.polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ),:])
 
 	lines!(embedScatterAx, left.polygon,
-		color=@lift( $(left.selected) ? RGBA(1/2,1,1/2,1) : RGBA(1/2,1,1/2,0) ))
+		linewidth=@lift( $(left.selected) ? 3 : 1 ),
+		color=RGBA(1/2,1,1/2,1) )
 	
-	# lines!(embedScatterAx, polygonRight,
-	# 	color=@lift( $right.selected ? RGBA(1,1/4,0,1) : RGBA(1,1/4,0,0) ))
+	lines!(embedScatterAx, right.polygon,
+		linewidth=@lift( $(right.selected) ? 3 : 1 ),
+		color=RGBA(1,1/4,0,1))
 	
-	# scatter!( embedScatterAx, polygonLeft,
-	# 	marker=:cross, markersize=10,
-	# 	color=RGBA(1/2,1,1/2,1) )
-	
-# 	on(polygonLeftSelected) do selection
-# 		polygonLeft[] = [
-# 			SVector(0.0,0.0),SVector(1.5,1.5),
-# 			SVector(3,1.5), SVector(2.0,-1.0)
-# 		]
-# 	end
-	
-# 	on(polygonRightSelected) do selection
-# 		polygonRight[] = [
-# 			SVector(6.0,-1.5),SVector(5.0,1.0),
-# 			SVector(3,1.5), SVector(2.0,-1.0)
-# 		]
-# 	end
-	
-	on(mouseevents.obs) do events
-		if ispressed(embedScatterAx.scene, Mouse.left)
+	################################################ polygon interactions
+	on(embedScatterAx.scene.events.mousebuttons) do events
+		for gate ∈ [left,right]
 			
-			if inpolygon( mouseevents.obs.val.data,
-					left.polygon[]; in=true,on=true,out=false)
-				
-				println("!")
-
-				
+			if ispressed(embedScatterAx.scene, Mouse.left) #### selection
+				gate.selected[] = inpolygon( mouseposition(embedScatterAx.scene),
+					gate.polygon[]; in=true,on=true,out=false)
 			end
 		end
 	end
 	
-	########################################### update gates with polygon
-# 	on(embedScatter.events.keyboardbuttons) do button
-# 		if ispressed(button, Keyboard.enter)
+	empty!(embedScatter.events.mousedrag.listeners)
+	downDisplacement = Observable(mouseposition(embedScatterAx.scene))
+	vertexIdx = Observable(0)
+
+	on(embedScatterAx.scene.events.mousedrag) do drag
+		
+		################################ detect selection
+		idx = findfirst(x->x.selected[],gates)
+		if ~isnothing(idx) & ispressed(embedScatterAx.scene,Mouse.left)
+			gate = gates[idx]
 			
-# 			mouseevents.obs.val.data
+			################################## move selected
+			if drag==Mouse.down
+				
+				position = mouseposition(embedScatterAx.scene)
+				downDisplacement[] = position - PolygonOps.centroid(gate.polygon[])
+				
+				selectionThreshold = 0.12*sqrt(abs(PolygonOps.area(gate.polygon[])))
+				vertex = @. norm([position]-gate.polygon[].x) < selectionThreshold
+				vertexIdx[] = isnothing(findfirst(vertex)) ? 0 : findfirst(vertex)
 			
-# 		end
-# 	end
+			elseif (drag==Mouse.pressed) & (vertexIdx[]==0)
+				
+				displacement = mouseposition(embedScatterAx.scene) - 
+					PolygonOps.centroid(gate.polygon[]) -
+					downDisplacement[]
+
+				polygon = gate.polygon[] .+ [displacement]
+				gate.polygon[] = ClosedVector(polygon[Not(end)])
+				
+			elseif (drag==Mouse.pressed) & (vertexIdx[]>0)
+				
+				gate.polygon[][vertexIdx[]] = mouseposition(embedScatterAx.scene)
+				gate.polygon[] = gate.polygon[]
+			end
+		end
+		
+		################################## update
+		if ~isnothing(idx) & (drag==Mouse.up) 
+			
+			selectedLeft[] =
+				fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+				left.polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ),:]
+
+			selectedRight[] =
+				fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+				right.polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ),:]
+		end
+	end
 	
 	############################################### zoom constraint
 	on(embedScatterAx.scene.events.scroll) do scroll
-		if maximum(embedScatterAx.limits[].widths) > 25
+		if maximum(embedScatterAx.limits[].widths) > 24
 			limits!(embedScatterAx,-12,12,-12,12)
 		end
 	end
@@ -350,16 +381,6 @@ channelRange = range(-2,7,length=50)
 # ╔═╡ b2a63c7a-49f7-11eb-300d-b7e283639a39
 begin
 	#################################################### density estimation	
-	selectedLeft = @lift( $(left.selected) ?
-		fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-		$(left.polygon); in=true,on=false,out=false),
-		embedding[:,1], embedding[:,2] ),:] : fcsdata )
-	
-	selectedRight = @lift( $(right.selected) ? 
-		fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-		$(right.polygon); in=true,on=false,out=false),
-		embedding[:,1], embedding[:,2] ),:] : fcsdata )
-	
 	density(x::AbstractVector) = kde(x,channelRange).density
 	densitiesLeft = @lift(combine( $selectedLeft,
 			[ x => density => x for x ∈ channels ]) )
@@ -387,9 +408,8 @@ begin
 			k .- $densitiesLeft[:,channel]/$maxDensityLeft, channelRange ) )
 
 		violinMeshLeft = @lift(AbstractPlotting.triangle_mesh($pointsLeft))
-		mesh!( violinsAx, violinMeshLeft; shading=false,
-			color=@lift($(left.selected) ?
-				RGBA(0,1,0,0.2) : RGBA(1/2,1/2,1/2,1)))
+		mesh!( violinsAx, pointsLeft; shading=false,
+			color=RGBA(0,1,0,0.2) )
 
 		########################## right split
 		maxDensityRight = @lift( 5/2*maximum(x->x[1], $densitiesRight[:,channel]) )
@@ -398,8 +418,7 @@ begin
 
 		violinMeshRight = @lift(AbstractPlotting.triangle_mesh($pointsRight))
 		mesh!( violinsAx, violinMeshRight; shading=false,
-			color=@lift($(right.selected) ?
-				RGBA(1,1/4,0,0.2) : RGBA(1/2,1/2,1/2,1)))
+			color= RGBA(1,1/4,0,0.2) )
 	end
 
 	#################################### remove mouse interactions
@@ -469,9 +488,9 @@ end
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
 # ╟─20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─1811f6f6-5439-11eb-33a5-11a16ce5ce76
-# ╠═aae5b128-436a-11eb-092b-0fc350961437
+# ╟─aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
-# ╠═b2a63c7a-49f7-11eb-300d-b7e283639a39
+# ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
 # ╟─21033346-4a17-11eb-22fe-8b938ed61ece
 # ╟─9be70f5e-4a14-11eb-3635-bd9fef2ea09a
 # ╟─0867a38c-4a15-11eb-0583-21b96f8009c3

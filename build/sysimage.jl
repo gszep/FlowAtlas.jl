@@ -20,4 +20,4 @@ create_sysimage([
     ],
 
 sysimage_path="build/cytometry.so",
-precompile_execution_file=["lib/utils.jl","cytometry.jl"])
+precompile_execution_file=["lib/gates.jl","lib/utils.jl","cytometry.jl"])
