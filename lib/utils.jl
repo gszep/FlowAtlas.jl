@@ -8,6 +8,7 @@ show(io::IO, ::MIME"text/html", x::CategoricalValue) = print(io, get(x))
 function load(path::String; workspace::String="", cofactor::Number=250, channelMap::Dict=Dict(), kwargs...)
 
 	#######################################
+	path = replace(path,"\\"=>"/")
     params, data = loadFCS(path; kwargs...)
 	params = getMetaData(params)
 	
