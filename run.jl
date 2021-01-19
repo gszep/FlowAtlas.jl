@@ -19,4 +19,4 @@ end
 printstyled(color=:blue,"[Pluto] ")
 printstyled("Launching notebook...\n")
 using Pluto
-Pluto.run(notebook="cytometry.jl",sysimage="build/cytometry.so",threads="$(Sys.CPU_THREADS)")
+Pluto.run(notebook="cytometry.jl",threads="$(Sys.CPU_THREADS)")
