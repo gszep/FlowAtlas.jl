@@ -62,21 +62,21 @@ function load(pattern::GlobMatch; workspace::String="", cofactor::Number=250, ch
 		fcs,label,group,gating = load(path;workspace=workspace,cofactor=cofactor,channelMap=channelMap,kwargs...)
 		
 		append!(data,fcs)
-		append!(labels,label)
-
-		append!(groups,group,cols=:union)
 		gatings[path] = gating
-		
+
+		append!(labels,label,cols=:union)
+		append!(groups,group,cols=:union)		
 	end
 
 	if isempty(workspace)
 		return data,nothing,nothing,nothing
 	end
 
-	for name ∈ names(groups)
-		replace!(groups[!,name],missing=>false)
-	end
+	map( name->replace!(labels[!,name],missing=>false), names(labels) )
+	map( name->replace!(groups[!,name],missing=>false), names(groups) )
 
+	disallowmissing!(labels)
 	disallowmissing!(groups)
+
 	return data,labels, groups,gatings
 end

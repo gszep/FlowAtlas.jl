@@ -54,6 +54,9 @@ us to interact with FCS files and FlowJo Workspaces. Features include but are no
 limited to clustering and dimensionality reduction with `GigaSOM.jl`, automated population label assignment, threshold detection and visualisation with dot plots and violin plots.
 """
 
+# ╔═╡ 58aeddea-5a5c-11eb-3231-f159e09eb4a7
+md""
+
 # ╔═╡ 9dbf3d0c-4432-11eb-1170-4f59655b7820
 md"""
 #### Loading and Pre-processing
@@ -65,58 +68,65 @@ L"
 \mathbf{x}\rightarrow \mathrm{arcsinh}(\mathbf{x}/\beta)
 "
 
-# ╔═╡ b7ff517c-450c-11eb-2054-61f8572bbccf
-begin
-	cofactor = 250
-	workspace = "data/workspace.wsp"
-	pattern = glob"data/*/*_BM_*.cleaned.fcs"
-end
-
 # ╔═╡ 8110ec1e-54a9-11eb-05fb-d7e5281f6236
 md"Since each `fcs` file may have different channel names, the user should provide a `channelMap` to map the channels into a common set of names so that the data can be stored in `DataFrame` types"
 
-# ╔═╡ 0f376f9a-5437-11eb-0640-35b9e2e1e0cd
-channelMap = Dict([
+# ╔═╡ b7ff517c-450c-11eb-2054-61f8572bbccf
+begin
+	
+	##################### paths to workpace and data
+	workspace = "data/workspace.wsp"
+	files = @glob_str("data/*/*.cleaned.fcs")
+	
+	#################### cofactor for biexp transformation
+	cofactor = 250
+	
+	#################### drop intermediate gates from strategy
+	selectLabels = Not([
+			"CD4","CD8","Memory","Th17 | Th22",
+			"CD127- CD25+","non-Tregs"
+	])
 
-	"FJComp-355 379_28-A"=>"CD3", 
-	"FJComp-355 560_40-A"=>"CD8", 
+	#################### channel map in case FCS files do not share channel names
+	channelMap = Dict([
 
-	"FJComp-355 820_60-A"=>"CD4",
-	"FJComp-355 670_30-A"=>"CD4",
+		"FJComp-355 379_28-A"=>"CD3", 
+		"FJComp-355 560_40-A"=>"CD8", 
 
-	"FJComp-640 780_60-A"=>"CCR7",
-	"FJComp-405 780_60-A"=>"CD45RA", 
+		"FJComp-355 820_60-A"=>"CD4",
+		"FJComp-355 670_30-A"=>"CD4",
 
-	"FJComp-561 780_60-A"=>"CD127", 
-	"FJComp-640 670_30-A"=>"CD25", 
+		"FJComp-640 780_60-A"=>"CCR7",
+		"FJComp-405 780_60-A"=>"CD45RA", 
 
-	"FJComp-561 610_20-A"=>"Helios", 
-	"FJComp-561 585_15-A"=>"Foxp3", 
+		"FJComp-561 780_60-A"=>"CD127", 
+		"FJComp-640 670_30-A"=>"CD25", 
 
-	"FJComp-405 710_40-A"=>"PD-1", 
-	"FJComp-640 730_35-A"=>"CXCR5", 
+		"FJComp-561 610_20-A"=>"Helios", 
+		"FJComp-561 585_15-A"=>"Foxp3", 
+		"Foxp3-IgM"=>"Foxp3",
 
-	"FJComp-405 670_30-A"=>"CCR6", 
-	"FJComp-488 715_30-A"=>"CXCR3", 
+		"FJComp-405 710_40-A"=>"PD-1", 
+		"FJComp-640 730_35-A"=>"CXCR5", 
 
-	"FJComp-405 605_40-A"=>"CCR4", 
-	"FJComp-488 525_50-A"=>"CCR10", 
+		"FJComp-405 670_30-A"=>"CCR6", 
+		"FJComp-488 715_30-A"=>"CXCR3", 
 
-	"FJComp-405 450_50-A"=>"CD103", 
-	"FJComp-355 740_35-A"=>"CD69",
-	"FJComp-405 515_20-A"=>"HLA-DR",
+		"FJComp-405 605_40-A"=>"CCR4", 
+		"FJComp-488 525_50-A"=>"CCR10", 
 
-	"Foxp3-IgM"=>"Foxp3", 
-])
+		"FJComp-405 450_50-A"=>"CD103", 
+		"FJComp-355 740_35-A"=>"CD69",
+		"FJComp-405 515_20-A"=>"HLA-DR"
+	])
+end
 
 # ╔═╡ 477abee2-4367-11eb-003d-792fed6546ca
 begin
-	fcsdata,labels,groups,gating = load(pattern;
+	fcsdata,labels,groups,gating = load( files;
 		workspace=workspace, cofactor=cofactor, channelMap=channelMap)
 
-	select!( labels, Not([
-		"CD4","CD8","Memory","Th17 | Th22", "CD127- CD25+","non-Tregs"]) )
-
+	select!( labels, selectLabels)
 	nothing
 end
 
@@ -138,7 +148,7 @@ The gating strategy is stored as a directed graph with each vertex having `:poly
 
 # ╔═╡ 199c6556-4525-11eb-154b-034d1b0e0692
 md"""
-The gating graph is applied to the imported data `fcsdata` and we obtain a boolean dataframe `labels` that tells us whether a cell has been labelled by the gate and its parents or not. We can drop columns representing intermediate gates with `select!` and only view final populations
+The gating graph is applied to the imported data `fcsdata` and we obtain a boolean dataframe `labels` that tells us whether a cell has been labelled by the gate and its parents or not. We can drop columns representing intermediate gates by passing them to `selectLabels`
 """
 
 # ╔═╡ 232bb380-5439-11eb-0bf0-517df30fd027
@@ -475,12 +485,12 @@ end
 # ╔═╡ Cell order:
 # ╟─c49493f2-4366-11eb-2969-b3fff0c37e7b
 # ╟─ba294c1c-43ab-11eb-0695-1147232dc62a
+# ╟─58aeddea-5a5c-11eb-3231-f159e09eb4a7
 # ╟─9dbf3d0c-4432-11eb-1170-4f59655b7820
 # ╟─b80a14f4-4435-11eb-07bd-7fcc8ca10325
-# ╠═b7ff517c-450c-11eb-2054-61f8572bbccf
 # ╟─8110ec1e-54a9-11eb-05fb-d7e5281f6236
-# ╟─0f376f9a-5437-11eb-0640-35b9e2e1e0cd
-# ╠═477abee2-4367-11eb-003d-792fed6546ca
+# ╠═b7ff517c-450c-11eb-2054-61f8572bbccf
+# ╟─477abee2-4367-11eb-003d-792fed6546ca
 # ╟─10458cda-450c-11eb-2a3f-c168e35db194
 # ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
