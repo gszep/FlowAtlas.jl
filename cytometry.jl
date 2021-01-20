@@ -54,9 +54,6 @@ us to interact with FCS files and FlowJo Workspaces. Features include but are no
 limited to clustering and dimensionality reduction with `GigaSOM.jl`, automated population label assignment, threshold detection and visualisation with dot plots and violin plots.
 """
 
-# ╔═╡ 58aeddea-5a5c-11eb-3231-f159e09eb4a7
-md""
-
 # ╔═╡ 9dbf3d0c-4432-11eb-1170-4f59655b7820
 md"""
 #### Loading and Pre-processing
@@ -194,6 +191,9 @@ begin ###################################################### scene construction
 	channel = Observable(first(channels))
 	fluorescence = Observable(true)
 	
+	doneCalculations = Observable(true)
+	compareGates = JSServe.Button("Compare Gates",style=style)
+	
 	markersize = JSServe.Slider(range(1,20,length=100))
 	markeralpha = JSServe.Slider(range(0,1,length=100))
 	
@@ -246,21 +246,17 @@ begin ###################################################### scene construction
 	])
 	
 	gates = [left,right]
-	selectedLeft = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-				left.polygon[]; in=true,on=false,out=false),
-				embedding[:,1], embedding[:,2] ),:])
-	
-	selectedRight = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-				right.polygon[]; in=true,on=false,out=false),
-				embedding[:,1], embedding[:,2] ),:])
 
 	lines!(embedScatterAx, left.polygon,
-		linewidth=@lift( $(left.selected) ? 3 : 1 ),
-		color=RGBA(1/2,1,1/2,1) )
+		linewidth=@lift( $(left.selected) & ($doneCalculations) ? 3 : 1 ),
+		color=@lift( $doneCalculations ? RGBA(1/2,1,1/2,1) : RGBA(0,0,0,0.2) ))
 	
 	lines!(embedScatterAx, right.polygon,
-		linewidth=@lift( $(right.selected) ? 3 : 1 ),
-		color=RGBA(1,1/4,0,1))
+		linewidth=@lift( $(right.selected) & ($doneCalculations) ? 3 : 1 ),
+		color=@lift( $doneCalculations ? RGBA(1,1/4,0,1) : RGBA(0,0,0,0.2) ))
+	
+	downDisplacement = Observable(mouseposition(embedScatterAx.scene))
+	vertexIdx = Observable(0)
 	
 	################################################ polygon interactions
 	on(embedScatterAx.scene.events.mousebuttons) do events
@@ -274,9 +270,6 @@ begin ###################################################### scene construction
 	end
 	
 	empty!(embedScatter.events.mousedrag.listeners)
-	downDisplacement = Observable(mouseposition(embedScatterAx.scene))
-	vertexIdx = Observable(0)
-
 	on(embedScatterAx.scene.events.mousedrag) do drag
 		
 		################################ detect selection
@@ -309,22 +302,8 @@ begin ###################################################### scene construction
 				gate.polygon[] = gate.polygon[]
 			end
 		end
-		
-		################################## update
-		if ~isnothing(idx) & (drag==Mouse.up) 
-			
-			selectedLeft[] =
-				fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-				left.polygon[]; in=true,on=false,out=false),
-				embedding[:,1], embedding[:,2] ),:]
-
-			selectedRight[] =
-				fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-				right.polygon[]; in=true,on=false,out=false),
-				embedding[:,1], embedding[:,2] ),:]
-		end
 	end
-	
+
 	############################################### zoom constraint
 	on(embedScatterAx.scene.events.scroll) do scroll
 		if maximum(embedScatterAx.limits[].widths) > 24
@@ -338,50 +317,55 @@ end
 begin
 	JSServe.App() do session, request
 		return DOM.div( style=style,
+						
+		DOM.div(
+			DOM.label(style="font-weight: bold","Colour:"),
 			
-		######################################## channel intensity
-		DOM.div( DOM.input(type="checkbox",checked=true,
-			onchange=js"update_obs($fluorescence,this.checked);"),
+			DOM.label("Population"),
+			DOM.input(type="checkbox",checked=true,
+				onchange=js"update_obs($fluorescence,this.checked);"),
 
-		DOM.label("Fluorescence Intensity"), DOM.select(DOM.option.(channels),
-		onchange=js"update_obs($channel,this.options[this.selectedIndex].text)")),
+			DOM.label("Fluorescence Intensity"),
+			DOM.select(DOM.option.(channels),
+			onchange=js"update_obs($channel,this.options[this.selectedIndex].text)")
+		),
 			
 		DOM.div( style="margin-top: 10px;",
-			DOM.label("Marker: Size"), markersize,
+			DOM.label(style="font-weight: bold","Markers:"),
+			DOM.label("Size"), markersize,
 			DOM.label("Opacity"), markeralpha,
+		),
+			
+		DOM.div( style="margin-top: 15px;",
+			DOM.label(style="font-weight: bold","Population Labelling:"),
+			DOM.label("Automatic"),
+			DOM.label("Manual")
 		),
 
 		########################## embedding scatterplot
 		DOM.div(style=style,embedScatter),
 
-		######################################### interactive population legend
+		######################################### interactive legend
 		DOM.div(style=style,
-			DOM.label("Populations"), DOM.br(),
+			DOM.label(style="font-weight: bold","Populations"), DOM.br(),
 				
-			[( DOM.input(type="color",name=name,id=name,value="#EEEEEE",
-				onchange=js"update_obs(($colors)[name],this.value)"),
-				DOM.label(name), DOM.br() ) for name ∈ populations ],
+			DOM.div( style="margin-top: 10px;",
+				[( DOM.input(type="color",name=name,id=name,value="#EEEEEE",
+				   onchange=js"update_obs(($colors)[name],this.value)"),
+				   DOM.label(name), DOM.br() ) for name ∈ populations ]),
 				
-			DOM.br(), DOM.label("Gates"), DOM.br(),
+			DOM.br(),
+			compareGates
+		))
 
-			[( DOM.input(type="checkbox", checked=false,
-				onchange=js"update_obs($(left.selected),this.checked);"),
-				DOM.label("Left"), DOM.br()),
-				
-			 ( DOM.input(type="checkbox", checked=false,
-				onchange=js"update_obs($(right.selected),this.checked);"),
-				DOM.label("Right") )
-			]
-		),
-		
-		[
-			(DOM.input(type="checkbox",checked=true,
-			onchange=js"update_obs($fluorescence,this.checked);"),
-			DOM.label(name) )
+# 		DOM.div(style=style,[
+# 			(DOM.input(type="checkbox",checked=true,
+# 			onchange=js"update_obs($fluorescence,this.checked);"),
+# 			DOM.label(name) )
 				
 				
-			for name in ["BM","Spleen"]
-		])
+# 			for name in ["BM","Spleen"]
+# 		]))
 	end
 end
 
@@ -390,6 +374,29 @@ channelRange = range(-2,7,length=50)
 
 # ╔═╡ b2a63c7a-49f7-11eb-300d-b7e283639a39
 begin
+	selectedLeft = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+				left.polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ),:])
+	
+	selectedRight = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+				right.polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ),:])
+	
+	################################## update
+	on(compareGates) do button
+		doneCalculations[] = false
+
+		selectedLeft[] =
+			fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+			left.polygon[]; in=true,on=false,out=false),
+			embedding[:,1], embedding[:,2] ),:]
+
+		selectedRight[] =
+			fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
+			right.polygon[]; in=true,on=false,out=false),
+			embedding[:,1], embedding[:,2] ),:]
+	end
+	
 	#################################################### density estimation	
 	density(x::AbstractVector) = kde(x,channelRange).density
 	densitiesLeft = @lift(combine( $selectedLeft,
@@ -419,7 +426,7 @@ begin
 
 		violinMeshLeft = @lift(AbstractPlotting.triangle_mesh($pointsLeft))
 		mesh!( violinsAx, pointsLeft; shading=false,
-			color=RGBA(0,1,0,0.2) )
+			color=@lift( $doneCalculations ? RGBA(0,1,0,0.2) : RGBA(0,0,0,0.2) ) )
 
 		########################## right split
 		maxDensityRight = @lift( 5/2*maximum(x->x[1], $densitiesRight[:,channel]) )
@@ -428,7 +435,11 @@ begin
 
 		violinMeshRight = @lift(AbstractPlotting.triangle_mesh($pointsRight))
 		mesh!( violinsAx, violinMeshRight; shading=false,
-			color= RGBA(1,1/4,0,0.2) )
+			color=@lift( $doneCalculations ? RGBA(1,1/4,0,0.2) : RGBA(0,0,0,0.2) ) )
+	end
+	
+	on(densitiesRight) do event
+		doneCalculations[] = true
 	end
 
 	#################################### remove mouse interactions
@@ -485,7 +496,6 @@ end
 # ╔═╡ Cell order:
 # ╟─c49493f2-4366-11eb-2969-b3fff0c37e7b
 # ╟─ba294c1c-43ab-11eb-0695-1147232dc62a
-# ╟─58aeddea-5a5c-11eb-3231-f159e09eb4a7
 # ╟─9dbf3d0c-4432-11eb-1170-4f59655b7820
 # ╟─b80a14f4-4435-11eb-07bd-7fcc8ca10325
 # ╟─8110ec1e-54a9-11eb-05fb-d7e5281f6236
