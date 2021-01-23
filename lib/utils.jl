@@ -83,7 +83,7 @@ function load(pattern::GlobMatch; workspace::String="", cofactor::Number=250, ch
 end
 
 
-function som(data::DataFrame,path::String="",xdim::Int64=20,ydim::Int64=20)
+function som(data::DataFrame;path::String="",xdim::Int64=20,ydim::Int64=20)
 
 	if isfile(path)
 		som = deserialize(path)
