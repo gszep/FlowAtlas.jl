@@ -1,4 +1,5 @@
 using GigaSOM,EzXML,DataFrames
+using Serialization: serialize,deserialize
 using Glob: GlobMatch
 
 using DataFrames: CategoricalValue
@@ -79,4 +80,25 @@ function load(pattern::GlobMatch; workspace::String="", cofactor::Number=250, ch
 	disallowmissing!(groups)
 
 	return data,labels, groups,gatings
+end
+
+
+function som(data::DataFrame,path::String="",xdim::Int64=20,ydim::Int64=20)
+
+	if isfile(path)
+		som = deserialize(path)
+
+	else
+		som = initGigaSOM(data,xdim,ydim)
+		som = trainGigaSOM(som,data)
+		~isempty(path) && serialize(path,som)
+	end
+
+	######################## extract clusters and embedding
+	clusters = mapToGigaSOM(som,data)
+	embedding = embedGigaSOM(som,data)
+
+	embedding .-= 10
+	rename!(clusters,"index"=>"cluster")
+	return clusters,embedding
 end

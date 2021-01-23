@@ -10,9 +10,7 @@ begin
 	Pkg.activate(".")
 	Pkg.instantiate()
 
-	using Serialization: serialize,deserialize
 	using Glob
-	
 	using AbstractPlotting.MakieLayout
 	using WGLMakie,AbstractPlotting,LaTeXStrings
 
@@ -159,24 +157,8 @@ We can explore the clusters in the embedded space given by `EmbedSOM`. **Select 
 
 # ╔═╡ 20596a96-4708-11eb-0b61-539eba64e3fd
 begin
-	######### load self-organised map
-	somPath = "data/workspace.som"
-	if isfile(somPath)
-		som = deserialize(somPath)
-
-	else #################### train self-organised map
-		som = initGigaSOM(fcsdata,20,20)
-		som = trainGigaSOM(som,fcsdata)
-		serialize(somPath,som)
-	end
-
-	######################## extract clusters and embedding
-	clusters = mapToGigaSOM(som,fcsdata)
-	embedding = embedGigaSOM(som,fcsdata)
-
-	embedding .-= 10
-	rename!(clusters,"index"=>"cluster")
-	println("Training Self-organised Map : Done")
+	clusters,embedding = som(fcsdata,path="data/workspace.som")
+	nothing
 end
 
 # ╔═╡ 1811f6f6-5439-11eb-33a5-11a16ce5ce76
