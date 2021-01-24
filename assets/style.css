@@ -59,6 +59,27 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+/* #################################### legend label */
+.slider.text {
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  font-size: 10;
+  color: hsl(0, 0%, 75%)
+}
+
+.slider.text:before {
+  background-color: transparent;
+}
+
+input:checked + .slider.text {
+  background-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  font-size: 10;
+  color: hsl(0, 0%, 25%)
+}
+
 /* #################################### colorpicker */
 input[type=color]{
 	width: 10px;
@@ -67,9 +88,11 @@ input[type=color]{
 	border-radius: 20px;
 	background: none;
 }
+
 input[type="color"]::-webkit-color-swatch-wrapper {
 	padding: 0;
 }
+
 input[type="color"]::-webkit-color-swatch {
 	border: none ;
 	border-radius: 20px;

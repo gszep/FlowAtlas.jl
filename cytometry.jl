@@ -17,19 +17,6 @@ begin
 	AbstractPlotting.inline!(true)
 	using JSServe,JSServe.DOM
 	using JSServe: @js_str
-	
-	style = """
-
-		font-family: "Alegreya Sans", sans-serif;
-		font-weight: 400;
-		font-size:   1em;
-		color:       hsl(0, 0%, 25%);
-		
-		vertical-align: middle;
-		horizontal-align: middle;
-		display:        inline-block;
-	
-	"""
 
 	using Plots: default
 	using GraphRecipes
@@ -71,7 +58,7 @@ begin
 	
 	##################### paths to workpace and data
 	workspace = "data/workspace.wsp"
-	files = @glob_str("data/*/*.cleaned.fcs")
+	files = @glob_str("data/403C/*.cleaned.fcs")
 	
 	#################### cofactor for biexp transformation
 	cofactor = 250
@@ -174,7 +161,7 @@ begin ###################################################### scene construction
 	fluorescence = Observable(true)
 	
 	doneCalculations = Observable(true)
-	compareGates = JSServe.Button("Compare Gates",style=style)
+	compareGates = JSServe.Button("Compare Gates")
 	
 	markersize = JSServe.Slider(range(1,20,length=100))
 	markeralpha = JSServe.Slider(range(0,1,length=100))
@@ -298,56 +285,78 @@ end
 # ╔═╡ 7cdadea8-4715-11eb-220c-475f60a98543
 begin
 	JSServe.App() do session, request
-		return DOM.div( style=style,
+		style = JSServe.Asset(joinpath(@__DIR__, "assets/style.css"))
+		return DOM.div( style,
 						
-		DOM.div(
-			DOM.label(style="font-weight: bold","Colour:"),
-			
+		DOM.div( class="container",
+			DOM.label(class="bold","Colour:"),
+				
 			DOM.label("Population"),
-			DOM.input(type="checkbox",checked=true,
+			DOM.label(class="switch",
+					
+				DOM.input(type="checkbox",checked=true,
 				onchange=js"update_obs($fluorescence,this.checked);"),
+				DOM.span(class="slider round")
+			),
 
 			DOM.label("Fluorescence Intensity"),
 			DOM.select(DOM.option.(channels),
 			onchange=js"update_obs($channel,this.options[this.selectedIndex].text)")
 		),
 			
-		DOM.div( style="margin-top: 10px;",
-			DOM.label(style="font-weight: bold","Markers:"),
+		DOM.div( class="container",
+			DOM.label(class="bold","Markers:"),
 			DOM.label("Size"), markersize,
 			DOM.label("Opacity"), markeralpha,
 		),
 			
-		DOM.div( style="margin-top: 15px;",
-			DOM.label(style="font-weight: bold","Population Labelling:"),
-			DOM.label("Automatic"),
-			DOM.label("Manual")
+		DOM.div( class="container",
+			DOM.label(class="bold","Population Labelling:"),
+				
+			DOM.label("Gating Strategy"),
+			DOM.label(class="switch",
+					
+				DOM.input(type="checkbox",checked=true,
+				onchange=js"update_obs($fluorescence,this.checked);"),
+				DOM.span(class="slider round")
+			),
+			DOM.label("Self-organised Map")
 		),
 
 		########################## embedding scatterplot
-		DOM.div(style=style,embedScatter),
+		DOM.div( class="container",
+			embedScatter,
 
 		######################################### interactive legend
-		DOM.div(style=style,
-			DOM.label(style="font-weight: bold","Populations"), DOM.br(),
-				
-			DOM.div( style="margin-top: 10px;",
-				[( DOM.input(type="color",name=name,id=name,value="#EEEEEE",
-				   onchange=js"update_obs(($colors)[name],this.value)"),
-				   DOM.label(name), DOM.br() ) for name ∈ populations ]),
-				
-			DOM.br(),
-			compareGates
-		))
+			DOM.span( DOM.label(class="bold","Populations"),
+				map( name -> DOM.div( class="container",
+							
+					DOM.input(type="color",name=name,id=name,value="#EEEEEE",
+				    onchange=js"update_obs(($colors)[name],this.value)"),
+					DOM.label(class="switch", style="width:100%",
+								
+					DOM.input(type="checkbox",checked=true,
+					onchange=js"update_obs($fluorescence,this.checked);"),
+					DOM.span(class="slider text",name))
 
-# 		DOM.div(style=style,[
-# 			(DOM.input(type="checkbox",checked=true,
-# 			onchange=js"update_obs($fluorescence,this.checked);"),
-# 			DOM.label(name) )
+				), populations),
+			),
 				
-				
-# 			for name in ["BM","Spleen"]
-# 		]))
+			DOM.span( DOM.label(class="bold","Groups"),
+				map( name -> DOM.div( class="container",
+							
+					DOM.input(type="color",name=name,id=name,value="#EEEEEE",
+				    onchange=js"update_obs(($colors)[name],this.value)"),
+					DOM.label(class="switch", style="width:100%",
+								
+					DOM.input(type="checkbox",checked=true,
+					onchange=js"update_obs($fluorescence,this.checked);"),
+					DOM.span(class="slider text",name))
+
+				), conditions),
+			),
+		)
+	)
 	end
 end
 
