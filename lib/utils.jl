@@ -1,4 +1,4 @@
-using GigaSOM,EzXML,DataFrames
+using GigaSOM,EzXML,DataFrames,TSne
 using Serialization: serialize,deserialize
 using Glob: GlobMatch
 
@@ -83,7 +83,8 @@ function load(pattern::GlobMatch; workspace::String="", cofactor::Number=250, ch
 end
 
 
-function som(data::DataFrame;path::String="",xdim::Int64=20,ydim::Int64=20)
+function embed(data::DataFrame;path::String="",xdim::Int64=20,ydim::Int64=20,perplexity=10,maxIter=10000,eta=200.0)
+	# Kratochvíl M, Koladiya A and Vondrášek J. Generalized EmbedSOM on quadtree-structured self-organizing maps. F1000Research 2020, 8:2120
 
 	if isfile(path)
 		som = deserialize(path)
@@ -94,11 +95,13 @@ function som(data::DataFrame;path::String="",xdim::Int64=20,ydim::Int64=20)
 		~isempty(path) && serialize(path,som)
 	end
 
+	########################### landmarks
+	som.grid = tsne(som.codes,2,0,maxIter,perplexity;eta=eta)
+
 	######################## extract clusters and embedding
 	clusters = mapToGigaSOM(som,data)
 	embedding = embedGigaSOM(som,data)
 
-	embedding .-= 10
 	rename!(clusters,"index"=>"cluster")
 	return clusters,embedding
 end

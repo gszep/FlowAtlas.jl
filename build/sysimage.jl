@@ -6,6 +6,7 @@ create_sysimage([
     :EzXML,
     :GigaSOM,
     :GigaScatter,
+    :Glob,
     :GraphRecipes,
     :Images,
     :JSServe,
@@ -13,11 +14,14 @@ create_sysimage([
     :LaTeXStrings,
     :LightGraphs,
     :MetaGraphs,
+    :Observables,
     :Plots,
     :PolygonOps,
+    :Setfield,
     :StaticArrays,
+    :TSne,
     :WGLMakie    
-    ],
+],
 
 sysimage_path="build/cytometry.so",
-precompile_execution_file=["lib/gates.jl","lib/utils.jl","cytometry.jl"])
+precompile_execution_file=["lib/components.jl","lib/gates.jl","lib/utils.jl","cytometry.jl"])

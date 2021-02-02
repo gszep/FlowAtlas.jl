@@ -1,33 +1,6 @@
 using EzXML,DataFrames
 using LightGraphs,MetaGraphs
-
 using PolygonOps,StaticArrays
-using Observables
-
-struct ClosedVector{T} <: AbstractVector{T}
-    x::AbstractVector{T}
-
-    function ClosedVector(x::AbstractVector{T}) where T
-        return new{T}(x)
-    end
-end
-
-Base.size(A::ClosedVector) = (size(A.x,1)+1,)
-Base.length(A::ClosedVector) = length(A.x)+1
-Base.IndexStyle(::Type{ClosedVector}) = IndexCartesian() 
-
-Base.getindex(A::ClosedVector, i::Int) = getindex(A.x, i == length(A) ? 1 : i)
-Base.setindex!(A::ClosedVector, v, i::Int) = setindex!(A.x, v, i == length(A) ? 1 : i) 
-
-
-struct Gate
-    polygon::Observable{<:ClosedVector}
-    selected::Observable{<:Bool}
-end
-
-Gate(x::AbstractVector{<:StaticVector}) = Gate( (Observable ∘ ClosedVector)(x), Observable(false) )
-Gate(x::Observable{<:ClosedVector}) = Gate(x,Observable(false))
-
 
 function gatingGraph(path::String, workspace::EzXML.Node; channelMap::Dict=Dict(), cofactor::Number=250)
 

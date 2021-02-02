@@ -64,19 +64,20 @@ input:checked + .slider:before {
   background-color: transparent;
   display: inline-flex;
   align-items: center;
-  font-size: 10;
+  font-size: 0.75em;
   color: hsl(0, 0%, 75%)
 }
 
 .slider.text:before {
   background-color: transparent;
+  font-size: 0.75em;
 }
 
 input:checked + .slider.text {
   background-color: transparent;
   display: inline-flex;
   align-items: center;
-  font-size: 10;
+  font-size: 0.75em;
   color: hsl(0, 0%, 25%)
 }
 
@@ -109,8 +110,6 @@ select {
 body, html {
   font-family: "Alegreya Sans", sans-serif;
   color: hsl(0, 0%, 25%);
-  word-spacing: 0.053em;
-  line-height: 1.45em;
 }
 
 .container {        
