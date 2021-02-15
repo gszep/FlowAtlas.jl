@@ -172,48 +172,27 @@ begin ###################################################### scene construction
 	
 	################################################## colormaps
 	channelRange, nlevels = range(-2,7,length=50), 10
-	palette = convert( Vector{RGBA{Normed{UInt8,8}}},
-		cgrad(:curl,nlevels,categorical=true,rev=true).colors.colors)
-	
-	function toIndex(x::AbstractVector{<:Number})
-
-		min,max = extrema(channelRange)
-		scaled = ( x .- min ) / ( max - min )
-		
-		@. scaled[scaled<0] = 0
-		@. scaled[1<scaled] = 1
-
-		return @. trunc(Int,(nlevels-1)*scaled) + 1
-	end
-	
-	function encode( input; T::DataType=Int )
-		v,encodedInt = 1,zero(T)
-		iter = Iterators.reverse(input)
-
-		for i ∈ iter
-			encodedInt += v * i
-			v <<= 1
-		end
-		return encodedInt
-	end
-	
-	codes = select( hcat(labels,groups),
-		AsTable(:) => ByRow(encode∘values) => "encoding"
-	)[:,:encoding]
-
-	channel = Observable(first(names(fcsdata)))
+	toIndex(x::AbstractVector{<:Number})=toIndex(x,channelRange;nlevels=nlevels)
 	colorIndex = combine(fcsdata,[ col => toIndex => col for col ∈ names(fcsdata) ] )
 	
-	color = Observable(palette[ colorIndex[!,channel[]] ])
 	segments = fill( parse(RGBA,"#EEEEEE00"), size(fcsdata,1) )
+	palette = convert( Vector{RGBA{Normed{UInt8,8}}},
+		cgrad(:curl,nlevels,categorical=true,rev=true).colors.colors)
+
+	channel = Observable(first(names(fcsdata)))
+	color = Observable(palette[ colorIndex[!,channel[]] ])
 	
-	legendColors = convert( Vector{RGB},
+	legend = convert( Vector{RGB},
 		cgrad(:Accent_8,size(labels,2),categorical=true).colors.colors)
-	
+
 	legend = [ map( name -> Group(
-		name,"#"*hex(popfirst!(legendColors))), names(labels) );
+		name,"#"*hex(popfirst!(legend))), names(labels) );
 		map( name -> Group(name,true), names(groups) )
 	]
+	
+	############################# filter codes
+	codes = select( hcat(labels,groups), 
+		AsTable(:) => ByRow(encode∘values) => "encoding")[:,:encoding]
 
 	labelCode = encode([i ≤ size(labels,2) for i ∈ 1:length(legend)])
 	groupCode = encode([i > size(labels,2) for i ∈ 1:length(legend)])
@@ -281,18 +260,18 @@ begin ###################################################### scene construction
 	embedScatter[:,2] = Colorbar(embedScatter,scatterPlot,
 		colormap=cgrad(palette),width=10)
 	
-	#################################################### polygon selection
-	left = Gate([
-		MVector(0.0,0.0),MVector(0.15,0.15),MVector(0.3,0.15),
-		MVector(0.2,-0.1),MVector(0.1,-0.18),MVector(0.0,-0.2)
-	],"#80FF80")
-
-	right = Gate([
-		MVector(0.6,-0.15),MVector(0.7,0.0),MVector(0.5,0.1),
-		MVector(0.3,0.15),MVector(0.2,-0.1),MVector(0.4,-0.2)
-	],"#FF4000")
-	
-	gates = [left,right]
+	#################################################### polygon selection	
+	gates = [
+			Gate([
+				MVector(0.0,0.0),MVector(0.15,0.15),MVector(0.3,0.15),
+				MVector(0.2,-0.1),MVector(0.1,-0.18),MVector(0.0,-0.2)
+			],"#80FF80"),
+		
+			Gate([
+				MVector(0.6,-0.15),MVector(0.7,0.0),MVector(0.5,0.1),
+				MVector(0.3,0.15),MVector(0.2,-0.1),MVector(0.4,-0.2)
+			],"#FF4000")
+	]
 	
 	for gate ∈ gates
 		
@@ -459,48 +438,44 @@ begin
 	end
 end
 
-# ╔═╡ c010c502-6538-11eb-3f14-c9ea81b48b74
-md"""
-* gates remember filters
-* select population count to divide stats through. frequency by group or population
-* create separate dot plots
-"""
-
 # ╔═╡ 628db7e6-6533-11eb-0afe-4973d1320a9f
 compareGates
 
 # ╔═╡ b2a63c7a-49f7-11eb-300d-b7e283639a39
 begin
-	selectedLeft = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-				left.polygon[]; in=true,on=false,out=false),
-				embedding[:,1], embedding[:,2] ),:])
+	#################################################### density estimation	
+	density(x::AbstractVector) = kde(x,channelRange;
+		bandwidth=step(channelRange)/2).density
 	
-	selectedRight = Observable(fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-				right.polygon[]; in=true,on=false,out=false),
-				embedding[:,1], embedding[:,2] ),:])
+	selected = codes .& encode(map(x->x.selected[],legend))
+	selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
+	
+	selections = map( gate-> fcsdata[
+		map( (x,y)->inpolygon(SVector(x,y),
+						
+			gate.polygon[]; in=true,on=false,out=false),
+			embedding[:,1], embedding[:,2] ) .& selected,:], gates)
+	
+	densities = map( selection -> Observable( combine( selection,
+		[ x => density => x for x ∈ names(fcsdata) ] )), selections )
 	
 	################################## update
+	doneCalculations[] = true
 	on(compareGates) do button
+		
 		doneCalculations[] = false
-
-		selectedLeft[] =
-			fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-			left.polygon[]; in=true,on=false,out=false),
-			embedding[:,1], embedding[:,2] ),:]
-
-		selectedRight[] =
-			fcsdata[ map( (x,y)->inpolygon(SVector(x,y),
-			right.polygon[]; in=true,on=false,out=false),
-			embedding[:,1], embedding[:,2] ),:]
+		for i ∈ 1:length(densities)
+			
+			selection = fcsdata[
+				map( (x,y)->inpolygon(SVector(x,y),
+						
+				gates[i].polygon[]; in=true,on=false,out=false),
+				embedding[:,1], embedding[:,2] ) .& selected,:]
+			
+			densities[i][] = combine( selection,
+				[ x => density => x for x ∈ names(fcsdata) ] )
+		end
 	end
-	
-	#################################################### density estimation	
-	density(x::AbstractVector) = kde(x,channelRange).density
-	densitiesLeft = @lift(combine( $selectedLeft,
-			[ x => density => x for x ∈ names(fcsdata) ]) )
-
-	densitiesRight = @lift(combine( $selectedRight,
-			[ x => density => x for x ∈ names(fcsdata) ]) )
 	########## todo maybe not the most efficient way to select.......
 	
 	###################################################### violin plot
@@ -515,27 +490,22 @@ begin
 
 	####################################### per channel
 	for (k,channel) ∈ enumerate(names(fcsdata))
+		for i ∈ 1:length(densities)
+			
+			maxDensity = @lift( 5/2*maximum(x->x[1], $(densities[i])[:,channel]) )
+			points=@lift(map(Point,
+				k .+ (-1)^i * $(densities[i])[:,channel] / $maxDensity,
+			channelRange))
 
-		########################## left split
-		maxDensityLeft = @lift( 5/2*maximum(x->x[1], $densitiesLeft[:,channel]) )
-		pointsLeft = @lift( map( Point,
-			k .- $densitiesLeft[:,channel]/$maxDensityLeft, channelRange ) )
-
-		violinMeshLeft = @lift(AbstractPlotting.triangle_mesh($pointsLeft))
-		mesh!( violinsAx, pointsLeft; shading=false,
-			color=@lift( $doneCalculations ? RGBA(0,1,0,0.2) : RGBA(0,0,0,0.2) ) )
-
-		########################## right split
-		maxDensityRight = @lift( 5/2*maximum(x->x[1], $densitiesRight[:,channel]) )
-		pointsRight = @lift( map( Point,
-			k .+ $densitiesRight[:,channel]/$maxDensityRight, channelRange ) )
-
-		violinMeshRight = @lift(AbstractPlotting.triangle_mesh($pointsRight))
-		mesh!( violinsAx, violinMeshRight; shading=false,
-			color=@lift( $doneCalculations ? RGBA(1,1/4,0,0.2) : RGBA(0,0,0,0.2) ) )
+			violinMesh = @lift(AbstractPlotting.triangle_mesh($points))
+			mesh!( violinsAx, violinMesh; shading=false,
+				
+				color=@lift( $doneCalculations ? parse(RGBA,$(gates[i].color)) : 
+					RGBA(0,0,0,0.2)))
+		end
 	end
 	
-	on(densitiesRight) do event
+	on(densities[end]) do event
 		doneCalculations[] = true
 	end
 
@@ -544,6 +514,13 @@ begin
 	empty!(violins.events.scroll.listeners)
 	violins
 end
+
+# ╔═╡ c010c502-6538-11eb-3f14-c9ea81b48b74
+md"""
+* gate buttons for both gates
+* select population count to divide stats through. frequency by group or population
+* Visualise confusion matrix
+"""
 
 # ╔═╡ 80238db4-6533-11eb-2db5-db6650a2af55
 begin
@@ -605,11 +582,11 @@ end
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
 # ╠═20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─1811f6f6-5439-11eb-33a5-11a16ce5ce76
-# ╟─aae5b128-436a-11eb-092b-0fc350961437
+# ╠═aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
-# ╠═c010c502-6538-11eb-3f14-c9ea81b48b74
 # ╟─628db7e6-6533-11eb-0afe-4973d1320a9f
-# ╠═b2a63c7a-49f7-11eb-300d-b7e283639a39
+# ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
+# ╠═c010c502-6538-11eb-3f14-c9ea81b48b74
 # ╟─2507bf12-653e-11eb-193e-2fef057dd4ec
 # ╟─80238db4-6533-11eb-2db5-db6650a2af55
 # ╟─02ed06fa-54b4-11eb-3e51-2908afcd617f
