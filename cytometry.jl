@@ -183,50 +183,90 @@ begin ###################################################### scene construction
 		@. scaled[scaled<0] = 0
 		@. scaled[1<scaled] = 1
 
-		return @. trunc(Int,nlevels*scaled) + 1
+		return @. trunc(Int,(nlevels-1)*scaled) + 1
 	end
+	
+	function encode( input; T::DataType=Int )
+		v,encodedInt = 1,zero(T)
+		iter = Iterators.reverse(input)
+
+		for i ∈ iter
+			encodedInt += v * i
+			v <<= 1
+		end
+		return encodedInt
+	end
+	
+	codes = select( hcat(labels,groups),
+		AsTable(:) => ByRow(encode∘values) => "encoding"
+	)[:,:encoding]
 
 	channel = Observable(first(names(fcsdata)))
 	colorIndex = combine(fcsdata,[ col => toIndex => col for col ∈ names(fcsdata) ] )
+	
 	color = Observable(palette[ colorIndex[!,channel[]] ])
+	segments = fill( parse(RGBA,"#EEEEEE00"), size(fcsdata,1) )
+	
+	legendColors = convert( Vector{RGB},
+		cgrad(:Accent_8,size(labels,2),categorical=true).colors.colors)
+	
+	legend = [ map( name -> Group(
+		name,"#"*hex(popfirst!(legendColors))), names(labels) );
+		map( name -> Group(name,true), names(groups) )
+	]
+
+	labelCode = encode([i ≤ size(labels,2) for i ∈ 1:length(legend)])
+	groupCode = encode([i > size(labels,2) for i ∈ 1:length(legend)])
 	
 	############################# update on channel change
 	on(channel) do channel
 		if fluorescence[]
-			color[] = palette[ colorIndex[!,channel] ]
+			
+			selected = codes .& encode(map(x->x.selected[],legend))
+			selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
+			
+			colors = palette[ colorIndex[!,channel] ]
+			colors[.~selected] .= parse(RGBA,"#EEEEEE00")
+			color[] = colors
 		end
 	end
 	
 	on(fluorescence) do fluorescence
-		if fluorescence
-			color[] = palette[ colorIndex[!,channel[]] ]
-		else 
-			color[] = segments
-		end
+
+		selected = codes .& encode(map(x->x.selected[],legend))
+		selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
+		
+		colors = fluorescence ? palette[ colorIndex[!,channel[]] ] : segments
+		colors[.~selected] .= parse(RGBA,"#EEEEEE00")
+		color[] = colors
 	end
 	
 	############################# update legend interactions
-	legendColors = convert( Vector{RGB},
-		cgrad(:Accent_8,size(labels,2),categorical=true).colors.colors)
-	legend = Dict([ name=>Group( name ∈ names(labels) ?
-				
-		"#"*hex(popfirst!(legendColors)) : false )
-		for name ∈ [names(labels);names(groups)] ])
-	
-	segments = fill( parse(RGBA,"#EEEEEE00"), size(fcsdata,1) )
-	for (name,label) in legend
+	for label ∈ legend
 		
-		mask = name ∈ names(labels) ? labels[!,name] : groups[!,name]
-		if label.selected[] segments[mask] .= parse(RGBA,label.color[]) end
+		mask=label.name ∈ names(labels) ? labels[!,label.name] : groups[!,label.name]
+		if label.name ∈ names(labels) segments[mask] .= parse(RGBA,label.color[]) end
 
 		on(label.color) do labelColor
-			segments[mask] .= @set parse(RGBA,labelColor).alpha = label.selected[]
-			if ~fluorescence[] color[] = segments end
+			segments[mask] .= parse(RGBA,labelColor)
+			
+			selected = codes .& encode(map(x->x.selected[],legend))
+			selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
+			
+			colors = fluorescence[] ? palette[ colorIndex[!,channel[]] ] : segments
+			colors[.~selected] .= parse(RGBA,"#EEEEEE00")
+			color[] = colors
 		end
 		
 		on(label.selected) do selected
-			segments[mask] .= @set parse(RGBA,label.color[]).alpha = selected
-			if ~fluorescence[] color[] = segments end
+			if selected segments[mask] .= parse(RGBA,label.color[]) end
+			
+			selected = codes .& encode(map(x->x.selected[],legend))
+			selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
+			
+			colors = fluorescence[] ? palette[ colorIndex[!,channel[]] ] : segments
+			colors[.~selected] .= parse(RGBA,"#EEEEEE00")
+			color[] = colors
 		end
 	end
 
@@ -369,36 +409,50 @@ begin
 			embedScatter.scene,
 
 		######################################### interactive legend
-			DOM.span( DOM.label(class="bold","Populations"),
-				map( name -> DOM.div( class="container",
+			DOM.span( DOM.label(class="switch", style="width:70px",	
+				DOM.input(type="checkbox", checked=true,
+					onchange=js"""$(map(legend->legend.selected,
+						filter( label->label.name ∈ names(labels), legend))
+						).map(x=>JSServe.update_obs(x,this.checked))"""
+				),
+						
+				DOM.span(class="slider text",style="font-weight:bold","Populations")),
+				map( legend -> DOM.div( class="container",
 							
-					DOM.input(type="color",name=name,id=name,
-						value=legend[name].color, onchange=js"""
-							JSServe.update_obs($(legend[name].color),this.value)"""),
+					DOM.input(type="color",name=legend.name,id=legend.name,
+						value=legend.color, onchange=js"""
+							JSServe.update_obs($(legend.color),this.value)"""),
 					DOM.label(class="switch", style="width:100%",
 								
 					DOM.input(type="checkbox",
-						checked=legend[name].selected, onchange=js"""
-							JSServe.update_obs($(legend[name].selected),this.checked)"""),
-					DOM.span(class="slider text",name))
+						checked=legend.selected, onchange=js"""
+							JSServe.update_obs($(legend.selected),this.checked)"""),
+					DOM.span(class="slider text",legend.name))
 
-				), names(labels) ),
+				), filter( label->label.name ∈ names(labels), legend) ),
 			),
 				
-			DOM.span( DOM.label(class="bold","Groups"),
-				map( name -> DOM.div( class="container",
+			DOM.span( DOM.label(class="switch", style="width:70px",	
+				DOM.input(type="checkbox", checked=true, 					
+					onchange=js"""$(map(legend->legend.selected,
+						filter( label->label.name ∈ names(groups), legend))
+						).map(x=>JSServe.update_obs(x,this.checked))"""
+				),
+						
+				DOM.span(class="slider text",style="font-weight:bold","Groups")),
+				map( legend -> DOM.div( class="container",
 							
-					DOM.input(type="color",name=name,id=name,
-						value=legend[name].color, onchange=js"""
-							JSServe.update_obs($(legend[name].color),this.value)"""),
+					DOM.input(type="color",name=legend.name,id=legend.name,
+						value=legend.color, onchange=js"""
+							JSServe.update_obs($(legend.color),this.value)"""),
 					DOM.label(class="switch", style="width:100%",
 								
 					DOM.input(type="checkbox",
-						checked=legend[name].selected, onchange=js"""
-							JSServe.update_obs($(legend[name].selected),this.checked)"""),
-					DOM.span(class="slider text",name))
+						checked=legend.selected, onchange=js"""
+							JSServe.update_obs($(legend.selected),this.checked)"""),
+					DOM.span(class="slider text",legend.name))
 
-				), names(groups)),
+				), filter( label->label.name ∈ names(groups), legend) ),
 			),
 		)
 	)
@@ -407,12 +461,7 @@ end
 
 # ╔═╡ c010c502-6538-11eb-3f14-c9ea81b48b74
 md"""
-* hide/show all button
-* switch to color by population or group. Exclusive choice
 * gates remember filters
-* auto-gate by density
-* likely usage one population and multiple groups or multiple populations, one group. group colours have priority.
-
 * select population count to divide stats through. frequency by group or population
 * create separate dot plots
 """
@@ -556,7 +605,7 @@ end
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
 # ╠═20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─1811f6f6-5439-11eb-33a5-11a16ce5ce76
-# ╠═aae5b128-436a-11eb-092b-0fc350961437
+# ╟─aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
 # ╠═c010c502-6538-11eb-3f14-c9ea81b48b74
 # ╟─628db7e6-6533-11eb-0afe-4973d1320a9f

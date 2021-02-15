@@ -30,13 +30,14 @@ Gate(x::AbstractVector{<:StaticVector},select::Bool,color::String) = Gate( (Obse
 Gate(x::AbstractVector{<:StaticVector},color::String,select::Bool) = Gate( (Observable ∘ ClosedVector)(x), Observable(select), Observable(color) )
 
 struct Group
+    name::String
     selected::Observable{<:Bool}
     color::Observable{<:String}
 end
 
-Group() = Group(Observable(true),Observable("#EEEEEE"))
-Group(select::Bool) = Group(Observable(select),Observable("#EEEEEE"))
-Group(color::String) = Group(Observable(true),Observable(color))
+Group(name::String) = Group(name,Observable(true),Observable("#EEEEEE"))
+Group(name::String,select::Bool) = Group(name,Observable(select),Observable("#EEEEEE"))
+Group(name::String,color::String) = Group(name,Observable(true),Observable(color))
 
-Group(select::Bool,color::String) = Group(Observable(select),Observable(color))
-Group(color::String,select::Bool) = Group(Observable(select),Observable(color))
+Group(name::String,select::Bool,color::String) = Group(name,Observable(select),Observable(color))
+Group(name::String,color::String,select::Bool) = Group(name,Observable(select),Observable(color))
