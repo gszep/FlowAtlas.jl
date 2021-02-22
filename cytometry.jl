@@ -65,7 +65,7 @@ begin
 	
 	##################### paths to workpace and data
 	workspace = "data/workspace.wsp"
-	files = @glob_str("data/403C/*.cleaned.fcs")
+	files = @glob_str("data/*/*.cleaned.fcs")
 	
 	#################### cofactor for biexp transformation
 	cofactor = 250
@@ -524,16 +524,16 @@ md"""
 
 # ╔═╡ 80238db4-6533-11eb-2db5-db6650a2af55
 begin
-	leftMask = map( (x,y)->inpolygon(SVector(x,y),
-			left.polygon[]; in=true,on=false,out=false),
-			embedding[:,1], embedding[:,2] )
+	# leftMask = map( (x,y)->inpolygon(SVector(x,y),
+	# 		left.polygon[]; in=true,on=false,out=false),
+	# 		embedding[:,1], embedding[:,2] )
 	
-	combine( groups[leftMask,:], names(groups) .=> sum .=> names(groups))
+	# combine( groups[leftMask,:], names(groups) .=> sum .=> names(groups))
 end
 
 # ╔═╡ 2507bf12-653e-11eb-193e-2fef057dd4ec
 begin
-	combine( labels[leftMask,:], names(labels) .=> (x->sum(x)/564) .=> names(labels))
+	# combine( labels[leftMask,:], names(labels) .=> (x->sum(x)/564) .=> names(labels))
 end
 
 # ╔═╡ 02ed06fa-54b4-11eb-3e51-2908afcd617f
@@ -574,15 +574,15 @@ end
 # ╟─b80a14f4-4435-11eb-07bd-7fcc8ca10325
 # ╟─8110ec1e-54a9-11eb-05fb-d7e5281f6236
 # ╠═b7ff517c-450c-11eb-2054-61f8572bbccf
+# ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─477abee2-4367-11eb-003d-792fed6546ca
 # ╟─10458cda-450c-11eb-2a3f-c168e35db194
-# ╟─12e279d2-4477-11eb-0f4e-510c1329a935
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
 # ╟─232bb380-5439-11eb-0bf0-517df30fd027
 # ╟─0b758ce0-4528-11eb-1df4-e97707ec4f1c
 # ╠═20596a96-4708-11eb-0b61-539eba64e3fd
 # ╟─1811f6f6-5439-11eb-33a5-11a16ce5ce76
-# ╠═aae5b128-436a-11eb-092b-0fc350961437
+# ╟─aae5b128-436a-11eb-092b-0fc350961437
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
 # ╟─628db7e6-6533-11eb-0afe-4973d1320a9f
 # ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
