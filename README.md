@@ -1,4 +1,4 @@
-# Flow Explorer
+# Flow Atlas
 
 _an interactive explorer for single-cell flow cytometry data_
 
