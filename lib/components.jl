@@ -1,6 +1,3 @@
-using Observables
-using StaticArrays
-
 struct ClosedVector{T} <: AbstractVector{T}
     x::AbstractVector{T}
 
