@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.20
+# v0.12.21
 
 using Markdown
 using InteractiveUtils
@@ -129,6 +129,9 @@ begin
 		names=[ get_prop(exampleStrategy,k,:name) for k ∈ 1:nv(exampleStrategy) ],
 		fontsize=6, nodesize=0.12, linewidth=3, markercolor=:lightblue)
 end
+
+# ╔═╡ 77732b94-777d-11eb-1265-ff9e74460cf7
+fcsdata
 
 # ╔═╡ 10458cda-450c-11eb-2a3f-c168e35db194
 md"""
@@ -519,8 +522,13 @@ end
 md"""
 * gate buttons for both gates
 * select population count to divide stats through. frequency by group or population
-* Visualise confusion matrix
+* Drag/drop groups to different levels in heirarchy
 """
+
+# ╔═╡ 2507bf12-653e-11eb-193e-2fef057dd4ec
+begin
+	# combine( labels[leftMask,:], names(labels) .=> (x->sum(x)/564) .=> names(labels))
+end
 
 # ╔═╡ 80238db4-6533-11eb-2db5-db6650a2af55
 begin
@@ -529,11 +537,6 @@ begin
 	# 		embedding[:,1], embedding[:,2] )
 	
 	# combine( groups[leftMask,:], names(groups) .=> sum .=> names(groups))
-end
-
-# ╔═╡ 2507bf12-653e-11eb-193e-2fef057dd4ec
-begin
-	# combine( labels[leftMask,:], names(labels) .=> (x->sum(x)/564) .=> names(labels))
 end
 
 # ╔═╡ 02ed06fa-54b4-11eb-3e51-2908afcd617f
@@ -575,7 +578,8 @@ end
 # ╟─8110ec1e-54a9-11eb-05fb-d7e5281f6236
 # ╠═b7ff517c-450c-11eb-2054-61f8572bbccf
 # ╟─12e279d2-4477-11eb-0f4e-510c1329a935
-# ╟─477abee2-4367-11eb-003d-792fed6546ca
+# ╠═477abee2-4367-11eb-003d-792fed6546ca
+# ╠═77732b94-777d-11eb-1265-ff9e74460cf7
 # ╟─10458cda-450c-11eb-2a3f-c168e35db194
 # ╟─199c6556-4525-11eb-154b-034d1b0e0692
 # ╟─232bb380-5439-11eb-0bf0-517df30fd027
@@ -586,7 +590,7 @@ end
 # ╟─7cdadea8-4715-11eb-220c-475f60a98543
 # ╟─628db7e6-6533-11eb-0afe-4973d1320a9f
 # ╟─b2a63c7a-49f7-11eb-300d-b7e283639a39
-# ╠═c010c502-6538-11eb-3f14-c9ea81b48b74
+# ╟─c010c502-6538-11eb-3f14-c9ea81b48b74
 # ╟─2507bf12-653e-11eb-193e-2fef057dd4ec
 # ╟─80238db4-6533-11eb-2db5-db6650a2af55
 # ╟─02ed06fa-54b4-11eb-3e51-2908afcd617f
