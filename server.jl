@@ -12,7 +12,7 @@ println("Compling Julia code... please be patient :) Will release pre-built sysi
 
 using JSServe: @js_str, file_server, response_404, Routes, App, DOM, Observable, on
 using JSServe, HTTP, Images, FileIO, ImageIO 
-using GigaScatter, PlotlyJS, ColorSchemes
+using GigaScatter, ColorSchemes
 
 using Serialization: serialize,deserialize
 using FlowWorkspace: inpolygon
