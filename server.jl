@@ -11,9 +11,12 @@ printstyled("[FlowAtlas] ", color = :blue)
 println("Compling Julia code... please be patient :) Will release pre-built sysimages in future")
 
 using JSServe: @js_str, file_server, response_404, Routes, App, DOM, Observable, on
-using JSServe, HTTP, GigaScatter, Plots, Images, FileIO, ImageIO
+using JSServe, HTTP, Images, FileIO, ImageIO 
+using GigaScatter, PlotlyJS, ColorSchemes
 
 using Serialization: serialize,deserialize
+using FlowWorkspace: inpolygon
+
 using FlowWorkspace, StaticArrays, DataFrames, Glob
 using GigaSOM, TSne
 
@@ -74,6 +77,8 @@ select!( labels, Not(filter(name -> occursin("threshold", name), names(labels)))
 clusters, embedding = embed(data,path = "data/workspace.som",
     perplexity = 300, maxIter = 10000)
 
+embeddingCoordinates = map( SVector, embedding[2,:], -embedding[1,:] )
+
 ###############################################################################
 ######################################################## interactive components
 doneCalculations = Observable(true)
@@ -86,13 +91,12 @@ toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange;nlevels = nlevels
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
 
 segments = channelview(fill(parse(RGBA, "#EEEEEE00"), size(data, 1)))
-palette = channelview(cgrad(:curl, nlevels, categorical = true, rev = true).colors.colors)
+palette = channelview( map( x->RGBA(get( reverse(ColorSchemes.curl),x)), range(0,1,length=nlevels)))
 
 channel = Observable(first(names(data)))
 colors = Observable(palette[:,colorIndex[!,channel[]] ])
 
-legend = convert( Vector{RGB},
-    cgrad(:Accent_8, size(labels, 2), categorical = true).colors.colors)
+legend = map( x-> RGB(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2)))
 
 legend = [ map( name -> Group(
     name,"#" * hex(popfirst!(legend))), names(labels) );
@@ -158,6 +162,8 @@ for label ∈ legend
     end
 end
 
+polygons = Observable(Vector{SVector{2,Float64}}[])
+
 ###############################################################################
 ############################################################## construct canvas
 
@@ -181,6 +187,7 @@ extensions = map( extension -> HTML("""
     <script src="$(JSServe.Asset(joinpath(@__DIR__, extension)))" ></script>
 """), ["assets/ol/sidebar.js"])
 
+(xmin,xmax), (ymin,ymax) = extrema(embedding,dims=2)
 app = App() do session::Session
 
     ###################################################### mapview construction
@@ -188,17 +195,41 @@ app = App() do session::Session
     JSServe.onload( session, Map, js"""
         function (container){
 
-            var tiles = new $ol.layer.Tile({
-                source: new $ol.source.XYZ({
+            ////////////////////////////////////////////////// tile layer
+            var projection = new $ol.proj.Projection({
+                code: 'raster',
 
-                    url: 'http://localhost:$port/{z}/{y}/{x}.png',
+                extent: $([ymin,-xmax,ymax,-xmin]),
+                units: 'pixels',
+            })
+
+            $ol.proj.addProjection(projection);
+            var tiles = new $ol.layer.Tile({
+
+                source: new $ol.source.XYZ({
+                    tileUrlFunction: function (zxy) {
+
+                        [z,x,y] = zxy
+                        return 'http://localhost:$port/'+[z,y,x].join("/")+'.png&seed='+Math.random()
+                    },
+
+                    projection: 'raster',
                     wrapX: false,
                 })
             })
 
-            var source = new $ol.source.Vector()
+            ////////////////////////////////////////////////// polygon layer
+            var polygons = new $ol.source.Vector({wrapX:false})
+            polygons.on('change', function (event) {
+
+                var features = document.getElementById("map").gates.getFeatures()
+                var polygons = features.filter(x=>x.getGeometry().getType()=="Polygon")
+
+                JSServe.update_obs($polygons,polygons.map(x=>x.getGeometry().getCoordinates()[0]))
+            })
+
             var gates = new $ol.layer.Vector({
-                source: source,
+                source: polygons,
 
                 style: new $ol.style.Style({
                     fill: new $ol.style.Fill({
@@ -217,34 +248,34 @@ app = App() do session::Session
                 }),
             })
 
+            //////////////////////////////////////////////////////// initialise map
             var map = new $ol.Map({
                 layers: [ tiles, gates ],
                 target: 'map',
 
                 view: new $ol.View({
+                    projection: 'raster',
                     center: [0, 0],
                     zoom: 0,
                 }),
             })
 
-            document.getElementById("map").tiles = tiles
-            var sidebar = new $ol.control.Sidebar({ element: 'sidebar', position: 'left' })
-            map.addControl(sidebar)
+            document.getElementById("map").tiles = tiles.getSource()
+            document.getElementById("map").gates = gates.getSource()
 
-            ///////////////////////////////////////////////////////// gating interactions
-            var modify = new $ol.interaction.Modify({source: source});
+            ///////////////////////////////////////////////////////// polygon interactions
+            var modify = new $ol.interaction.Modify({source: polygons});
             map.addInteraction(modify);
 
             var draw, snap; // global so we can remove them later
-            var typeSelect = 'Polygon';
 
             function addInteractions() {
                 draw = new $ol.interaction.Draw({
-                    source: source,
+                    source: polygons,
                     type: 'Polygon',
                 })
                 map.addInteraction(draw)
-                snap = new $ol.interaction.Snap({source: source})
+                snap = new $ol.interaction.Snap({source: polygons})
                 map.addInteraction(snap)
             }
 
@@ -258,10 +289,12 @@ app = App() do session::Session
             // }
 
             addInteractions()
+            var sidebar = new $ol.control.Sidebar({ element: 'sidebar', position: 'left' })
+            map.addControl(sidebar)
         }
     """)
 
-    return DOM.div( id = "application", style,
+    return DOM.div( id = "application", style, DOM.title("FlowAtlas.jl"),
         DOM.div( id = "sidebar", class = "sidebar collapsed",
 
             ######################################## sidebar layout
@@ -282,6 +315,20 @@ app = App() do session::Session
 
                 DOM.div(class = "sidebar-pane",id = "annotations",
                     HTML("""<h1 class="sidebar-header">Annotations<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+                    DOM.div( class="container",
+                            
+                        DOM.label("Population"),
+                        DOM.label(class="switch",
+                                
+                            DOM.input(type="checkbox",checked=true,
+                            onchange=js"""JSServe.update_obs($fluorescence,this.checked);document.getElementById("map").tiles.refresh()"""),
+                            DOM.span(class="slider round")
+                        ),
+            
+                        DOM.label("Fluorescence Intensity"),
+                        DOM.select(DOM.option.(names(data)),
+                        onchange=js"""JSServe.update_obs($channel,this.options[this.selectedIndex].text);document.getElementById("map").tiles.refresh()""")
+                    ),
                     DOM.div( class = "container",
         
                         ######################################### interactive legend
@@ -289,7 +336,7 @@ app = App() do session::Session
                             DOM.input(type = "checkbox", checked = true,
                                 onchange = js"""$(map(legend->legend.selected,
                                     filter( label->label.name ∈ names(labels), legend))
-                                    ).map(x=>JSServe.update_obs(x,this.checked))"""
+                                    ).map(x=>{JSServe.update_obs(x,this.checked);document.getElementById("map").tiles.refresh()})"""
                             ),
                                     
                             DOM.span(class = "slider text", style = "font-weight:bold", "Populations")),
@@ -297,12 +344,12 @@ app = App() do session::Session
                                         
                                 DOM.input(type = "color",name = legend.name,id = legend.name,
                                     value = legend.color, onchange = js"""
-                                        JSServe.update_obs($(legend.color),this.value)"""),
+                                        JSServe.update_obs($(legend.color),this.value);document.getElementById("map").tiles.refresh()"""),
                                 DOM.label(class = "switch", style = "width:100%",
                                             
                                 DOM.input(type = "checkbox",
                                     checked = legend.selected, onchange = js"""
-                                        JSServe.update_obs($(legend.selected),this.checked)"""),
+                                        JSServe.update_obs($(legend.selected),this.checked);document.getElementById("map").tiles.refresh()"""),
                                 DOM.span(class = "slider text", legend.name))
             
                             ), filter(label -> label.name ∈ names(labels), legend) ),
@@ -312,7 +359,7 @@ app = App() do session::Session
                             DOM.input(type = "checkbox", checked = true, 					
                                 onchange = js"""$(map(legend->legend.selected,
                                     filter( label->label.name ∈ names(groups), legend))
-                                    ).map(x=>JSServe.update_obs(x,this.checked))"""
+                                    ).map(x=>{JSServe.update_obs(x,this.checked);document.getElementById("map").tiles.refresh()})"""
                             ),
                                     
                             DOM.span(class = "slider text", style = "font-weight:bold", "Groups")),
@@ -320,12 +367,12 @@ app = App() do session::Session
                                         
                                 DOM.input(type = "color",name = legend.name,id = legend.name,
                                     value = legend.color, onchange = js"""
-                                        JSServe.update_obs($(legend.color),this.value)"""),
+                                        JSServe.update_obs($(legend.color),this.value);document.getElementById("map").tiles.refresh()"""),
                                 DOM.label(class = "switch", style = "width:100%",
                                             
                                 DOM.input(type = "checkbox",
                                     checked = legend.selected, onchange = js"""
-                                        JSServe.update_obs($(legend.selected),this.checked)"""),
+                                        JSServe.update_obs($(legend.selected),this.checked);document.getElementById("map").tiles.refresh()"""),
                                 DOM.span(class = "slider text", legend.name))
             
                             ), filter(label -> label.name ∈ names(groups), legend) ),
@@ -351,7 +398,7 @@ app = App() do session::Session
 end
 
 ###############################################################################
-    ############################################# open app as locally hosted server
+############################################# open app as locally hosted server
 try
     global server = JSServe.Server(app, "127.0.0.1", port;
         verbose = true, routes = Routes( "/" => app,

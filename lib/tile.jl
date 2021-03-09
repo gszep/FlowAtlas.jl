@@ -18,8 +18,8 @@ function tile(context::NamedTuple; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
 end
 
 function tile(url::String; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
-    tileIndex = broadcast(parse, Int, match(r"(\d+)/(\d+)/(\d+)", url ).captures )
-    return colorview(RGB,tile(tileIndex...;extrema=extrema))
+    zxy = broadcast(parse, Int, match(r"(\d+)/(\d+)/(\d+)", url ).captures )
+    return colorview(RGB,tile(zxy...;extrema=extrema))
 end
 
 function tile( z::Int, x::Int, y::Int; extrema::Array{<:Tuple}=[(-2,2) (-2,2)], padIndex::Int=16)

@@ -103,7 +103,6 @@ input[type="color"]::-webkit-color-swatch {
 select {
   margin: 5px;
   color: hsl(0, 0%, 25%);
-  font: 400 13.3333px "Alegreya Sans", sans-serif;
 }
 
 /* #################################### general */
