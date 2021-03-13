@@ -10,15 +10,16 @@ Pkg.update()
 printstyled("[FlowAtlas] ", color = :blue)
 println("Compling Julia code... please be patient :) Will release pre-built sysimages in future")
 
-using JSServe: @js_str, file_server, response_404, Routes, App, DOM, Observable, on
-using JSServe, HTTP, Images, FileIO, ImageIO 
+using JSServe: Session, @js_str, file_server, response_404, Routes, App, DOM, Observable, on
+using JSServe, HTTP, JSON, Images, FileIO, ImageIO
 using GigaScatter, ColorSchemes
 
 using Serialization: serialize,deserialize
 using FlowWorkspace: inpolygon
 
 using FlowWorkspace, StaticArrays, DataFrames, Glob
-using GigaSOM, TSne
+using StatsBase, GigaSOM, TSne
+using StatsBase: normalize 
 
 include("lib/components.jl")
 include("lib/embed.jl")
@@ -26,6 +27,8 @@ include("lib/markers.jl")
 
 include("lib/sys.jl")
 include("lib/tile.jl")
+include("lib/gate.jl")
+include("lib/map.jl")
 
 #################### server defaults
 port = 3141
@@ -33,7 +36,7 @@ url = "http://localhost:$port"
 
 #################### data inputs
 workspace = "data/workspace.wsp"
-files = glob"data/*/*.cleaned.fcs"
+files = glob"data/390C/*_BM_*.cleaned.fcs"
 channelMap = Dict([
 
     "FJComp-355 379_28-A" => "CD3", 
@@ -78,15 +81,14 @@ clusters, embedding = embed(data,path = "data/workspace.som",
     perplexity = 300, maxIter = 10000)
 
 embeddingCoordinates = map( SVector, embedding[2,:], -embedding[1,:] )
+(xmin,xmax), (ymin,ymax) = extrema(embedding,dims=2)
 
 ###############################################################################
 ######################################################## interactive components
-doneCalculations = Observable(true)
 fluorescence, automatic = Observable(true), Observable(true)
-compareGates = JSServe.Button("Compare Gates")
 
 ################################################## colormaps
-channelRange, nlevels = range(-2, 7, length = 50), 10
+channelRange, nlevels = range(-3, 7, length = 50), 10
 toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange;nlevels = nlevels)
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
 
@@ -162,8 +164,6 @@ for label ∈ legend
     end
 end
 
-polygons = Observable(Vector{SVector{2,Float64}}[])
-
 ###############################################################################
 ############################################################## construct canvas
 
@@ -177,7 +177,11 @@ const ol = JSServe.Dependency( :ol, # OpenLayers
     ])
 )
 
-const style = JSServe.Dependency( :style, [ # custom styling
+const d3 = JSServe.Dependency( :d3, [ # data-driven documents
+        joinpath(@__DIR__, "assets/d3/d3.v6.min.js"),
+])
+
+const style = JSServe.Dependency( :style, [ # custom styling todo(@gszep) remove remote dep
         "//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css",
         joinpath(@__DIR__, "assets/style.css"),
 ])
@@ -185,216 +189,14 @@ const style = JSServe.Dependency( :style, [ # custom styling
 ############################################## extensions loaded at end of body
 extensions = map( extension -> HTML("""
     <script src="$(JSServe.Asset(joinpath(@__DIR__, extension)))" ></script>
-"""), ["assets/ol/sidebar.js"])
+"""), ["assets/ol/sidebar.js","assets/Sortable.js","assets/violins.js","assets/uuid.js"])
 
-(xmin,xmax), (ymin,ymax) = extrema(embedding,dims=2)
+########################################################################## body
 app = App() do session::Session
-
-    ###################################################### mapview construction
     Map = DOM.div(id = "map", class = "sidebar-map")
-    JSServe.onload( session, Map, js"""
-        function (container){
 
-            ////////////////////////////////////////////////// tile layer
-            var projection = new $ol.proj.Projection({
-                code: 'raster',
-
-                extent: $([ymin,-xmax,ymax,-xmin]),
-                units: 'pixels',
-            })
-
-            $ol.proj.addProjection(projection);
-            var tiles = new $ol.layer.Tile({
-
-                source: new $ol.source.XYZ({
-                    tileUrlFunction: function (zxy) {
-
-                        [z,x,y] = zxy
-                        return 'http://localhost:$port/'+[z,y,x].join("/")+'.png&seed='+Math.random()
-                    },
-
-                    projection: 'raster',
-                    wrapX: false,
-                })
-            })
-
-            ////////////////////////////////////////////////// polygon layer
-            var polygons = new $ol.source.Vector({wrapX:false})
-            polygons.on('change', function (event) {
-
-                var features = document.getElementById("map").gates.getFeatures()
-                var polygons = features.filter(x=>x.getGeometry().getType()=="Polygon")
-
-                JSServe.update_obs($polygons,polygons.map(x=>x.getGeometry().getCoordinates()[0]))
-            })
-
-            var gates = new $ol.layer.Vector({
-                source: polygons,
-
-                style: new $ol.style.Style({
-                    fill: new $ol.style.Fill({
-                        color: 'rgba(255, 255, 255, 0.2)',
-                    }),
-                    stroke: new $ol.style.Stroke({
-                        color: '#ffcc33',
-                        width: 2,
-                    }),
-                    image: new $ol.style.Circle({
-                        radius: 7,
-                        fill: new $ol.style.Fill({
-                            color: '#ffcc33',
-                        }),
-                    }),
-                }),
-            })
-
-            //////////////////////////////////////////////////////// initialise map
-            var map = new $ol.Map({
-                layers: [ tiles, gates ],
-                target: 'map',
-
-                view: new $ol.View({
-                    projection: 'raster',
-                    center: [0, 0],
-                    zoom: 0,
-                }),
-            })
-
-            document.getElementById("map").tiles = tiles.getSource()
-            document.getElementById("map").gates = gates.getSource()
-
-            ///////////////////////////////////////////////////////// polygon interactions
-            var modify = new $ol.interaction.Modify({source: polygons});
-            map.addInteraction(modify);
-
-            var draw, snap; // global so we can remove them later
-
-            function addInteractions() {
-                draw = new $ol.interaction.Draw({
-                    source: polygons,
-                    type: 'Polygon',
-                })
-                map.addInteraction(draw)
-                snap = new $ol.interaction.Snap({source: polygons})
-                map.addInteraction(snap)
-            }
-
-            /**
-             * Handle change event.
-             */
-            // typeSelect.onchange = function () {
-            //     map.removeInteraction(draw)
-            //     map.removeInteraction(snap)
-            //     addInteractions()
-            // }
-
-            addInteractions()
-            var sidebar = new $ol.control.Sidebar({ element: 'sidebar', position: 'left' })
-            map.addControl(sidebar)
-        }
-    """)
-
-    return DOM.div( id = "application", style, DOM.title("FlowAtlas.jl"),
-        DOM.div( id = "sidebar", class = "sidebar collapsed",
-
-            ######################################## sidebar layout
-            DOM.div(class = "sidebar-tabs",
-                DOM.ul(role = "tablist", map( (href, class) ->
-                    HTML("""<li><a href="#$href" role="tab"><i class="$class"></i></a></li>"""),
-                    ["annotations","comparisons","clustering"], ["fab fa-amilia","fa fa-adjust","fa fa-arrows-alt"]
-                )),
-
-                DOM.ul(role = "tablist", map( (href, class) ->
-                    HTML("""<li><a href="#$href" role="tab"><i class="$class"></i></a></li>"""),
-                    ["settings"], ["fa fa-gear"]
-                )),
-            ),
-
-            ######################################## sidebar widgets
-            DOM.div(class = "sidebar-content",
-
-                DOM.div(class = "sidebar-pane",id = "annotations",
-                    HTML("""<h1 class="sidebar-header">Annotations<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
-                    DOM.div( class="container",
-                            
-                        DOM.label("Population"),
-                        DOM.label(class="switch",
-                                
-                            DOM.input(type="checkbox",checked=true,
-                            onchange=js"""JSServe.update_obs($fluorescence,this.checked);document.getElementById("map").tiles.refresh()"""),
-                            DOM.span(class="slider round")
-                        ),
-            
-                        DOM.label("Fluorescence Intensity"),
-                        DOM.select(DOM.option.(names(data)),
-                        onchange=js"""JSServe.update_obs($channel,this.options[this.selectedIndex].text);document.getElementById("map").tiles.refresh()""")
-                    ),
-                    DOM.div( class = "container",
-        
-                        ######################################### interactive legend
-                        DOM.span( DOM.label(class = "switch", style = "width:70px",	
-                            DOM.input(type = "checkbox", checked = true,
-                                onchange = js"""$(map(legend->legend.selected,
-                                    filter( label->label.name ∈ names(labels), legend))
-                                    ).map(x=>{JSServe.update_obs(x,this.checked);document.getElementById("map").tiles.refresh()})"""
-                            ),
-                                    
-                            DOM.span(class = "slider text", style = "font-weight:bold", "Populations")),
-                            map( legend -> DOM.div( class = "container",
-                                        
-                                DOM.input(type = "color",name = legend.name,id = legend.name,
-                                    value = legend.color, onchange = js"""
-                                        JSServe.update_obs($(legend.color),this.value);document.getElementById("map").tiles.refresh()"""),
-                                DOM.label(class = "switch", style = "width:100%",
-                                            
-                                DOM.input(type = "checkbox",
-                                    checked = legend.selected, onchange = js"""
-                                        JSServe.update_obs($(legend.selected),this.checked);document.getElementById("map").tiles.refresh()"""),
-                                DOM.span(class = "slider text", legend.name))
-            
-                            ), filter(label -> label.name ∈ names(labels), legend) ),
-                        ),
-                            
-                        DOM.span( DOM.label(class = "switch", style = "width:70px",	
-                            DOM.input(type = "checkbox", checked = true, 					
-                                onchange = js"""$(map(legend->legend.selected,
-                                    filter( label->label.name ∈ names(groups), legend))
-                                    ).map(x=>{JSServe.update_obs(x,this.checked);document.getElementById("map").tiles.refresh()})"""
-                            ),
-                                    
-                            DOM.span(class = "slider text", style = "font-weight:bold", "Groups")),
-                            map( legend -> DOM.div( class = "container",
-                                        
-                                DOM.input(type = "color",name = legend.name,id = legend.name,
-                                    value = legend.color, onchange = js"""
-                                        JSServe.update_obs($(legend.color),this.value);document.getElementById("map").tiles.refresh()"""),
-                                DOM.label(class = "switch", style = "width:100%",
-                                            
-                                DOM.input(type = "checkbox",
-                                    checked = legend.selected, onchange = js"""
-                                        JSServe.update_obs($(legend.selected),this.checked);document.getElementById("map").tiles.refresh()"""),
-                                DOM.span(class = "slider text", legend.name))
-            
-                            ), filter(label -> label.name ∈ names(groups), legend) ),
-                        ),
-                    )
-                ),
-
-                html"""
-                <div class="sidebar-pane" id="comparisons">
-                    <h1 class="sidebar-header">Comparisons<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                </div>
-
-                <div class="sidebar-pane" id="clustering">
-                    <h1 class="sidebar-header">Clustering<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                </div>
-
-                <div class="sidebar-pane" id="settings">
-                    <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-                </div>"""
-            )
-        ),
-    Map, extensions )
+    JSServe.onload( session, Map, olMap( [(xmin,xmax), (ymin,ymax)]; port=port) )
+    return DOM.div( id="application", style, DOM.title("FlowAtlas.jl"), sidebar(session), Map, extensions )
 end
 
 ###############################################################################
@@ -404,7 +206,10 @@ try
         verbose = true, routes = Routes( "/" => app,
             r"/assetserver/" * r"[\da-f]"^40 * r"-.*" => file_server,
 
-            r"/\d+/\d+/\d+.png" => context -> tile(context;extrema = extrema(embedding, dims = 2)),
+            r"/\d+/\d+/\d+.png" => context -> tile(context;extrema=[(xmin,xmax),(ymin,ymax)]),
+            r"/gate" => context -> gate(context),
+
+            r"/favicon.ico" => context -> HTTP.Response(500),
             r".*" => context -> response_404() )
     )
 

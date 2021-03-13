@@ -7,12 +7,11 @@ function tile(context::NamedTuple; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
 		body = IOBuffer(response.body, write=true)
 		t = @elapsed save( Stream(format"PNG",body), tile(request.target;extrema=extrema) )
 
-		@info """GET $(replace(request.target, r"&.+" => "")) | $t seconds"""
+		@info """$(request.method) $(replace(request.target, r"&.+" => "")) | $t seconds"""
 		return response
 
 	catch exception
 		printstyled("ERROR $(request.target)\n",color=:red)
-		failed = true
 		return HTTP.Response(500)
 	end
 end

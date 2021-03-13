@@ -99,10 +99,58 @@ input[type="color"]::-webkit-color-swatch {
 	border-radius: 20px;
 }
 
+/* #################################### legend sorting */
+.legend ul {
+  list-style: none;
+  padding: 0;
+}
+
+.legend li {
+  background: #eee;
+  margin: 1px;
+  padding: 5px 10px;
+}
+
+.sortable-ghost {
+  opacity: .6;
+}
+
 /* #################################### menu */
 select {
   margin: 5px;
   color: hsl(0, 0%, 25%);
+}
+
+/* #################################### delete button overlay */
+.ol-attribution > ul {
+  font-size: 1.6rem;
+}
+
+.overlay {
+  display: none;
+  position: absolute;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.25);
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 180px;
+  top: -76px;
+  left: -90px;
+}
+
+.overlay:after {
+  top: 100%;
+  border: 10px solid transparent;
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  border-top-color: rgba(255,255,255,0.9);
+}
+
+.overlay button + button {
+  float: right;
 }
 
 /* #################################### general */
@@ -138,4 +186,20 @@ html, body, #map {
 
 .sidebar-left .sidebar-close {
   top: 10;
+}
+
+/* dynamic d3 plot sizes */
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
