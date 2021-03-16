@@ -1,5 +1,5 @@
-function olMap(extrema::Array{<:Tuple}; port::Int=3141)
-    (xmin,xmax), (ymin,ymax) = extrema
+function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
+    (xmin, xmax), (ymin, ymax) = extrema
 
     return js"""
         function (container){
@@ -162,57 +162,126 @@ end
 
 function sidebar(session::Session)
 
-    ############################################################# interactive legend
-    Legend = DOM.div(id="legend",class="legend", HTML("""
-
-        <ul id="populations">
-            <li>foo 1</li>
-            <li>foo 2</li>
-            <li>foo 3</li>
-        </ul>
-
-        <ul id="conditions">
-            <li>foo 1</li>
-            <li>foo 2</li>
-            <li>foo 3</li>
-        </ul>
-
-        <ul id="groups">
-            <li>bar 1</li>
-            <li>bar 2</li>
-            <li>bar 3</li>
-        </ul>    
+    ############################################################# sortable legend
+    Legend = DOM.div(id = "legend",class = "legend", HTML("""
+        <ul id="populations"> Populations </ul>
+        <ul id="conditions"> Conditions </ul>
+        <ul id="groups"> Groups </ul>    
     """)
     )
 
     JSServe.onload( session, Legend, js"""
         function (container){
 
-            var populations = document.getElementById('populations')
-            Sortable.create(populations, {
+            ////////////////////////////////////////////// update filters
+            function updateFilters(event) {
+                console.log({
+                    populations: populations.toArray(),
+                    conditions: conditions.toArray(),
+                    groups: groups.toArray() })
+            }
 
+            function select(event,label) {
+                if (event.target.tagName != 'INPUT') {
+
+                    var element = document.getElementById(label)
+                    element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
+                }
+            }
+
+            ////////////////////////////////////////////// update marker colors
+            function updateColors(event,label) {
+                document.getElementById('map').tiles.refresh()
+                console.log("changed color for "+label)
+            }
+
+            ////////////////////////////////////////////// populations
+            var colors = $(map( x-> "#"*hex(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2))))
+            for ( const [key,value] of Object.entries($(names(labels))) ) {
+
+                var population = document.createElement('li')
+                population.setAttribute('id',value)
+
+                population.setAttribute('selected',true)
+                population.onclick = function(event) { select(event,value) }
+
+                var label = document.createElement('label')
+                label.innerHTML = value
+
+                var color = document.createElement('input')
+                Object.assign( color, {
+                    type: 'color',
+
+                    onchange: event => updateColors(event,value),
+                    value: colors[key]
+                })
+
+                population.appendChild(color)
+                population.appendChild(label)
+
+                document.getElementById('populations').appendChild(population)
+            }
+
+            ////////////////////////////////////////////// groups/conditions
+            for ( const [key,value] of Object.entries($(names(groups))) ) {
+
+                var group = document.createElement('li')
+                group.setAttribute('id',value)
+
+                group.setAttribute('selected',true)
+                group.onclick = function(event) { select(event,value) }
+
+                var label = document.createElement('label')
+                label.innerHTML = value
+
+                var color = document.createElement('input')
+                Object.assign( color, {
+                    type: 'color',
+
+                    onchange: event => updateColors(event,value),
+                    value: '#DDDDDD'
+                })
+
+                group.appendChild(color)
+                group.appendChild(label)
+
+                if ( value.match(/\d+/g) != null) // add to groups if name contains number
+                    document.getElementById('groups').appendChild(group)
+                else                              // otherwise add to conditions
+                    document.getElementById('conditions').appendChild(group)
+            }
+
+            var populations = Sortable.create(
+                document.getElementById('populations'), {
+                dataIdAttr: 'id',
+
+                onEnd: updateFilters,
                 group: 'populations',
-                animation: 100
+                animation: 150
             })
 
-            var conditions = document.getElementById('conditions')
-            Sortable.create(conditions, {
+            var conditions = Sortable.create(
+                document.getElementById('conditions'), {
+                dataIdAttr: 'id',
 
+                onEnd: updateFilters,
                 group: 'shared',
-                animation: 100
+                animation: 150
             })
 
-            var groups = document.getElementById('groups')
-            Sortable.create(groups, {
+            var groups = Sortable.create(
+                document.getElementById('groups'), {
+                dataIdAttr: 'id',
 
+                onEnd: updateFilters,
                 group: 'shared',
-                animation: 100
+                animation: 150
             })
         }
     """)
 
     ############################################################# violins
-    Violins = DOM.div(id = "violins", class="svg-container")
+    Violins = DOM.div(id = "violins", class = "svg-container")
     JSServe.onload( session, Violins, js"""
         function (container){
 
@@ -235,7 +304,7 @@ function sidebar(session::Session)
 
             DOM.ul(role = "tablist", map( (href, class) ->
                 HTML("""<li><a href="#$href" role="tab"><i class="$class"></i></a></li>"""),
-                ["settings"], ["fa fa-gear"]
+                ["settings"], ["fa fa-cog"]
             )),
         ),
 
@@ -244,19 +313,19 @@ function sidebar(session::Session)
 
             DOM.div(class = "sidebar-pane",id = "annotations",
                 HTML("""<h1 class="sidebar-header">Annotations<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
-                DOM.div( class="container",
+                DOM.div( class = "container",
                         
                     DOM.label("Population"),
-                    DOM.label(class="switch",
+                    DOM.label(class = "switch",
                             
-                        DOM.input(type="checkbox",checked=true,
-                        onchange=js"""update_obs($fluorescence,this.checked);document.getElementById("map").tiles.refresh()"""),
-                        DOM.span(class="slider round")
+                        DOM.input(type = "checkbox",checked = true,
+                        onchange = js"""update_obs($fluorescence,this.checked);document.getElementById("map").tiles.refresh()"""),
+                        DOM.span(class = "slider")
                     ),
         
                     DOM.label("Fluorescence Intensity"),
                     DOM.select(DOM.option.(names(data)),
-                    onchange=js"""update_obs($channel,this.options[this.selectedIndex].text);document.getElementById("map").tiles.refresh()""")
+                    onchange = js"""update_obs($channel,this.options[this.selectedIndex].text);document.getElementById("map").tiles.refresh()""")
                 ),
 
                 Legend,

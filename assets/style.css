@@ -2,7 +2,7 @@
 .switch {
   position: relative;
   display: inline-block;
-  margin: 5px;
+  margin: 0px 5px;
   width: 30px;
   height: 17px;
 }
@@ -46,20 +46,57 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(13px);
-  -ms-transform: translateX(13px);
-  transform: translateX(13px);
+  -webkit-transform: translateX(12px);
+  -ms-transform: translateX(12px);
+  transform: translateX(12px);
 }
 
-.slider.round {
-  border-radius: 34px;
+/* #################################### legend colorpickers */
+input[type=color]{
+	width: 10px;
+	height: 10px;
+	border: none;
+  border-radius: 0px;
+	background: none;
+  margin: 0px 5px 0px 0px;
+  transform: translateY(5%);
+	padding: 0;
 }
 
-.slider.round:before {
-  border-radius: 50%;
+input[type=color]::-webkit-color-swatch-wrapper {
+	padding: 0;
 }
 
-/* #################################### legend label */
+input[type=color]::-webkit-color-swatch {
+	border: none ;
+	border-radius: 0px;
+}
+
+/* #################################### legend labels */
+.legend ul {
+  list-style: none;
+  padding: 0;
+}
+
+.legend li {
+  cursor: pointer;
+  position: relative;
+  background: #eee;
+  margin: 5px;
+  padding: 5px 10px;
+}
+
+.legend label {
+  cursor: pointer;
+  position: absolute;
+  transform: translateY(-55%);
+  top: 50%;
+}
+
+.legend li[selected=false]{
+  opacity: 0.25;
+}
+
 .slider.text {
   background-color: transparent;
   display: inline-flex;
@@ -81,41 +118,11 @@ input:checked + .slider.text {
   color: hsl(0, 0%, 25%)
 }
 
-/* #################################### colorpicker */
-input[type=color]{
-	width: 10px;
-	height: 10px;
-	border: none;
-	border-radius: 20px;
-	background: none;
-}
-
-input[type="color"]::-webkit-color-swatch-wrapper {
-	padding: 0;
-}
-
-input[type="color"]::-webkit-color-swatch {
-	border: none ;
-	border-radius: 20px;
-}
-
-/* #################################### legend sorting */
-.legend ul {
-  list-style: none;
-  padding: 0;
-}
-
-.legend li {
-  background: #eee;
-  margin: 1px;
-  padding: 5px 10px;
-}
-
 .sortable-ghost {
   opacity: .6;
 }
 
-/* #################################### menu */
+/* #################################### channel selection menu */
 select {
   margin: 5px;
   color: hsl(0, 0%, 25%);
@@ -154,41 +161,11 @@ select {
 }
 
 /* #################################### general */
-body {
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
-}
-
 html, body, #map {
-  height: 100%;
   font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
-.container {        
-  display: flex;
-  align-items: center;
-}
-
-.bold {
-  font-weight: bold;
-  padding: 5px
-}
-
-.li-content {
-  width: calc(100% - 3em);
-}
-
-/* vertical alignment bug fix */
-.sidebar-tabs > li > a, .sidebar-tabs > ul > li > a {
-    display: inherit
-}
-
-.sidebar-left .sidebar-close {
-  top: 10;
-}
-
-/* dynamic d3 plot sizes */
+/* #################################### d3 plots */
 .svg-container {
   display: inline-block;
   position: relative;
@@ -202,4 +179,13 @@ html, body, #map {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+/* sidebar icons vertical alignment bug fix */
+.sidebar-tabs > li > a, .sidebar-tabs > ul > li > a {
+  display: inherit
+}
+
+.sidebar-left .sidebar-close {
+top: 10;
 }

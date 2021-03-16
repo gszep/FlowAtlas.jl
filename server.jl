@@ -1,7 +1,7 @@
 import Pkg
 Pkg.activate(".")
 
-printstyled(color=:cyan,"[pkg] ")
+printstyled(color = :cyan,"[pkg] ")
 printstyled("Installing/updating julia package dependencies...\n")
 
 Pkg.instantiate()
@@ -15,11 +15,11 @@ using JSServe, HTTP, JSON, Images, FileIO, ImageIO
 using GigaScatter, ColorSchemes
 
 using Serialization: serialize,deserialize
-using FlowWorkspace: inpolygon
+using FlowWorkspace:inpolygon
 
 using FlowWorkspace, StaticArrays, DataFrames, Glob
 using StatsBase, GigaSOM, TSne
-using StatsBase: normalize 
+using StatsBase:normalize 
 
 include("lib/components.jl")
 include("lib/embed.jl")
@@ -80,8 +80,8 @@ select!( labels, Not(filter(name -> occursin("threshold", name), names(labels)))
 clusters, embedding = embed(data,path = "data/workspace.som",
     perplexity = 300, maxIter = 10000)
 
-embeddingCoordinates = map( SVector, embedding[2,:], -embedding[1,:] )
-(xmin,xmax), (ymin,ymax) = extrema(embedding,dims=2)
+embeddingCoordinates = map(SVector, embedding[2,:], -embedding[1,:])
+(xmin, xmax), (ymin, ymax) = extrema(embedding, dims = 2)
 
 ###############################################################################
 ######################################################## interactive components
@@ -93,12 +93,12 @@ toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange;nlevels = nlevels
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
 
 segments = channelview(fill(parse(RGBA, "#EEEEEE00"), size(data, 1)))
-palette = channelview( map( x->RGBA(get( reverse(ColorSchemes.curl),x)), range(0,1,length=nlevels)))
+palette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0, 1, length = nlevels)))
 
 channel = Observable(first(names(data)))
 colors = Observable(palette[:,colorIndex[!,channel[]] ])
 
-legend = map( x-> RGB(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2)))
+legend = map(x -> RGB(get(ColorSchemes.Accent_8, x)), range(0, 1, length = size(labels, 2)))
 
 legend = [ map( name -> Group(
     name,"#" * hex(popfirst!(legend))), names(labels) );
@@ -194,19 +194,19 @@ extensions = map( extension -> HTML("""
 ########################################################################## body
 app = App() do session::Session
     Map = DOM.div(id = "map", class = "sidebar-map")
-
-    JSServe.onload( session, Map, olMap( [(xmin,xmax), (ymin,ymax)]; port=port) )
-    return DOM.div( id="application", style, DOM.title("FlowAtlas.jl"), sidebar(session), Map, extensions )
+    
+    JSServe.onload(session, Map, olMap([(xmin, xmax), (ymin, ymax)]; port = port))
+    return DOM.div(id = "application", style, DOM.title("FlowAtlas.jl"), sidebar(session), Map, extensions)
 end
 
 ###############################################################################
-############################################# open app as locally hosted server
+    ############################################# open app as locally hosted server
 try
     global server = JSServe.Server(app, "127.0.0.1", port;
         verbose = true, routes = Routes( "/" => app,
             r"/assetserver/" * r"[\da-f]"^40 * r"-.*" => file_server,
 
-            r"/\d+/\d+/\d+.png" => context -> tile(context;extrema=[(xmin,xmax),(ymin,ymax)]),
+            r"/\d+/\d+/\d+.png" => context -> tile(context;extrema = [(xmin, xmax),(ymin, ymax)]),
             r"/gate" => context -> gate(context),
 
             r"/favicon.ico" => context -> HTTP.Response(500),
