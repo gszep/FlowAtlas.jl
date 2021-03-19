@@ -12,7 +12,7 @@ function gate(context::NamedTuple)
 		return response
 
 	catch exception
-		printstyled("ERROR $(request.target)\n",color=:red)
+		printstyled("ERROR $(replace(request.target, r"&.+" => "")) | $exception\n",color=:red)
 		return HTTP.Response(500)
 	end
 end

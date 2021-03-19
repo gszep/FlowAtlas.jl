@@ -82,8 +82,16 @@ input[type=color]::-webkit-color-swatch {
   cursor: pointer;
   position: relative;
   background: #eee;
-  margin: 5px;
+  margin: 5px 5px 5px 30px;
   padding: 5px 10px;
+}
+
+.legend-header {
+  cursor: pointer;
+  font-size: 14;
+  background: #eee;
+  padding: 5px 10px;
+  margin: 0px 5px 0px 0px;
 }
 
 .legend label {
@@ -97,25 +105,8 @@ input[type=color]::-webkit-color-swatch {
   opacity: 0.25;
 }
 
-.slider.text {
-  background-color: transparent;
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.75em;
-  color: hsl(0, 0%, 75%)
-}
-
-.slider.text:before {
-  background-color: transparent;
-  font-size: 0.75em;
-}
-
-input:checked + .slider.text {
-  background-color: transparent;
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.75em;
-  color: hsl(0, 0%, 25%)
+.legend-header[selected=false]{
+  opacity: 0.25;
 }
 
 .sortable-ghost {

@@ -11,7 +11,7 @@ function tile(context::NamedTuple; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
 		return response
 
 	catch exception
-		printstyled("ERROR $(request.target)\n",color=:red)
+		printstyled("ERROR $(replace(request.target, r"&.+" => "")) | $exception\n",color=:red)
 		return HTTP.Response(500)
 	end
 end
@@ -32,7 +32,7 @@ function tile( z::Int, x::Int, y::Int; extrema::Array{<:Tuple}=[(-2,2) (-2,2)], 
     y = ymin + y*tileSize
 
     return solidBackground( rasterKernelCircle( sqrt(z),
-        rasterize( (256+2padIndex,256+2padIndex), embedding, colors[],
+        rasterize( (256+2padIndex,256+2padIndex), embedding, colors!(colors),
 		
             xlim=( x-padding, x+tileSize+padding),
             ylim=( y-padding, y+tileSize+padding)

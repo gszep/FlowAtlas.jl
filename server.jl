@@ -17,18 +17,19 @@ using GigaScatter, ColorSchemes
 using Serialization: serialize,deserialize
 using FlowWorkspace:inpolygon
 
-using FlowWorkspace, StaticArrays, DataFrames, Glob
+using FlowWorkspace, StaticArrays, DataFrames, OrderedCollections, Glob
 using StatsBase, GigaSOM, TSne
 using StatsBase:normalize 
 
-include("lib/components.jl")
+include("lib/colors.jl")
 include("lib/embed.jl")
-include("lib/markers.jl")
 
-include("lib/sys.jl")
 include("lib/tile.jl")
 include("lib/gate.jl")
+
+include("lib/sys.jl")
 include("lib/map.jl")
+include("lib/sidebar.jl")
 
 #################### server defaults
 port = 3141
@@ -36,7 +37,7 @@ url = "http://localhost:$port"
 
 #################### data inputs
 workspace = "data/workspace.wsp"
-files = glob"data/390C/*_BM_*.cleaned.fcs"
+files = glob"data/*/*_BM_*.cleaned.fcs"
 channelMap = Dict([
 
     "FJComp-355 379_28-A" => "CD3", 
@@ -84,90 +85,31 @@ embeddingCoordinates = map(SVector, embedding[2,:], -embedding[1,:])
 (xmin, xmax), (ymin, ymax) = extrema(embedding, dims = 2)
 
 ###############################################################################
-######################################################## interactive components
-fluorescence, automatic = Observable(true), Observable(true)
+######################################################### colormaps and filters
 
-################################################## colormaps
+################################################## initialise color settings
 channelRange, nlevels = range(-3, 7, length = 50), 10
-toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange;nlevels = nlevels)
+toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels = nlevels)
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
 
-segments = channelview(fill(parse(RGBA, "#EEEEEE00"), size(data, 1)))
-palette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0, 1, length = nlevels)))
+labelColors = map( x-> "#"*hex(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2)))
+palette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0,1,length=nlevels)))
 
-channel = Observable(first(names(data)))
-colors = Observable(palette[:,colorIndex[!,channel[]] ])
+colors = palette[:,colorIndex[!,"CD4"] ]
+segments = channelview(fill(parse(RGBA,"#EEEEEE"), size(data,1)))
 
-legend = map(x -> RGB(get(ColorSchemes.Accent_8, x)), range(0, 1, length = size(labels, 2)))
+############################# initalise filter settings
+codes = select( hcat(labels, groups), AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
+selection = OrderedDict([ name=>true for name ∈ [names(labels); names(groups)]])
+selections = fill(true,size(data,1))
 
-legend = [ map( name -> Group(
-    name,"#" * hex(popfirst!(legend))), names(labels) );
-    map(name -> Group(name, true), names(groups))
-]
-
-############################# filter codes
-codes = select( hcat(labels, groups), 
-    AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
-
-labelCode = encode([i ≤ size(labels, 2) for i ∈ 1:length(legend)])
-groupCode = encode([i > size(labels, 2) for i ∈ 1:length(legend)])
-
-############################# update on channel change
-on(channel) do channel
-    if fluorescence[]
-        
-        selected = codes .& encode(map(x -> x.selected[], legend))
-        selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
-        
-        markerColors = palette[ :, colorIndex[!,channel] ]
-        markerColors[ :, .~selected ] .= 0.0
-        colors[] = markerColors
-    end
-end
-
-on(fluorescence) do fluorescence
-
-    selected = codes .& encode(map(x -> x.selected[], legend))
-    selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
-    
-    markerColors = fluorescence ? palette[ :, colorIndex[!,channel[]] ] : segments
-    markerColors[ :, .~selected] .= 0.0
-    colors[] = markerColors
-end
-
-############################# update legend interactions
-for label ∈ legend
-    
-    mask = label.name ∈ names(labels) ? labels[!,label.name] : groups[!,label.name]
-    if label.name ∈ names(labels) segments[:,mask] .= channelview([parse(RGBA, label.color[])]) end
-
-    on(label.color) do labelColor
-        segments[:,mask] .= channelview([parse(RGBA, labelColor)])
-        
-        selected = codes .& encode(map(x -> x.selected[], legend))
-        selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
-        
-        markerColors = fluorescence[] ? palette[ :, colorIndex[!,channel[]] ] : segments
-        markerColors[ :, .~selected] .= 0.0
-        colors[] = markerColors
-    end
-    
-    on(label.selected) do selected
-        if selected segments[:,mask] .= channelview([parse(RGBA, label.color[])]) end
-        
-        selected = codes .& encode(map(x -> x.selected[], legend))
-        selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
-        
-        markerColors = fluorescence[] ? palette[ :, colorIndex[!,channel[]] ] : segments
-        markerColors[ :, .~selected] .= 0.0
-        colors[] = markerColors
-    end
-end
+populationNames = names(labels)
+conditionNames = filter( name-> ~occursin(r"\d",name), names(groups))
+groupNames = filter( name->occursin(r"\d",name), names(groups))
 
 ###############################################################################
 ############################################################## construct canvas
 
-########################################################################## head
 const ol = JSServe.Dependency( :ol, # OpenLayers
     map( path -> joinpath(@__DIR__, path), [
 
@@ -200,13 +142,14 @@ app = App() do session::Session
 end
 
 ###############################################################################
-    ############################################# open app as locally hosted server
+############################################# open app as locally hosted server
 try
     global server = JSServe.Server(app, "127.0.0.1", port;
         verbose = true, routes = Routes( "/" => app,
             r"/assetserver/" * r"[\da-f]"^40 * r"-.*" => file_server,
 
             r"/\d+/\d+/\d+.png" => context -> tile(context;extrema = [(xmin, xmax),(ymin, ymax)]),
+            r"/colors" => context -> colors!(segments,context),
             r"/gate" => context -> gate(context),
 
             r"/favicon.ico" => context -> HTTP.Response(500),

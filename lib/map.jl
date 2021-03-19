@@ -163,120 +163,122 @@ end
 function sidebar(session::Session)
 
     ############################################################# sortable legend
-    Legend = DOM.div(id = "legend",class = "legend", HTML("""
-        <ul id="populations"> Populations </ul>
-        <ul id="conditions"> Conditions </ul>
-        <ul id="groups"> Groups </ul>    
-    """)
+    Legend = DOM.div( id = "legend", class = "legend", map( group ->
+                DOM.ul( id = group, DOM.h2( class = "legend-header", selected=true, uppercasefirst(group),
+
+                    onclick = js"""
+                        Array.from(document.getElementById($group).children).map( element => {
+                            element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
+                        })
+
+                        console.log("inverted filters for "+$group)
+
+                    """
+                )),
+            ["populations","conditions","groups"]
+        )
     )
 
     JSServe.onload( session, Legend, js"""
         function (container){
 
-            ////////////////////////////////////////////// update filters
-            function updateFilters(event) {
-                console.log({
-                    populations: populations.toArray(),
-                    conditions: conditions.toArray(),
-                    groups: groups.toArray() })
-            }
-
-            function select(event,label) {
-                if (event.target.tagName != 'INPUT') {
-
-                    var element = document.getElementById(label)
-                    element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
-                }
-            }
-
-            ////////////////////////////////////////////// update marker colors
-            function updateColors(event,label) {
-                document.getElementById('map').tiles.refresh()
-                console.log("changed color for "+label)
-            }
-
-            ////////////////////////////////////////////// populations
-            var colors = $(map( x-> "#"*hex(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2))))
-            for ( const [key,value] of Object.entries($(names(labels))) ) {
-
-                var population = document.createElement('li')
-                population.setAttribute('id',value)
-
-                population.setAttribute('selected',true)
-                population.onclick = function(event) { select(event,value) }
-
-                var label = document.createElement('label')
-                label.innerHTML = value
-
-                var color = document.createElement('input')
-                Object.assign( color, {
-                    type: 'color',
-
-                    onchange: event => updateColors(event,value),
-                    value: colors[key]
-                })
-
-                population.appendChild(color)
-                population.appendChild(label)
-
-                document.getElementById('populations').appendChild(population)
-            }
-
-            ////////////////////////////////////////////// groups/conditions
-            for ( const [key,value] of Object.entries($(names(groups))) ) {
+            ////////////////////////////////////////////// populate legend with groups and event listeners
+            var colors = $labelColors
+            for ( const [key,value] of Object.entries($( [names(labels); names(groups)] )) ) {
 
                 var group = document.createElement('li')
                 group.setAttribute('id',value)
 
+                /////////////////////////////////////////////////// selection event
                 group.setAttribute('selected',true)
-                group.onclick = function(event) { select(event,value) }
+                group.onclick = function (event) {
+                    if (event.target.tagName != 'INPUT') {
+
+                        var element = document.getElementById(value)
+                        element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
+
+                        fetch( 'http://localhost:$port/colors', {
+
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'POST',
+
+                            body: JSON.stringify({
+                                color: element.querySelector('input').value + ( element.getAttribute('selected') == 'true' ? 'FF' : '00' ),
+                                name: value
+                            })
+
+                        }).then( response => {
+                            document.getElementById('map').tiles.refresh()
+
+                        }).catch( error => {
+                            console.error('Error:',error)
+                        })
+                    }
+                }
 
                 var label = document.createElement('label')
                 label.innerHTML = value
 
                 var color = document.createElement('input')
                 Object.assign( color, {
+
+                    value: key < $(size(labels,2)) ? colors[key] : '#DDDDDD',
                     type: 'color',
 
-                    onchange: event => updateColors(event,value),
-                    value: '#DDDDDD'
+                    ////////////////////////////////////////////// marker color event
+                    onchange: function (event) {
+                        fetch( 'http://localhost:$port/colors', {
+
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'POST',
+
+                            body: JSON.stringify({
+                                color: event.target.value,
+                                name: value
+                            })
+
+                        }).then( response => {
+                            document.getElementById('map').tiles.refresh()
+
+                        }).catch( error => {
+                            console.error('Error:',error)
+                        })
+                    }
                 })
 
                 group.appendChild(color)
                 group.appendChild(label)
 
-                if ( value.match(/\d+/g) != null) // add to groups if name contains number
+                if ( key < $(size(labels,2)) )
+                    document.getElementById('populations').appendChild(group)
+
+                else if ( value.match(/\d+/g) != null)
                     document.getElementById('groups').appendChild(group)
-                else                              // otherwise add to conditions
+
+                else
                     document.getElementById('conditions').appendChild(group)
             }
 
-            var populations = Sortable.create(
-                document.getElementById('populations'), {
-                dataIdAttr: 'id',
+            //////////////////////////////////////////////////// legend groups as sortable lists
+            var legend = Object.assign(...['populations','conditions','groups'].map(
+                group => ({
 
-                onEnd: updateFilters,
-                group: 'populations',
-                animation: 150
-            })
+                    [group]: Sortable.create(
+                        document.getElementById(group), {
+                        group: group == 'populations' ? 'populations' : 'shared',
 
-            var conditions = Sortable.create(
-                document.getElementById('conditions'), {
-                dataIdAttr: 'id',
+                        dataIdAttr: 'id',
+                        animation: 150,
 
-                onEnd: updateFilters,
-                group: 'shared',
-                animation: 150
-            })
-
-            var groups = Sortable.create(
-                document.getElementById('groups'), {
-                dataIdAttr: 'id',
-
-                onEnd: updateFilters,
-                group: 'shared',
-                animation: 150
-            })
+                        /////////////////////////////////////////// de/select all event
+                        onEnd: function (event) {
+                            for ( const [key,value] of Object.entries(legend) ) {
+                                console.log(value.toArray())
+                            }
+                        }
+                    })
+                })
+            ))
         }
     """)
 
@@ -319,65 +321,16 @@ function sidebar(session::Session)
                     DOM.label(class = "switch",
                             
                         DOM.input(type = "checkbox",checked = true,
-                        onchange = js"""update_obs($fluorescence,this.checked);document.getElementById("map").tiles.refresh()"""),
+                        onchange = js"""document.getElementById("map").tiles.refresh()"""),
                         DOM.span(class = "slider")
                     ),
         
                     DOM.label("Fluorescence Intensity"),
                     DOM.select(DOM.option.(names(data)),
-                    onchange = js"""update_obs($channel,this.options[this.selectedIndex].text);document.getElementById("map").tiles.refresh()""")
+                    onchange = js"""document.getElementById("map").tiles.refresh()""")
                 ),
 
-                Legend,
-                DOM.div( class = "container",
-    
-                    ######################################### interactive legend
-                    DOM.span( DOM.label(class = "switch", style = "width:70px",	
-                        DOM.input(type = "checkbox", checked = true,
-                            onchange = js"""$(map(legend->legend.selected,
-                                filter( label->label.name ∈ names(labels), legend))
-                                ).map(x=>{update_obs(x,this.checked);document.getElementById("map").tiles.refresh()})"""
-                        ),
-                                
-                        DOM.span(class = "slider text", style = "font-weight:bold", "Populations")),
-                        map( legend -> DOM.div( class = "container",
-                                    
-                            DOM.input(type = "color",name = legend.name,id = legend.name,
-                                value = legend.color, onchange = js"""
-                                    update_obs($(legend.color),this.value);document.getElementById("map").tiles.refresh()"""),
-                            DOM.label(class = "switch", style = "width:100%",
-                                        
-                            DOM.input(type = "checkbox",
-                                checked = legend.selected, onchange = js"""
-                                    update_obs($(legend.selected),this.checked);document.getElementById("map").tiles.refresh()"""),
-                            DOM.span(class = "slider text", legend.name))
-        
-                        ), filter(label -> label.name ∈ names(labels), legend) ),
-                    ),
-                        
-                    DOM.span( DOM.label(class = "switch", style = "width:70px",	
-                        DOM.input(type = "checkbox", checked = true, 					
-                            onchange = js"""$(map(legend->legend.selected,
-                                filter( label->label.name ∈ names(groups), legend))
-                                ).map(x=>{update_obs(x,this.checked);document.getElementById("map").tiles.refresh()})"""
-                        ),
-                                
-                        DOM.span(class = "slider text", style = "font-weight:bold", "Groups")),
-                        map( legend -> DOM.div( class = "container",
-                                    
-                            DOM.input(type = "color",name = legend.name,id = legend.name,
-                                value = legend.color, onchange = js"""
-                                    update_obs($(legend.color),this.value);document.getElementById("map").tiles.refresh()"""),
-                            DOM.label(class = "switch", style = "width:100%",
-                                        
-                            DOM.input(type = "checkbox",
-                                checked = legend.selected, onchange = js"""
-                                    update_obs($(legend.selected),this.checked);document.getElementById("map").tiles.refresh()"""),
-                            DOM.span(class = "slider text", legend.name))
-        
-                        ), filter(label -> label.name ∈ names(groups), legend) ),
-                    ),
-                )
+                Legend
             ),
 
             DOM.div(class = "sidebar-pane",id = "comparisons",
