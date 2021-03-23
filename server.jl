@@ -22,6 +22,7 @@ using StatsBase, GigaSOM, TSne
 using StatsBase:normalize 
 
 include("lib/colors.jl")
+include("lib/selection.jl")
 include("lib/embed.jl")
 
 include("lib/tile.jl")
@@ -37,7 +38,7 @@ url = "http://localhost:$port"
 
 #################### data inputs
 workspace = "data/workspace.wsp"
-files = glob"data/*/*_BM_*.cleaned.fcs"
+files = glob"data/*/*.cleaned.fcs"
 channelMap = Dict([
 
     "FJComp-355 379_28-A" => "CD3", 
@@ -93,14 +94,17 @@ toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels = nlevel
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
 
 labelColors = map( x-> "#"*hex(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2)))
-palette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0,1,length=nlevels)))
+channelColors = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0,1,length=nlevels)))
 
-colors = palette[:,colorIndex[!,"CD4"] ]
+colors = channelColors[:,colorIndex[!,"CD4"] ]
 segments = channelview(fill(parse(RGBA,"#EEEEEE"), size(data,1)))
 
 ############################# initalise filter settings
-codes = select( hcat(labels, groups), AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
-selection = OrderedDict([ name=>true for name ∈ [names(labels); names(groups)]])
+codeBitmap = hcat(labels, groups)
+codes = select( codeBitmap, AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
+codeCounts = [ ( names=decode(code,names(codeBitmap)), count=count ) for (code,count) ∈ countmap(codes) ]
+
+selection = OrderedDict([ name=>true for name ∈ names(codeBitmap) ])
 selections = fill(true,size(data,1))
 
 populationNames = names(labels)
@@ -149,8 +153,7 @@ try
             r"/assetserver/" * r"[\da-f]"^40 * r"-.*" => file_server,
 
             r"/\d+/\d+/\d+.png" => context -> tile(context;extrema = [(xmin, xmax),(ymin, ymax)]),
-            r"/colors" => context -> colors!(segments,context),
-            r"/gate" => context -> gate(context),
+            r"/colors" => colors!, r"/selection" => selection!, r"/gate" => gate,
 
             r"/favicon.ico" => context -> HTTP.Response(500),
             r".*" => context -> response_404() )

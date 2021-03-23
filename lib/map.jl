@@ -171,7 +171,22 @@ function sidebar(session::Session)
                             element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
                         })
 
-                        console.log("inverted filters for "+$group)
+                        fetch( 'http://localhost:$port/selection', {
+
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'POST',
+
+                            body: JSON.stringify({
+                                selected: null,
+                                name: $group
+                            })
+
+                        }).then( response => {
+                            document.getElementById('map').tiles.refresh()
+
+                        }).catch( error => {
+                            console.error('Error:',error)
+                        })
 
                     """
                 )),
@@ -184,7 +199,7 @@ function sidebar(session::Session)
 
             ////////////////////////////////////////////// populate legend with groups and event listeners
             var colors = $labelColors
-            for ( const [key,value] of Object.entries($( [names(labels); names(groups)] )) ) {
+            for ( const [key,value] of Object.entries($(names(codeBitmap))) ) {
 
                 var group = document.createElement('li')
                 group.setAttribute('id',value)
@@ -196,14 +211,13 @@ function sidebar(session::Session)
 
                         var element = document.getElementById(value)
                         element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
-
-                        fetch( 'http://localhost:$port/colors', {
+                        fetch( 'http://localhost:$port/selection', {
 
                             headers: { 'Content-Type': 'application/json' },
                             method: 'POST',
 
                             body: JSON.stringify({
-                                color: element.querySelector('input').value + ( element.getAttribute('selected') == 'true' ? 'FF' : '00' ),
+                                selected: element.getAttribute('selected') == 'true' ? true : false,
                                 name: value
                             })
 
@@ -327,7 +341,9 @@ function sidebar(session::Session)
         
                     DOM.label("Fluorescence Intensity"),
                     DOM.select(DOM.option.(names(data)),
-                    onchange = js"""document.getElementById("map").tiles.refresh()""")
+                    onchange = js"""
+                        document.getElementById("map").tiles.refresh()
+                        """)
                 ),
 
                 Legend

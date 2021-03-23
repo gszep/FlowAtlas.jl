@@ -20,3 +20,7 @@ function browser(url::AbstractString)
         println("Could not open default browser")
     end
 end
+
+function random(min,max) {
+    return Math.random() * (max - min) + min;
+}

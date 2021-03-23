@@ -3,9 +3,10 @@ function tile(context::NamedTuple; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
 	try 
 		response = HTTP.Response(200)
 		HTTP.Messages.setheader(response,"Content-type" => "image/png")
+		channel = "CD4"
 		
 		body = IOBuffer(response.body, write=true)
-		t = @elapsed save( Stream(format"PNG",body), tile(request.target;extrema=extrema) )
+		t = @elapsed save( Stream(format"PNG",body), tile(request.target;extrema=extrema,channel=channel) )
 
 		@info """$(request.method) $(replace(request.target, r"&.+" => "")) | $t seconds"""
 		return response
@@ -16,12 +17,12 @@ function tile(context::NamedTuple; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
 	end
 end
 
-function tile(url::String; extrema::Array{<:Tuple}=[(-2,2) (-2,2)])
+function tile(url::String; extrema::Array{<:Tuple}=[(-2,2) (-2,2)], channel::String="")
     zxy = broadcast(parse, Int, match(r"(\d+)/(\d+)/(\d+)", url ).captures )
-    return colorview(RGB,tile(zxy...;extrema=extrema))
+    return colorview(RGBA,tile(zxy...;extrema=extrema))
 end
 
-function tile( z::Int, x::Int, y::Int; extrema::Array{<:Tuple}=[(-2,2) (-2,2)], padIndex::Int=16)
+function tile( z::Int, x::Int, y::Int; extrema::Array{<:Tuple}=[(-2,2) (-2,2)], channel::String="", padIndex::Int=16)
 	(xmin,xmax), (ymin,ymax) = extrema
 	imageSize = max(xmax-xmin,ymax-ymin)
 
@@ -31,11 +32,12 @@ function tile( z::Int, x::Int, y::Int; extrema::Array{<:Tuple}=[(-2,2) (-2,2)], 
     x = xmin + x*tileSize
     y = ymin + y*tileSize
 
-    return solidBackground( rasterKernelCircle( sqrt(z),
-        rasterize( (256+2padIndex,256+2padIndex), embedding, colors!(colors),
+    return rasterKernelCircle( sqrt(z),
+        rasterize( (256+2padIndex,256+2padIndex), embedding,
+			channel ∈ names(data) ? view(channelColors,:,colorIndex[!,channel]) : colors,
 		
             xlim=( x-padding, x+tileSize+padding),
             ylim=( y-padding, y+tileSize+padding)
 		)
-	))[:,padIndex+1:end-padIndex,padIndex+1:end-padIndex]
+	)[:,padIndex+1:end-padIndex,padIndex+1:end-padIndex]
 end

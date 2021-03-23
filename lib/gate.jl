@@ -20,14 +20,11 @@ end
 gate(polygon::Vector{<:Any}) = gate( convert( Vector{SVector{2,Float64}}, polygon ) )
 function gate(polygon::Vector{SVector{2,Float64}})
 
-    selected = codes .& encode(map(x->x.selected[],legend))
-    selected = @. ( selected & labelCode ≠ 0 ) & ( selected & groupCode ≠ 0 )
-
     inside(x::SVector{2,Float64}) = inpolygon(x,polygon;in=true,on=false,out=false)
     counts = combine(
     
         ############## for selected events in embedded polygon
-        view( data, selected .& map( inside, embeddingCoordinates ), : ),
+        view( data, selections .& map( inside, embeddingCoordinates ), : ),
     
         ############## histogram per channel
         map( channel -> channel => ( x->fit(Histogram,x,channelRange).weights ) => channel, names(data) ))
