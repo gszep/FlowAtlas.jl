@@ -301,3 +301,17 @@
     margin-right: 52px;
   }
 }
+
+
+@media (hover: hover){
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 60, 136, 0.5);
+  }
+  ::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}

@@ -1,54 +1,19 @@
-/* #################################### switch */
-.switch {
-  position: relative;
-  display: inline-block;
-  margin: 0px 5px;
-  width: 30px;
-  height: 17px;
-}
-  
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+
+.option-group {
+  margin: 0px -20px 0;
+  height: 31px;
+  padding: 0 10px;
+  line-height: 30px;
+  font-size: 11pt;
+  color: rgba(0, 59, 136, 0.781);
+  background-color: rgba(0, 136, 170, 0.24);
 }
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 13px;
-  width: 14px;
-  left: 2px;
-  bottom: 2px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(12px);
-  -ms-transform: translateX(12px);
-  transform: translateX(12px);
+.option-group * {
+  font-size: 11pt;
+  color: rgba(0, 59, 136, 0.781);
+  background-color: transparent;
+  border: 0px;
 }
 
 /* #################################### legend colorpickers */
@@ -81,7 +46,8 @@ input[type=color]::-webkit-color-swatch {
 .legend li {
   cursor: pointer;
   position: relative;
-  background: #eee;
+  color: rgba(0, 59, 136, 0.781);
+  background: rgba(0, 136, 170, 0.14);
   margin: 5px 5px 5px 30px;
   padding: 5px 10px;
 }
@@ -89,7 +55,8 @@ input[type=color]::-webkit-color-swatch {
 .legend-header {
   cursor: pointer;
   font-size: 14;
-  background: #eee;
+  color: rgba(0, 59, 136, 0.781);
+  background: rgba(0, 136, 170, 0.14);
   padding: 5px 10px;
   margin: 0px 5px 0px 0px;
 }
@@ -115,40 +82,8 @@ input[type=color]::-webkit-color-swatch {
 
 /* #################################### channel selection menu */
 select {
-  margin: 5px;
-  color: hsl(0, 0%, 25%);
-}
-
-/* #################################### delete button overlay */
-.ol-attribution > ul {
-  font-size: 1.6rem;
-}
-
-.overlay {
-  display: none;
-  position: absolute;
-  background: rgba(255,255,255,0.9);
-  box-shadow: 0 0 10px 0 rgba(0,0,0,0.25);
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 180px;
-  top: -76px;
-  left: -90px;
-}
-
-.overlay:after {
-  top: 100%;
-  border: 10px solid transparent;
-  content: "";
-  height: 0;
-  width: 0;
-  position: absolute;
-  border-top-color: rgba(255,255,255,0.9);
-}
-
-.overlay button + button {
-  float: right;
+  margin: -3px;
+  font-weight: bold;
 }
 
 /* #################################### general */
@@ -163,7 +98,6 @@ html, body, #map {
   width: 100%;
   padding-bottom: 100%;
   vertical-align: top;
-  overflow: hidden;
 }
 .svg-content {
   display: inline-block;
@@ -179,4 +113,13 @@ html, body, #map {
 
 .sidebar-left .sidebar-close {
 top: 10;
+}
+
+svg.colorbar {
+  position: absolute;
+  visibility: hidden;
+  z-index: 1;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 95%;
 }

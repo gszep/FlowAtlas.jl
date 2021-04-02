@@ -1,6 +1,7 @@
-function violins(data, color="#0088AA55", margin=({top:40,right:20,bottom:40,left:60}) ) {
+function violins(data, color="#0088AA55",
+  margin=({top:40,right:20,bottom:40,left:60}) ) {
+  
   const svg = d3.select("div#violins svg")
-
   var height = data.density.length * 30
   var width = 300
   

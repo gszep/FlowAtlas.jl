@@ -1,5 +1,8 @@
-/* global ol */
-
+/**!
+ * sidebar-v2 0.4.0
+ * @author	Turbo87  <tobias@bieniek.cloud>
+ * @license MIT
+ */
 ol.control.Sidebar = function (settings) {
 
     var defaults = {
