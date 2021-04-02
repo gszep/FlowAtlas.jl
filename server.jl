@@ -85,31 +85,33 @@ clusters, embedding = embed(data,path = "data/workspace.som",
 embeddingCoordinates = map(SVector, embedding[2,:], -embedding[1,:])
 (xmin, xmax), (ymin, ymax) = extrema(embedding, dims = 2)
 
+#################################################### calculate label statistics
+codes = select(hcat(labels, groups), AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
+labelCounts = [ (names = decode(code, [names(labels);names(groups)]), count = count) for (code, count) ∈ countmap(codes) ]
+
 ###############################################################################
 ######################################################### colormaps and filters
 
-################################################## initialise color settings
+##################################################### initialise color settings
 channelRange, nlevels = range(-3, 7, length = 50), 10
 toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels = nlevels)
+
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
+channelLevels = range(extrema(channelRange)...,length=nlevels)
 
-labelColors = map( x-> "#"*hex(get( ColorSchemes.Accent_8,x)), range(0,1,length=size(labels,2)))
-channelColors = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0,1,length=nlevels)))
+labelPalette = map(x -> '#' * hex(get(ColorSchemes.Accent_8, x)), range(0, 1, length = size(labels, 2)))
+labelColors = channelview(fill(parse(RGBA{Float64}, "#DDDDDD"), size(data, 1)))
 
-colors = channelColors[:,colorIndex[!,"CD4"] ]
-segments = channelview(fill(parse(RGBA,"#EEEEEE"), size(data,1)))
+channelPalette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0, 1, length = nlevels)))
+channelHexcodes = map(x->'#'*hex(x),colorview(RGB,view(channelPalette,1:3,:)))
 
-############################# initalise filter settings
-codeBitmap = hcat(labels, groups)
-codes = select( codeBitmap, AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
-codeCounts = [ ( names=decode(code,names(codeBitmap)), count=count ) for (code,count) ∈ countmap(codes) ]
-
-selection = OrderedDict([ name=>true for name ∈ names(codeBitmap) ])
-selections = fill(true,size(data,1))
+##################################################### initalise filter settings
+selection = OrderedDict([ name => true for name ∈ [names(labels);names(groups)] ])
+selections = fill(true, size(data, 1))
 
 populationNames = names(labels)
-conditionNames = filter( name-> ~occursin(r"\d",name), names(groups))
-groupNames = filter( name->occursin(r"\d",name), names(groups))
+conditionNames = filter(name -> ~occursin(r"\d", name), names(groups))
+groupNames = filter(name -> occursin(r"\d", name), names(groups))
 
 ###############################################################################
 ############################################################## construct canvas
@@ -135,7 +137,7 @@ const style = JSServe.Dependency( :style, [ # custom styling todo(@gszep) remove
 ############################################## extensions loaded at end of body
 extensions = map( extension -> HTML("""
     <script src="$(JSServe.Asset(joinpath(@__DIR__, extension)))" ></script>
-"""), ["assets/ol/sidebar.js","assets/Sortable.js","assets/violins.js","assets/uuid.js"])
+"""), ["assets/ol/sidebar.js","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"])
 
 ########################################################################## body
 app = App() do session::Session
