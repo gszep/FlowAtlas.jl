@@ -8,11 +8,11 @@ function gate(context::NamedTuple)
         body = IOBuffer(response.body, write=true)
         t = @elapsed save( Stream(format"CSV",body), gate(feature["coordinates"]) )
 
-		@info """$(request.method) $(replace(request.target, r"&.+" => "")) | $t seconds"""
+		@info """$(request.method) $(replace(request.target, r"\?.+" => "")) | $t seconds"""
 		return response
 
 	catch exception
-		printstyled("ERROR $(replace(request.target, r"&.+" => "")) | $exception\n",color=:red)
+		printstyled("ERROR $(replace(request.target, r"\?.+" => "")) | $exception\n",color=:red)
 		return HTTP.Response(500)
 	end
 end

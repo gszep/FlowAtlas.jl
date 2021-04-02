@@ -4,6 +4,9 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
     return js"""
         function (container){
 
+            var colorScale = $d3.scaleLinear().domain($channelLevels).range($channelHexcodes)
+            $d3.select("#map").call( colorbar( colorScale, height=300, width=20, origin={x:40,y:10} ))
+
             ////////////////////////////////////////////////// tile layer
             var projection = new $ol.proj.Projection({
                 code: 'raster',
@@ -19,7 +22,7 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
                     tileUrlFunction: function (zxy) {
 
                         [z,x,y] = zxy
-                        return 'http://localhost:$port/'+[z,y,x].join("/")+'.png&seed='+Math.random()
+                        return 'http://localhost:$port/'+[z,y,x].join("/")+'.png?'+'channel='+document.getElementById('channel').value+'&seed='+Math.random()
                     },
 
                     projection: 'raster',
@@ -72,7 +75,7 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
             var interaction
             var features
 
-            document.querySelectorAll('#button-interactions button').forEach(
+            document.querySelectorAll('#polygon-interactions button').forEach(
                 button => button.addEventListener('click', function(event) {
                     var features
 
@@ -113,6 +116,10 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
                                         })
                                     })
 
+                                    boxplots( $labelCounts, new Set($populationNames), new Set($conditionNames),
+                                        barcolors = { "CD4 | EM": "#afe3bd" },
+                                        markercolors = { "390C": "#a6cee3", "403C": "#e31a1c", "412C": "#6a3d9a" })
+
                                 }).catch( error => {
                                     console.error('Error:',error)
                                 })
@@ -134,7 +141,7 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
                             interaction.on('select', function(event) {
 
                                 selectedFeature = event.selected[0]
-                                selectedFeature ? overlay.setPosition(selectedFeature.getGeometry().getExtent()): overlay.setPosition(undefined)
+                                selectedFeature ? overlay.setPosition(selectedFeature.getGeometry().getLastCoordinate()): overlay.setPosition(undefined)
                             })
                             break
 
@@ -166,10 +173,11 @@ function sidebar(session::Session)
     Legend = DOM.div( id = "legend", class = "legend", map( group ->
                 DOM.ul( id = group, DOM.h2( class = "legend-header", selected=true, uppercasefirst(group),
 
+                    ############################################# de/select all in group
                     onclick = js"""
-                        Array.from(document.getElementById($group).children).map( element => {
-                            element.getAttribute('selected') == 'true' ? element.setAttribute('selected','false') : element.setAttribute('selected','true')
-                        })
+                        var element = document.getElementById($group)
+                        var selected = element.querySelector("h2").getAttribute('selected') == 'true' ? 'false' : 'true'
+                        Array.from(element.children).forEach( x => x.setAttribute('selected',selected) )
 
                         fetch( 'http://localhost:$port/selection', {
 
@@ -177,7 +185,7 @@ function sidebar(session::Session)
                             method: 'POST',
 
                             body: JSON.stringify({
-                                selected: null,
+                                selected: selected == 'true' ? true : false,
                                 name: $group
                             })
 
@@ -198,8 +206,8 @@ function sidebar(session::Session)
         function (container){
 
             ////////////////////////////////////////////// populate legend with groups and event listeners
-            var colors = $labelColors
-            for ( const [key,value] of Object.entries($(names(codeBitmap))) ) {
+            var colors = $labelPalette
+            for ( const [key,value] of Object.entries($([names(labels);names(groups)])) ) {
 
                 var group = document.createElement('li')
                 group.setAttribute('id',value)
@@ -284,11 +292,25 @@ function sidebar(session::Session)
                         dataIdAttr: 'id',
                         animation: 150,
 
-                        /////////////////////////////////////////// de/select all event
-                        onEnd: function (event) {
-                            for ( const [key,value] of Object.entries(legend) ) {
-                                console.log(value.toArray())
-                            }
+                        /////////////////////////////////////////// re-allocation of groups event
+                        onAdd: function (event) {
+
+                            // update_obs($populationNames,legend.populations)
+                            // update_obs($conditionNames, legend.conditions)
+                            // update_obs($groupNames,legend.groups)
+
+                            fetch( 'http://localhost:$port/selection', {
+
+                                headers: { 'Content-Type': 'application/json' },
+                                method: 'POST',
+                                body: JSON.stringify({ selected: NaN, name: '' })
+
+                            }).then( response => {
+                                document.getElementById('map').tiles.refresh()
+
+                            }).catch( error => {
+                                console.error('Error:',error)
+                            })
                         }
                     })
                 })
@@ -309,13 +331,26 @@ function sidebar(session::Session)
         }
     """)
 
+    ############################################################# boxplots
+    Boxplots = DOM.div(id = "boxplots", class = "svg-container")
+    JSServe.onload( session, Boxplots, js"""
+        function (container){
+
+            var svg = d3.select("div#boxplots").append("svg")
+                .attr("preserveAspectRatio", "xMinYMin meet")
+
+                .attr("viewBox", "0 0 300 $(300*length(populationNames))")
+                .classed("svg-content", true)
+        }
+    """)
+
     return DOM.div( id = "sidebar", class = "sidebar collapsed",
 
         ######################################## sidebar layout
         DOM.div(class = "sidebar-tabs",
             DOM.ul(role = "tablist", map( (href, class) ->
                 HTML("""<li><a href="#$href" role="tab"><i class="$class"></i></a></li>"""),
-                ["annotations","comparisons","clustering"], ["fab fa-amilia","fa fa-adjust","fa fa-arrows-alt"]
+                ["annotations","expression","frequency"], ["fab fa-amilia","fa fa-chart-area","fa fa-chart-pie"]
             )),
 
             DOM.ul(role = "tablist", map( (href, class) ->
@@ -329,50 +364,43 @@ function sidebar(session::Session)
 
             DOM.div(class = "sidebar-pane",id = "annotations",
                 HTML("""<h1 class="sidebar-header">Annotations<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
-                DOM.div( class = "container",
-                        
-                    DOM.label("Population"),
-                    DOM.label(class = "switch",
-                            
-                        DOM.input(type = "checkbox",checked = true,
-                        onchange = js"""document.getElementById("map").tiles.refresh()"""),
-                        DOM.span(class = "slider")
-                    ),
+                DOM.div( id = "channel-selector", class="option-group",
         
-                    DOM.label("Fluorescence Intensity"),
-                    DOM.select(DOM.option.(names(data)),
-                    onchange = js"""
+                    "Colour by",
+                    DOM.select( DOM.option.(["Labels";names(data)]), id="channel", onchange = js"""
+                        document.querySelector('svg.colorbar').style.visibility = document.getElementById('channel').value == 'Labels' ? 'hidden' : 'visible'
                         document.getElementById("map").tiles.refresh()
-                        """)
+                    """)
                 ),
 
                 Legend
             ),
 
-            DOM.div(class = "sidebar-pane",id = "comparisons",
-                HTML("""<h1 class="sidebar-header">Comparisons<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+            DOM.div(class = "sidebar-pane",id = "expression",
+                HTML("""<h1 class="sidebar-header">Expression<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
                 html"""
                 <div id="js-overlay" style="display:block">
                     <button id="js-remove">Remove</button>
                 </div>
-                <div id="button-interactions" class="btn-group btn-group-sm" role="group" aria-label="Draw">
-                    <button id="pan" type="button" class="btn btn-primary">Pan</button>
-                    <button id="polygon" type="button" class="btn btn-success">Polygon</button>
-                    <button id="modify" type="button" class="btn btn-primary">Modify</button>
-                    <button id="delete" type="button" class="btn btn-danger">Delete</button>
+                <div id="polygon-interactions" class="option-group">
+                    <button id="pan" type="button" class="primary">Pan</button>
+                    <button id="polygon" type="button" class="success">Polygon</button>
+                    <button id="modify" type="button" class="primary">Modify</button>
+                    <button id="delete" type="button" class="danger">Delete</button>
                 </div>
                 """,
                 Violins
             ),
 
-            html"""
-            <div class="sidebar-pane" id="clustering">
-                <h1 class="sidebar-header">Clustering<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>
+            DOM.div(class = "sidebar-pane",id = "frequency",
+                HTML("""<h1 class="sidebar-header">Frequency<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+                Boxplots
+            ),
 
-            <div class="sidebar-pane" id="settings">
-                <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-            </div>"""
+            DOM.div(class = "sidebar-pane",id = "settings",
+                HTML("""<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+                Boxplots
+            )
         )
     )
 end

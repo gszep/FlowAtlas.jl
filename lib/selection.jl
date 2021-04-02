@@ -5,11 +5,11 @@ function selection!(context::NamedTuple)
         label = JSON.parse(String(request.body))
         t = @elapsed selection!(label)
 
-		@info """$(request.method) $(replace(request.target, r"&.+" => "")) | $t seconds"""
+		@info """$(request.method) $(replace(request.target, r"\?.+" => "")) | $t seconds"""
 		return response
 
 	catch exception
-		printstyled("ERROR $(replace(request.target, r"&.+" => "")) | $exception\n",color=:red)
+		printstyled("ERROR $(replace(request.target, r"\?.+" => "")) | $exception\n",color=:red)
 		return HTTP.Response(500)
 	end
 end
@@ -20,13 +20,13 @@ function selection!(label::Dict)
 	    selection[label["name"]] = label["selected"]
 
     elseif label["name"] == "populations"
-        for name ∈ populationNames selection[name]=!selection[name] end
+        for name ∈ populationNames selection[name]=label["selected"] end
 
     elseif label["name"] == "conditions"
-        for name ∈ conditionNames selection[name]=!selection[name] end
+        for name ∈ conditionNames selection[name]=label["selected"] end
 
     elseif label["name"] == "groups"
-        for name ∈ groupNames selection[name]=!selection[name] end
+        for name ∈ groupNames selection[name]=label["selected"] end
     end
 
 	populations = encode(map( name -> name ∈ populationNames, selection.keys ))
@@ -35,8 +35,6 @@ function selection!(label::Dict)
 
     selectionCodes = codes .& encode(selection.vals)
     @. selections = ( selectionCodes & populations ≠ 0 ) & ( selectionCodes & conditions ≠ 0 ) & ( selectionCodes & groups ≠ 0 )
-
-    colors[ end, : ] .= selections
 	return selections
 end
 
