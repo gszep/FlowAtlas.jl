@@ -101,6 +101,7 @@ channelLevels = range(extrema(channelRange)...,length=nlevels)
 
 labelPalette = map(x -> '#' * hex(get(ColorSchemes.Accent_8, x)), range(0, 1, length = size(labels, 2)))
 labelColors = channelview(fill(parse(RGBA{Float64}, "#DDDDDD"), size(data, 1)))
+for (name,color) ∈ zip(names(labels),labelPalette) colors!( Dict([ "name"=>name, "color"=>color ]) ) end
 
 channelPalette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0, 1, length = nlevels)))
 channelHexcodes = map(x->'#'*hex(x),colorview(RGB,view(channelPalette,1:3,:)))
