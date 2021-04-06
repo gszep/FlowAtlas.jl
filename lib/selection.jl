@@ -15,6 +15,7 @@ function selection!(context::NamedTuple)
 end
 
 function selection!(label::Dict)
+	global populationNames,conditionNames,groupNames
 
     if label["name"] ∈ selection.keys
 	    selection[label["name"]] = label["selected"]
@@ -27,6 +28,11 @@ function selection!(label::Dict)
 
     elseif label["name"] == "groups"
         for name ∈ groupNames selection[name]=label["selected"] end
+
+    elseif typeof(label["name"]) <: Dict
+		populationNames = label["name"]["populations"]
+		conditionNames = label["name"]["conditions"]
+		groupNames = label["name"]["groups"]
     end
 
 	populations = encode(map( name -> name ∈ populationNames, selection.keys ))

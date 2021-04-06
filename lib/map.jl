@@ -282,39 +282,38 @@ function sidebar(session::Session)
             }
 
             //////////////////////////////////////////////////// legend groups as sortable lists
-            var legend = Object.assign(...['populations','conditions','groups'].map(
-                group => ({
+            ['populations','conditions','groups'].map( group => {
 
-                    [group]: Sortable.create(
-                        document.getElementById(group), {
-                        group: group == 'populations' ? 'populations' : 'shared',
+                Sortable.create( document.getElementById(group), {
+                    group: group == 'populations' ? 'populations' : 'shared',
 
-                        dataIdAttr: 'id',
-                        animation: 150,
+                    dataIdAttr: 'id',
+                    animation: 150,
 
-                        /////////////////////////////////////////// re-allocation of groups event
-                        onAdd: function (event) {
+                    /////////////////////////////////////////// re-allocation of groups event
+                    onAdd: function (event) {
+                        fetch( 'http://localhost:$port/selection', {
 
-                            // update_obs($populationNames,legend.populations)
-                            // update_obs($conditionNames, legend.conditions)
-                            // update_obs($groupNames,legend.groups)
+                            headers: { 'Content-Type': 'application/json' },
+                            method: 'POST',
 
-                            fetch( 'http://localhost:$port/selection', {
-
-                                headers: { 'Content-Type': 'application/json' },
-                                method: 'POST',
-                                body: JSON.stringify({ selected: NaN, name: '' })
-
-                            }).then( response => {
-                                document.getElementById('map').tiles.refresh()
-
-                            }).catch( error => {
-                                console.error('Error:',error)
+                            body: JSON.stringify({
+                                name: {
+                                    'populations': Array.from(document.getElementById('populations').querySelectorAll('li')).map(x=>x.id),
+                                    'conditions': Array.from(document.getElementById('conditions').querySelectorAll('li')).map(x=>x.id),
+                                    'groups': Array.from(document.getElementById('groups').querySelectorAll('li')).map(x=>x.id)
+                                }
                             })
-                        }
-                    })
+
+                        }).then( response => {
+                            document.getElementById('map').tiles.refresh()
+
+                        }).catch( error => {
+                            console.error('Error:',error)
+                        })
+                    }
                 })
-            ))
+            })
         }
     """)
 
