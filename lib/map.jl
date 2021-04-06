@@ -116,10 +116,6 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
                                         })
                                     })
 
-                                    boxplots( $labelCounts, new Set($populationNames), new Set($conditionNames),
-                                        barcolors = { "CD4 | EM": "#afe3bd" },
-                                        markercolors = { "390C": "#a6cee3", "403C": "#e31a1c", "412C": "#6a3d9a" })
-
                                 }).catch( error => {
                                     console.error('Error:',error)
                                 })
@@ -206,7 +202,7 @@ function sidebar(session::Session)
         function (container){
 
             ////////////////////////////////////////////// populate legend with groups and event listeners
-            var colors = $labelPalette
+            var colors = $(collect(values(labelPalette)))
             for ( const [key,value] of Object.entries($([names(labels);names(groups)])) ) {
 
                 var group = document.createElement('li')
@@ -393,12 +389,47 @@ function sidebar(session::Session)
 
             DOM.div(class = "sidebar-pane",id = "frequency",
                 HTML("""<h1 class="sidebar-header">Frequency<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+                DOM.div( id = "frequency-options", class="option-group",
+
+                    DOM.button( id="frequency-calculate", type="button", "Calculate",
+                        onclick=js"""
+
+                            fetch( 'http://localhost:$port/count', {
+                                method: 'GET'
+
+                            //////////////////////////////////////////// update stats
+                            }).then( response => response.json() ).then( data => {
+
+                                var populations = Array.from(document.getElementById('populations').querySelectorAll('li'))
+                                var conditions = Array.from(document.getElementById('conditions').querySelectorAll('li'))
+                                var groups = Array.from(document.getElementById('groups').querySelectorAll('li'))
+
+                                boxplots( data,
+
+                                    new Set(populations.map(x=>x.id)),
+                                    new Set(conditions.map(x=>x.id)),
+
+                                    barcolors = Object.assign( ...populations.map( x => ({[x.id]: x.querySelector('input').value}) )),
+                                    markercolors = Object.assign(   ...groups.map( x => ({[x.id]: x.querySelector('input').value}) ))
+                                )
+
+                            }).catch( error => {
+                                console.error('Error:',error)
+                            })
+                        """
+                    ),
+
+                    DOM.button( id="frequency-gate", type="button", "Gate",
+                        onclick=js"""
+                        
+                        """
+                    )
+                ),
                 Boxplots
             ),
 
             DOM.div(class = "sidebar-pane",id = "settings",
-                HTML("""<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
-                Boxplots
+                HTML("""<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>""")
             )
         )
     )

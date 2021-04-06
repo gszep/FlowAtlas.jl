@@ -4,6 +4,8 @@ function boxplots(data, populations, conditions,
     margin = ({ top: 10, right: 50, bottom: 30, left: 50 }), padding = 1 / 4) {
 
     const svg = d3.select("div#boxplots svg")
+    svg.selectAll("*").remove()
+
     var height = populations.size * 256
     var width = 256
 

@@ -27,6 +27,7 @@ include("lib/embed.jl")
 
 include("lib/tile.jl")
 include("lib/gate.jl")
+include("lib/count.jl")
 
 include("lib/sys.jl")
 include("lib/map.jl")
@@ -84,10 +85,7 @@ clusters, embedding = embed(data,path = "data/workspace.som",
 
 embeddingCoordinates = map(SVector, embedding[2,:], -embedding[1,:])
 (xmin, xmax), (ymin, ymax) = extrema(embedding, dims = 2)
-
-#################################################### calculate label statistics
 codes = select(hcat(labels, groups), AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
-labelCounts = [ (names = decode(code, [names(labels);names(groups)]), count = count) for (code, count) ∈ countmap(codes) ]
 
 ###############################################################################
 ######################################################### colormaps and filters
@@ -99,9 +97,9 @@ toIndex(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels = nlevel
 colorIndex = combine(data, [ col => toIndex => col for col ∈ names(data) ])
 channelLevels = range(extrema(channelRange)...,length=nlevels)
 
-labelPalette = map(x -> '#' * hex(get(ColorSchemes.Accent_8, x)), range(0, 1, length = size(labels, 2)))
+labelPalette = OrderedDict([ name=>'#'*hex(get(ColorSchemes.Accent_8,x)) for (name,x) ∈ zip(names(labels),range(0,1,length=size(labels,2))) ])
 labelColors = channelview(fill(parse(RGBA{Float64}, "#DDDDDD"), size(data, 1)))
-for (name,color) ∈ zip(names(labels),labelPalette) colors!( Dict([ "name"=>name, "color"=>color ]) ) end
+for (name,color) ∈ labelPalette colors!( Dict([ "name"=>name, "color"=>color ]) ) end
 
 channelPalette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0, 1, length = nlevels)))
 channelHexcodes = map(x->'#'*hex(x),colorview(RGB,view(channelPalette,1:3,:)))
@@ -156,7 +154,7 @@ try
             r"/assetserver/" * r"[\da-f]"^40 * r"-.*" => file_server,
 
             r"/\d+/\d+/\d+.png" => context -> tile(context;extrema = [(xmin, xmax),(ymin, ymax)]),
-            r"/colors" => colors!, r"/selection" => selection!, r"/gate" => gate,
+            r"/colors" => colors!, r"/selection" => selection!, r"/gate" => gate, r"/count" => count,
 
             r"/favicon.ico" => context -> HTTP.Response(500),
             r".*" => context -> response_404() )
