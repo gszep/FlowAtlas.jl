@@ -1,3 +1,8 @@
+name = "FlowAtlas"
+uuid = "ef7debb3-0d09-4604-8960-6109d4c5b3e0"
+authors = ["gszep <gregory.szep@gmail.com>"]
+version = "0.1.0"
+
 [deps]
 CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
 ColorSchemes = "35d6a980-a343-548e-a6ea-1d62b119f2f4"
@@ -13,6 +18,7 @@ Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
 JSServe = "824d6782-a2ef-11e9-3a09-e5662e0c26f9"
 OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+Serialization = "9e88b42a-f829-5b0c-bbe9-9e923198166b"
 StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 TSne = "24678dba-d5e9-5843-a4c6-250288b04835"
