@@ -36,19 +36,8 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
                 source: polygons,
 
                 style: new $ol.style.Style({
-                    fill: new $ol.style.Fill({
-                        color: 'rgba(255, 255, 255, 0.2)',
-                    }),
-                    stroke: new $ol.style.Stroke({
-                        color: '#ffcc33',
-                        width: 2,
-                    }),
-                    image: new $ol.style.Circle({
-                        radius: 7,
-                        fill: new $ol.style.Fill({
-                            color: '#ffcc33',
-                        }),
-                    }),
+                    fill: new $ol.style.Fill({ color: 'rgba(0, 136, 170, 0.2)' }),
+                    stroke: new $ol.style.Stroke({ color: 'rgb(0, 136, 170)', width: 3 }),
                 }),
             })
 
@@ -68,7 +57,7 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
             map.addOverlay(overlay) // delete button pop-up
 
             document.getElementById("map").tiles = tiles.getSource()
-            document.getElementById("map").gates = gates.getSource()
+            document.getElementById("map").gates = gates
 
             ///////////////////////////////////////////////////////// polygon interactions
             var selectedFeature
@@ -111,7 +100,8 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
                                         binCentres: Array.from( $d3.group(data,d=>d.channelValue).keys() ),
                                         density: Object.keys(data[0]).filter(x=>x!="channelValue").map( function(channel) {
       
-                                            return {name: channel, values: data.map(x=>x[channel]).map(
+                                            return { id: event.feature.getId(),
+                                                name: channel, values: data.map(x=>x[channel]).map(
                                                 y=>y/$d3.max(data.map(x=>x[channel])) ) }
                                         })
                                     })
@@ -152,6 +142,9 @@ function olMap(extrema::Array{<:Tuple}; port::Int = 3141)
 
             document.getElementById('js-remove').addEventListener('click', function() {
                 polygons.removeFeature(selectedFeature)
+
+                var id = CSS.escape(selectedFeature.getId())
+                document.querySelectorAll("#"+id).forEach( violin=> violin.remove())
 
                 overlay.setPosition(undefined)
                 interaction.getFeatures().clear()
@@ -380,7 +373,7 @@ function sidebar(session::Session)
                 <div id="polygon-interactions" class="option-group">
                     <button id="pan" type="button" class="primary">Pan</button>
                     <button id="polygon" type="button" class="success">Polygon</button>
-                    <button id="modify" type="button" class="primary">Modify</button>
+                    <button id="modify" type="button" class="primary" style="visibility: hidden">Modify</button>
                     <button id="delete" type="button" class="danger">Delete</button>
                 </div>
                 """,
@@ -419,7 +412,7 @@ function sidebar(session::Session)
                         """
                     ),
 
-                    DOM.button( id="frequency-gate", type="button", "Gate",
+                    DOM.button( id="frequency-gate", type="button", "Gate", style="visibility: hidden",
                         onclick=js"""
                         
                         """
