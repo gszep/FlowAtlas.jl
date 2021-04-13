@@ -15,6 +15,6 @@ To install Flow Atlas you need Julia 1.5+. Follow [your platform specific instru
 ```bash
 git clone https://github.com/gszep/FlowAtlas.jl.git # create new folder and download
 cd FlowAtlas # navigate to new folder
-julia server.jl # launch Flow Atlas
+julia src/server.jl # launch Flow Atlas
 ```
 ~~The script will build a system image `build/cytometry.so` first time you launch it which may take up to 30mins. This only needs to be built once; subsequent executions of `julia server.jl` will open a browser window instantly. Updates to Flow Atlas require re-building `build/cytometry.so`; simply delete that file to re-build it.~~
