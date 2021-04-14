@@ -393,14 +393,15 @@ function sidebar(session::Session)
                             //////////////////////////////////////////// update stats
                             }).then( response => response.json() ).then( data => {
 
-                                var populations = Array.from(document.getElementById('populations').querySelectorAll('li'))
-                                var conditions = Array.from(document.getElementById('conditions').querySelectorAll('li'))
-                                var groups = Array.from(document.getElementById('groups').querySelectorAll('li'))
+                                var populations = Array.from(document.getElementById('populations').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
+                                var conditions = Array.from(document.getElementById('conditions').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
+                                var groups = Array.from(document.getElementById('groups').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
 
                                 boxplots( data,
 
                                     new Set(populations.map(x=>x.id)),
                                     new Set(conditions.map(x=>x.id)),
+                                    new Set(groups.map(x=>x.id)),
 
                                     barcolors = Object.assign( ...populations.map( x => ({[x.id]: x.querySelector('input').value}) )),
                                     markercolors = Object.assign(   ...groups.map( x => ({[x.id]: x.querySelector('input').value}) ))

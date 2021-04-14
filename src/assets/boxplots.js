@@ -1,17 +1,13 @@
-function boxplots(data, populations, conditions,
-    barcolors = { "CD4 | EM": "#afe3bd" },
-    markercolors = { "390C": "#a6cee3", "403C": "#e31a1c", "412C": "#6a3d9a" },
-    margin = ({ top: 10, right: 50, bottom: 30, left: 50 }), padding = 1 / 4) {
+function boxplots(data, populations, conditions, groups,
+    barcolors = {}, markercolors = {},
+    margin = ({ top: 10, right: 50, bottom: 30, left: 50 }), padding = 1/4 ) {
 
     const svg = d3.select("div#boxplots svg")
     svg.selectAll("*").remove()
 
+    var color = d3.scaleOrdinal().domain(groups).range([...groups].map(x => markercolors[x]))
     var height = populations.size * 256
     var width = 256
-
-    var all = [...new Set(data.flatMap(x => x.names))]
-    var groups = new Set(all.filter(name => !populations.has(name)).filter(name => !conditions.has(name)))
-    var color = d3.scaleOrdinal().domain(groups).range([...groups].map(x => markercolors[x]))
 
     var populationName = d3.scaleBand().domain(populations)
         .range([margin.top, height])
