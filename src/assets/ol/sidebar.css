@@ -54,7 +54,7 @@
   top: 0;
   bottom: 0;
   height: 100%;
-  background-color: rgba(0, 60, 136, 0.5);
+  background-color: #B8C4BB;
 }
 .sidebar-left .sidebar-tabs {
   left: 0;
@@ -82,12 +82,12 @@
 .sidebar-tabs > li:hover,
 .sidebar-tabs > ul > li:hover {
   color: #fff;
-  background-color: rgba(0, 60, 136, 0.6);
+  background-color: #663F46;
 }
 .sidebar-tabs > li.active,
 .sidebar-tabs > ul > li.active {
   color: #fff;
-  background-color: #0074d9;
+  background-color: #663F46;
 }
 .sidebar-tabs > li.disabled,
 .sidebar-tabs > ul > li.disabled {
@@ -167,7 +167,7 @@
   line-height: 40px;
   font-size: 14.4pt;
   color: #fff;
-  background-color: #0074d9;
+  background-color: #663F46;
 }
 .sidebar-right .sidebar-header {
   padding-left: 40px;
@@ -305,7 +305,7 @@
 
 @media (hover: hover){
   ::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 60, 136, 0.5);
+    background-color: #B8C4BB;
   }
   ::-webkit-scrollbar-track {
     background-color: #f0f0f0;

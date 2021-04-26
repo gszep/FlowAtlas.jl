@@ -5,13 +5,13 @@
   padding: 0 10px;
   line-height: 30px;
   font-size: 11pt;
-  color: rgba(0, 59, 136, 0.781);
-  background-color: rgba(0, 136, 170, 0.24);
+  color: #3C362A;
+  background-color: #E8F7EE;
 }
 
 .option-group * {
   font-size: 11pt;
-  color: rgba(0, 59, 136, 0.781);
+  color: #3C362A;
   background-color: transparent;
   border: 0px;
 }
@@ -46,8 +46,8 @@ input[type=color]::-webkit-color-swatch {
 .legend li {
   cursor: pointer;
   position: relative;
-  color: rgba(0, 59, 136, 0.781);
-  background: rgba(0, 136, 170, 0.14);
+  color: #3C362A;
+  background: #E8F7EE;
   margin: 5px 5px 5px 30px;
   padding: 5px 10px;
 }
@@ -55,8 +55,8 @@ input[type=color]::-webkit-color-swatch {
 .legend-header {
   cursor: pointer;
   font-size: 14;
-  color: rgba(0, 59, 136, 0.781);
-  background: rgba(0, 136, 170, 0.14);
+  color: #3C362A;
+  background: #E8F7EE;
   padding: 5px 10px;
   margin: 0px 5px 0px 0px;
 }
