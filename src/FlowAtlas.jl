@@ -117,11 +117,11 @@ function run(; port = 3141, url = "http://localhost:$port")
     colorIndex = combine(data, [ col => indexTransform => col for col ∈ names(data) ])
     channelLevels = range(extrema(channelRange)...,length=nlevels)
 
-    labelPalette = OrderedDict([ name=>'#'*hex(get(ColorSchemes.Accent_8,x)) for (name,x) ∈ zip(names(labels),range(0,1,length=size(labels,2))) ])
+    labelPalette = OrderedDict([ name=>'#'*hex(get(ColorSchemes.flag_gu,x)) for (name,x) ∈ zip(names(labels),range(0,1,length=size(labels,2))) ])
     labelColors = channelview(fill(parse(RGBA{Float64}, "#DDDDDD"), size(data, 1)))
     for (name,color) ∈ labelPalette colors!( Dict([ "name"=>name, "color"=>color ]) ) end
 
-    channelPalette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.curl), x)), range(0, 1, length = nlevels)))
+    channelPalette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.matter), x)), range(0, 1, length = nlevels)))
     channelHexcodes = map(x->'#'*hex(x),colorview(RGB,view(channelPalette,1:3,:)))
 
     ##################################################### initalise filter settings
