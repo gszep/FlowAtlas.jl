@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <Workspace version="20.0"  modDate="Tue May 18 07:18:48 BST 2021"  clientTimestamp="1621318728475"  flowJoVersion="10.7.1"  drawRowBorders="1"  drawColumnBorders="1"  hideCompNodes="1"  curGroup="390C"  groupPaneHeight="209"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gating="http://www.isac-net.org/std/Gating-ML/v2.0/gating"  xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"  xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"  xsi:schemaLocation="http://www.isac-net.org/std/Gating-ML/v2.0/gating http://www.isac-net.org/std/Gating-ML/v2.0/gating/Gating-ML.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/transformations http://www.isac-net.org/std/Gating-ML/v2.0/gating/Transformations.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/datatypes http://www.isac-net.org/std/Gating-ML/v2.0/gating/DataTypes.v2.0.xsd "  nonAutoSaveFileName="file:/C:/Users/t-varadj/FlowAtlas.jl/data/workspace.wsp" >
+ <Workspace version="20.0"  modDate="Tue May 18 07:35:17 BST 2021"  clientTimestamp="1621319717842"  flowJoVersion="10.7.1"  drawRowBorders="1"  drawColumnBorders="1"  hideCompNodes="1"  curGroup="423C"  groupPaneHeight="286"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gating="http://www.isac-net.org/std/Gating-ML/v2.0/gating"  xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"  xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"  xsi:schemaLocation="http://www.isac-net.org/std/Gating-ML/v2.0/gating http://www.isac-net.org/std/Gating-ML/v2.0/gating/Gating-ML.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/transformations http://www.isac-net.org/std/Gating-ML/v2.0/gating/Transformations.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/datatypes http://www.isac-net.org/std/Gating-ML/v2.0/gating/DataTypes.v2.0.xsd "  nonAutoSaveFileName="file:/C:/Users/t-varadj/FlowAtlas.jl/data/workspace.wsp" >
    <WindowPosition x="46"  y="18"  width="600"  height="890"  displayed="1"  panelState="" />
    <TextTraits font="SansSerif"  size="11"  name=""  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
    <Columns>
@@ -59,7 +59,7 @@
          <Keywords/>
        </Group>
      </GroupNode>
-     <GroupNode name="390C"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="-1" >
+     <GroupNode name="390C"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="-1" >
        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
          <Axis dimension="x"  name=""  label=""  auto="auto" />
          <Axis dimension="y"  name=""  label=""  auto="modal" />
@@ -73,7 +73,7 @@
          </GraphEnvironment>
        </Graph>
        <Subpopulations>
-         <Population name="CD3"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="14159" >
+         <Population name="CD3"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="14159" >
            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
              <Axis dimension="x"  name="FJComp-355 560_40-A"  label=""  auto="auto" />
              <Axis dimension="y"  name="FJComp-355 379_28-A"  label=""  auto="modal" />
@@ -97,7 +97,7 @@
              </gating:RectangleGate>
            </Gate>
            <Subpopulations>
-             <Population name="CD4"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="1420" >
+             <Population name="CD4"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="1420" >
                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 560_40-A :: CD8"  type="Pseudocolor"  fast="1" >
                  <Axis dimension="x"  name="FJComp-640 670_30-A"  label=""  auto="auto" />
                  <Axis dimension="y"  name="FJComp-561 780_60-A"  label=""  auto="modal" />
@@ -209,7 +209,7 @@
                  </gating:PolygonGate>
                </Gate>
                <Subpopulations>
-                 <Population name="CD127- CD25+"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="328" >
+                 <Population name="CD127- CD25+"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="328" >
                    <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                      <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
                      <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="modal" />
@@ -305,7 +305,7 @@
                      </gating:PolygonGate>
                    </Gate>
                    <Subpopulations>
-                     <Population name="CD4 | Treg"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="91" >
+                     <Population name="CD4 | Treg"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="91" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="auto" />
@@ -415,7 +415,7 @@
                      </Population>
                    </Subpopulations>
                  </Population>
-                 <Population name="non-Tregs"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="963" >
+                 <Population name="non-Tregs"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="963" >
                    <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 560_40-A :: CD8"  type="Pseudocolor"  fast="1" >
                      <Axis dimension="x"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
                      <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="modal" />
@@ -471,7 +471,7 @@
                      </gating:PolygonGate>
                    </Gate>
                    <Subpopulations>
-                     <Population name="CD4 | CM"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="132" >
+                     <Population name="CD4 | CM"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="132" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -551,7 +551,7 @@
                          </gating:PolygonGate>
                        </Gate>
                      </Population>
-                     <Population name="CD4 | EM"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="651" >
+                     <Population name="CD4 | EM"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="651" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -619,7 +619,7 @@
                          </gating:PolygonGate>
                        </Gate>
                      </Population>
-                     <Population name="CD4 | EMRA"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="114" >
+                     <Population name="CD4 | EMRA"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="114" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -695,7 +695,7 @@
                          </gating:PolygonGate>
                        </Gate>
                      </Population>
-                     <Population name="CD4 | Naive"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="36" >
+                     <Population name="CD4 | Naive"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="36" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -811,7 +811,7 @@
                          </gating:PolygonGate>
                        </Gate>
                      </Population>
-                     <Population name="CD4 | Tfh"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="22" >
+                     <Population name="CD4 | Tfh"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="22" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="modal" />
@@ -923,7 +923,7 @@
                          </gating:PolygonGate>
                        </Gate>
                      </Population>
-                     <Population name="Memory"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="803" >
+                     <Population name="Memory"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="803" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
@@ -991,7 +991,7 @@
                          </gating:PolygonGate>
                        </Gate>
                        <Subpopulations>
-                         <Population name="CD4 | Th1"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="13" >
+                         <Population name="CD4 | Th1"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="13" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
@@ -1079,7 +1079,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="CD4 | Th2"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="772" >
+                         <Population name="CD4 | Th2"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="772" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
@@ -1147,7 +1147,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="Th17 | Th22"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="30" >
+                         <Population name="Th17 | Th22"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="30" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
@@ -1223,7 +1223,7 @@
                              </gating:PolygonGate>
                            </Gate>
                            <Subpopulations>
-                             <Population name="CD4 | Th17"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="16" >
+                             <Population name="CD4 | Th17"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="16" >
                                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                  <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
                                  <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
@@ -1299,7 +1299,7 @@
                                  </gating:PolygonGate>
                                </Gate>
                              </Population>
-                             <Population name="CD4 | Th22"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="3" >
+                             <Population name="CD4 | Th22"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="3" >
                                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                  <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
                                  <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
@@ -1391,7 +1391,7 @@
                  </Population>
                </Subpopulations>
              </Population>
-             <Population name="CD8"  annotation=""  owningGroup="390C"  expanded="1"  sortPriority="10"  count="1137" >
+             <Population name="CD8"  annotation=""  owningGroup="390C"  expanded="0"  sortPriority="10"  count="1137" >
                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                  <Axis dimension="x"  name="FJComp-355 820_60-A"  label=""  auto="auto" />
                  <Axis dimension="y"  name="FJComp-355 560_40-A"  label=""  auto="modal" />
@@ -1460,7 +1460,7 @@
          <Keywords/>
        </Group>
      </GroupNode>
-     <GroupNode name="423C"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="-1" >
+     <GroupNode name="423C"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="-1" >
        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
          <Axis dimension="x"  name=""  label=""  auto="auto" />
          <Axis dimension="y"  name=""  label=""  auto="modal" />
@@ -1474,7 +1474,7 @@
          </GraphEnvironment>
        </Graph>
        <Subpopulations>
-         <Population name="B"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="219" >
+         <Population name="B"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="219" >
            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
              <Axis dimension="x"  name="FJComp-355 560_40-A"  label=""  auto="auto" />
              <Axis dimension="y"  name="FJComp-355 379_28-A"  label=""  auto="modal" />
@@ -1498,7 +1498,7 @@
              </gating:RectangleGate>
            </Gate>
          </Population>
-         <Population name="non-B"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="4629" >
+         <Population name="non-B"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="4629" >
            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
              <Axis dimension="x"  name="FJComp-405 585_15-A"  label=""  auto="auto" />
              <Axis dimension="y"  name="FJComp-355 379_28-A"  label=""  auto="modal" />
@@ -1522,7 +1522,7 @@
              </gating:RectangleGate>
            </Gate>
            <Subpopulations>
-             <Population name="CD3"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="2633" >
+             <Population name="CD3"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="2633" >
                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                  <Axis dimension="x"  name="FJComp-405 585_15-A"  label=""  auto="auto" />
                  <Axis dimension="y"  name="FJComp-355 379_28-A"  label=""  auto="modal" />
@@ -1546,7 +1546,7 @@
                  </gating:RectangleGate>
                </Gate>
                <Subpopulations>
-                 <Population name="CD4"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="1070" >
+                 <Population name="CD4"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="1070" >
                    <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 560_40-A :: CD8"  type="Pseudocolor"  fast="1" >
                      <Axis dimension="x"  name="FJComp-640 670_30-A"  label=""  auto="auto" />
                      <Axis dimension="y"  name="FJComp-561 780_60-A"  label=""  auto="modal" />
@@ -1658,7 +1658,7 @@
                      </gating:PolygonGate>
                    </Gate>
                    <Subpopulations>
-                     <Population name="CD127- CD25+"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="220" >
+                     <Population name="CD127- CD25+"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="220" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="modal" />
@@ -1754,7 +1754,7 @@
                          </gating:PolygonGate>
                        </Gate>
                        <Subpopulations>
-                         <Population name="CD4 | Treg"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="56" >
+                         <Population name="CD4 | Treg"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="56" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-561 610_20-A :: Helios"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-561 585_15-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-561 610_20-A"  label=""  auto="auto" />
@@ -1864,7 +1864,7 @@
                          </Population>
                        </Subpopulations>
                      </Population>
-                     <Population name="non-Tregs"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="835" >
+                     <Population name="non-Tregs"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="835" >
                        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 560_40-A :: CD8"  type="Pseudocolor"  fast="1" >
                          <Axis dimension="x"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
                          <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="modal" />
@@ -1920,7 +1920,7 @@
                          </gating:PolygonGate>
                        </Gate>
                        <Subpopulations>
-                         <Population name="CD4 | CM"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="170" >
+                         <Population name="CD4 | CM"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="170" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -2000,7 +2000,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="CD4 | EM"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="581" >
+                         <Population name="CD4 | EM"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="581" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -2068,7 +2068,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="CD4 | EMRA"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="27" >
+                         <Population name="CD4 | EMRA"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="27" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -2144,7 +2144,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="CD4 | Naive"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="25" >
+                         <Population name="CD4 | Naive"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="25" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-405 780_60-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-640 780_60-A"  label=""  auto="auto" />
@@ -2260,7 +2260,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="CD4 | Tfh"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="123" >
+                         <Population name="CD4 | Tfh"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="123" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-640 730_35-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-405 710_40-A"  label=""  auto="modal" />
@@ -2372,7 +2372,7 @@
                              </gating:PolygonGate>
                            </Gate>
                          </Population>
-                         <Population name="Memory"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="747" >
+                         <Population name="Memory"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="747" >
                            <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                              <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
                              <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
@@ -2440,7 +2440,7 @@
                              </gating:PolygonGate>
                            </Gate>
                            <Subpopulations>
-                             <Population name="CD4 | Th1"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="674" >
+                             <Population name="CD4 | Th1"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="674" >
                                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                  <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
                                  <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
@@ -2528,7 +2528,7 @@
                                  </gating:PolygonGate>
                                </Gate>
                              </Population>
-                             <Population name="CD4 | Th2"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="27" >
+                             <Population name="CD4 | Th2"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="27" >
                                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                  <Axis dimension="x"  name="FJComp-488 715_30-A"  label=""  auto="auto" />
                                  <Axis dimension="y"  name="FJComp-405 670_30-A"  label=""  auto="auto" />
@@ -2596,7 +2596,7 @@
                                  </gating:PolygonGate>
                                </Gate>
                              </Population>
-                             <Population name="Th17 | Th22"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="45" >
+                             <Population name="Th17 | Th22"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="45" >
                                <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                  <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
                                  <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
@@ -2672,7 +2672,7 @@
                                  </gating:PolygonGate>
                                </Gate>
                                <Subpopulations>
-                                 <Population name="CD4 | Th17"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="13" >
+                                 <Population name="CD4 | Th17"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="13" >
                                    <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                      <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
                                      <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
@@ -2748,7 +2748,7 @@
                                      </gating:PolygonGate>
                                    </Gate>
                                  </Population>
-                                 <Population name="CD4 | Th22"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="18" >
+                                 <Population name="CD4 | Th22"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="18" >
                                    <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A :: CD3"  type="Pseudocolor"  fast="1" >
                                      <Axis dimension="x"  name="FJComp-488 525_50-A"  label=""  auto="auto" />
                                      <Axis dimension="y"  name="FJComp-405 605_40-A"  label=""  auto="auto" />
@@ -2840,7 +2840,7 @@
                      </Population>
                    </Subpopulations>
                  </Population>
-                 <Population name="CD8"  annotation=""  owningGroup="423C"  expanded="1"  sortPriority="10"  count="1137" >
+                 <Population name="CD8"  annotation=""  owningGroup="423C"  expanded="0"  sortPriority="10"  count="1137" >
                    <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
                      <Axis dimension="x"  name="FJComp-355 820_60-A"  label=""  auto="auto" />
                      <Axis dimension="y"  name="FJComp-355 560_40-A"  label=""  auto="modal" />
@@ -2912,7 +2912,7 @@
          <Keywords/>
        </Group>
      </GroupNode>
-     <GroupNode name="Compensation"  annotation=""  owningGroup="Compensation"  expanded="1"  sortPriority="10"  count="-1" >
+     <GroupNode name="Blood"  annotation=""  owningGroup="Blood"  expanded="1"  sortPriority="10"  count="-1" >
        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
          <Axis dimension="x"  name=""  label=""  auto="auto" />
          <Axis dimension="y"  name=""  label=""  auto="modal" />
@@ -2924,11 +2924,187 @@
            <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
          </GraphEnvironment>
        </Graph>
-       <Group name="Compensation"  live="1"  role="ws.group.dlog.compensation"  key=""  synchronized="0"  foreground="#bc1900"  fontStyle="bold" >
-         <Criteria>
-           <Criterion connector="And"  keyword="$FIL"  function="Contains"  value="unstained" />
-           <Criterion connector="Or"  keyword="$FIL"  function="Contains"  value="comp" />
-         </Criteria>
+       <Group name="Blood"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#00c000"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="13" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="13" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="BM"  annotation=""  owningGroup="BM"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="BM"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#909000"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="1" />
+           <SampleRef sampleID="8" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="1" />
+           <SampleRef sampleID="8" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="Ileum"  annotation=""  owningGroup="Ileum"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="Ileum"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#809880"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="2" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="9" />
+           <SampleRef sampleID="2" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="Liver"  annotation=""  owningGroup="Liver"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="Liver"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#d00000"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="3" />
+           <SampleRef sampleID="10" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="3" />
+           <SampleRef sampleID="10" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="Lung"  annotation=""  owningGroup="Lung"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="Lung"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#900080"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="11" />
+           <SampleRef sampleID="4" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="4" />
+           <SampleRef sampleID="11" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="mLN"  annotation=""  owningGroup="mLN"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="mLN"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#9090d0"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="12" />
+           <SampleRef sampleID="5" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="5" />
+           <SampleRef sampleID="12" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="Spleen"  annotation=""  owningGroup="Spleen"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="Spleen"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#988080"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="14" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="6" />
+           <SampleRef sampleID="14" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="tLN"  annotation=""  owningGroup="tLN"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="tLN"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#d000d0"  fontStyle="plain" >
+         <Criteria/>
+         <ManuallyIncludedSamples>
+           <SampleRef sampleID="15" />
+           <SampleRef sampleID="7" />
+         </ManuallyIncludedSamples>
+         <SampleRefs>
+           <SampleRef sampleID="7" />
+           <SampleRef sampleID="15" />
+         </SampleRefs>
          <Keywords/>
        </Group>
      </GroupNode>
@@ -20265,7 +20441,7 @@
          <Keyword name="$ENDDATA"  value="11408790" />
        </Keywords>
        <SampleNode name="390C_Spleen_025.fcs"  annotation=""  owningGroup=""  expanded="1"  sortPriority="10"  count="150062"  sampleID="6" >
-         <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  heatMapStatParameter="FJComp-355 379_28-A"  type="Pseudocolor"  fast="1" >
            <Axis dimension="x"  name="FJComp-355 379_28-A"  label=""  auto="auto" />
            <Axis dimension="y"  name="FJComp-355 560_40-A"  label=""  auto="modal" />
            <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
@@ -20274,7 +20450,7 @@
              <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
              <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
              <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
-             <WindowPosition x="0"  y="0"  width="0"  height="0"  displayed="0"  panelState="" />
+             <WindowPosition x="646"  y="18"  width="390"  height="582"  displayed="1"  panelState="---" />
            </GraphEnvironment>
          </Graph>
          <Subpopulations>
