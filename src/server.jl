@@ -39,13 +39,13 @@ url = "http://localhost:$port"
 
 #################### data inputs
 workspace = "data/workspace.wsp"
-files = glob"data/*/*.cleaned.fcs"
+files = glob"data/*/*.fcs"
 channelMap = Dict([
 
     "FJComp-355 379_28-A" => "CD3", 
     "FJComp-355 560_40-A" => "CD8", 
 
-    "FJComp-355 820_60-A" => "CD4",
+    # "FJComp-355 820_60-A" => "CD4",
     "FJComp-355 670_30-A" => "CD4",
 
     "FJComp-640 780_60-A" => "CCR7",
@@ -56,7 +56,7 @@ channelMap = Dict([
 
     "FJComp-561 610_20-A" => "Helios", 
     "FJComp-561 585_15-A" => "Foxp3", 
-    "Foxp3-IgM" => "Foxp3",
+    "Foxp3" => "Foxp3-IgM",
 
     "FJComp-405 710_40-A" => "PD-1", 
     "FJComp-640 730_35-A" => "CXCR5", 
@@ -73,9 +73,10 @@ channelMap = Dict([
 ])
 
 data, labels, groups, gating = FlowWorkspace.load( files;
-    workspace = workspace, channelMap = channelMap)
+    workspace = workspace, channelMap = channelMap, cols=:union)
+for name in names(labels) println(name) end
 
-select!( labels, Not([ "CD4","CD8","Memory","Th17 | Th22","CD127- CD25+","non-Tregs"]))
+select!( labels, Not([ "CD4","CD8","Memory","Th17 | Th22","CD127- CD25+","non-Tregs","non-B"]))
 select!( labels, Not(filter(name -> occursin("threshold", name), names(labels))))
 
 ###############################################################################
