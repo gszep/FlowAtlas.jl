@@ -74,7 +74,7 @@ channelMap = Dict([
 data, labels, groups, gating = FlowWorkspace.load( files;
     workspace = workspace, channelMap = channelMap, cols=:union)
 
-select!( labels, Not([ "CD4","Memory","Th17 | Th22","CD127- CD25+","non-Tregs","non-B"]))
+select!( labels, Not([ "CD4","CD3","CD4 | Memory","Th17-Th22","non-Tregs","non-B","non-Treg","non-Treg v1","Treg v1 | Foxp3+ Helios+","Treg | Helios+ Foxp3+","Treg | Foxp3+ Helios+"]))
 select!( labels, Not(filter(name -> occursin("threshold", name), names(labels))))
 
 ###############################################################################
