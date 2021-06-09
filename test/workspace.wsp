@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <Workspace version="20.0"  modDate="Wed Jun 09 19:31:21 BST 2021"  clientTimestamp="1623263481611"  flowJoVersion="10.7.1"  drawRowBorders="1"  drawColumnBorders="1"  hideCompNodes="1"  curGroup="All Samples"  groupPaneHeight="-1"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gating="http://www.isac-net.org/std/Gating-ML/v2.0/gating"  xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"  xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"  xsi:schemaLocation="http://www.isac-net.org/std/Gating-ML/v2.0/gating http://www.isac-net.org/std/Gating-ML/v2.0/gating/Gating-ML.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/transformations http://www.isac-net.org/std/Gating-ML/v2.0/gating/Transformations.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/datatypes http://www.isac-net.org/std/Gating-ML/v2.0/gating/DataTypes.v2.0.xsd "  nonAutoSaveFileName="file:/C:/Users/t-varadj/FlowAtlas.jl/test/workspace.wsp" >
+ <Workspace version="20.0"  modDate="Wed Jun 09 19:53:13 BST 2021"  clientTimestamp="1623264793998"  flowJoVersion="10.7.1"  drawRowBorders="1"  drawColumnBorders="1"  hideCompNodes="1"  curGroup="Compensated"  groupPaneHeight="80"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:gating="http://www.isac-net.org/std/Gating-ML/v2.0/gating"  xmlns:transforms="http://www.isac-net.org/std/Gating-ML/v2.0/transformations"  xmlns:data-type="http://www.isac-net.org/std/Gating-ML/v2.0/datatypes"  xsi:schemaLocation="http://www.isac-net.org/std/Gating-ML/v2.0/gating http://www.isac-net.org/std/Gating-ML/v2.0/gating/Gating-ML.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/transformations http://www.isac-net.org/std/Gating-ML/v2.0/gating/Transformations.v2.0.xsd http://www.isac-net.org/std/Gating-ML/v2.0/datatypes http://www.isac-net.org/std/Gating-ML/v2.0/gating/DataTypes.v2.0.xsd "  nonAutoSaveFileName="file:/C:/Users/t-varadj/FlowAtlas.jl/test/workspace.wsp" >
    <WindowPosition x="20"  y="20"  width="600"  height="720"  displayed="1"  panelState="" />
    <TextTraits font="SansSerif"  size="11"  name=""  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
    <Columns>
@@ -1109,11 +1109,6 @@
        </Graph>
        <Group name="All Samples"  live="1"  role="ws.group.dlog.test"  key=""  synchronized="0"  foreground="#000000"  fontStyle="bold" >
          <Criteria/>
-         <BlacklistedSamples>
-           <SampleRef sampleID="1" />
-           <SampleRef sampleID="2" />
-           <SampleRef sampleID="3" />
-         </BlacklistedSamples>
          <SampleRefs>
            <SampleRef sampleID="5" />
            <SampleRef sampleID="4" />
@@ -1121,7 +1116,7 @@
          <Keywords/>
        </Group>
      </GroupNode>
-     <GroupNode name="Compensation"  annotation=""  owningGroup="Compensation"  expanded="1"  sortPriority="10"  count="-1" >
+     <GroupNode name="Compensated"  annotation=""  owningGroup="Compensated"  expanded="1"  sortPriority="10"  count="-1" >
        <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
          <Axis dimension="x"  name=""  label=""  auto="auto" />
          <Axis dimension="y"  name=""  label=""  auto="modal" />
@@ -1133,17 +1128,29 @@
            <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
          </GraphEnvironment>
        </Graph>
-       <Group name="Compensation"  live="1"  role="ws.group.dlog.compensation"  key=""  synchronized="0"  foreground="#bc1900"  fontStyle="bold" >
-         <Criteria>
-           <Criterion connector="And"  keyword="$FIL"  function="Contains"  value="unstained" />
-           <Criterion connector="Or"  keyword="$FIL"  function="Contains"  value="comp" />
-         </Criteria>
-         <BlacklistedSamples>
-           <SampleRef sampleID="2" />
-           <SampleRef sampleID="3" />
-         </BlacklistedSamples>
+       <Group name="Compensated"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#0000d0"  fontStyle="plain" >
+         <Criteria/>
          <SampleRefs>
            <SampleRef sampleID="4" />
+         </SampleRefs>
+         <Keywords/>
+       </Group>
+     </GroupNode>
+     <GroupNode name="Uncompensated"  annotation=""  owningGroup="Uncompensated"  expanded="1"  sortPriority="10"  count="-1" >
+       <Graph smoothing="0"  backColor="#ffffff"  foreColor="#000000"  type="Pseudocolor"  fast="1" >
+         <Axis dimension="x"  name=""  label=""  auto="auto" />
+         <Axis dimension="y"  name=""  label=""  auto="modal" />
+         <GraphSettings level="5%"  smoothingHighResolution="1"  contourHighResolution="1"  histogramSmoothingCount="0"  graphResolution="256"  showOutliers="0"  drawLargeDots="0"  dotsToDraw="0"  tint="le.chartfill.none"  lineWeight="le.lineweight.normal"  lineStyle="le.linestyle.solid" />
+         <GraphEnvironment showGrid="0"  showAxes="tnlTNL"  showGates="1"  showFreqOnPlots="0"  showGateNameOnPlots="1"  showMedians="0"  showUncomped="0"  addEventParam="0"  lastYAxisName="" >
+           <TextTraits font="SansSerif"  size="11"  name="Labels"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+           <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+         </GraphEnvironment>
+       </Graph>
+       <Group name="Uncompensated"  live="1"  role="ws.group.dlog.undefined"  key=""  synchronized="0"  foreground="#009090"  fontStyle="plain" >
+         <Criteria/>
+         <SampleRefs>
            <SampleRef sampleID="5" />
          </SampleRefs>
          <Keywords/>
@@ -1414,7 +1421,7 @@
                  <WindowPosition x="620"  y="20"  width="390"  height="582"  displayed="1"  panelState="" />
                </GraphEnvironment>
              </Graph>
-             <Gate gating:id="ID829953260" >
+             <Gate gating:id="ID1026583468" >
                <gating:RectangleGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  percentX="0"  percentY="0" >
                  <gating:dimension gating:max="1273.1750318035236" >
                    <data-type:fcs-dimension data-type:name="FJComp-355 670_30-A" />
@@ -1438,7 +1445,7 @@
                  <WindowPosition x="620"  y="20"  width="390"  height="582"  displayed="1"  panelState="" />
                </GraphEnvironment>
              </Graph>
-             <Gate gating:id="ID883237110" >
+             <Gate gating:id="ID1627592229" >
                <gating:RectangleGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  percentX="0"  percentY="0" >
                  <gating:dimension gating:min="1273.1750318035236" >
                    <data-type:fcs-dimension data-type:name="FJComp-355 670_30-A" />
@@ -1462,7 +1469,7 @@
                  <WindowPosition x="620"  y="20"  width="390"  height="582"  displayed="1"  panelState="" />
                </GraphEnvironment>
              </Graph>
-             <Gate gating:id="ID177555610" >
+             <Gate gating:id="ID2081138791" >
                <gating:RectangleGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  percentX="0"  percentY="0" >
                  <gating:dimension gating:min="1273.1750318035236" >
                    <data-type:fcs-dimension data-type:name="FJComp-355 670_30-A" />
@@ -1486,7 +1493,7 @@
                  <WindowPosition x="620"  y="20"  width="390"  height="582"  displayed="1"  panelState="" />
                </GraphEnvironment>
              </Graph>
-             <Gate gating:id="ID1946005397" >
+             <Gate gating:id="ID1351675430" >
                <gating:RectangleGate eventsInside="1"  annoOffsetX="0"  annoOffsetY="0"  tint="#000000"  isTinted="0"  lineWeight="Normal"  userDefined="1"  percentX="0"  percentY="0" >
                  <gating:dimension gating:max="1273.1750318035236" >
                    <data-type:fcs-dimension data-type:name="FJComp-355 670_30-A" />
@@ -1746,18 +1753,18 @@
              <TextTraits font="SansSerif"  size="11"  name="LayoutGates"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
              <TextTraits font="SansSerif"  size="9"  name="Numbers"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
              <TextTraits font="SansSerif"  size="9"  name="Legend"  style="plain"  color="#000000"  background="#00ffffff"  just="left" />
+             <WindowPosition x="0"  y="0"  width="0"  height="0"  displayed="0"  panelState="" />
            </GraphEnvironment>
          </Graph>
-         <Subpopulations/>
        </SampleNode>
      </Sample>
    </SampleList>
    <TableEditor title="FlowJo Tables: workspace.wsp"  current="Table" >
-     <Table name="Table"  outputFile="file:/C:/Users/t-varadj/OneDrive%20-%20Microsoft/Documents/Table"  color="#00ffffff"  isBatch="0"  quickclose="0"  destination="toDisplay"  outputFormat="fj.document.type.table" >
+     <Table name="Table"  outputFile="file:/C:/Users/t-varadj/OneDrive%20-%20Microsoft/Documents/Table"  color="#00ffffff"  isBatch="0"  quickclose="0"  destination="toDisplay"  outputFormat="fj.document.type.table"  autoColumnName="" >
        <PrintLayout flipPattern0="0"  rows="1"  columns="1"  padding="36"  header=""  footer=""  headerActive="0"  footerActive="0"  scalingMode="fj.print.scale.none"  scaling="1"  orientation="1"  width="595.2744"  height="841.8888"  imageableX="72"  imageableY="72"  imageableWidth="451.2744"  imageableHeight="697.8888" />
        <PageSection sectionName="header" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&amp;NBSP&amp;NBSP&amp;NBSP&amp;NBSP&lt;IMG SRC=&quot;file:/C:/Program%20Files/FlowJo%2010.7.1/images/fj_icon.png&quot;&gt;&lt;/IMG&gt;&lt;br/&gt;FlowJo, LLC&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;top&quot;&gt;Page &lt;PageNumber/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
        <PageSection sectionName="footer" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;  valign=&quot;bottom&quot;&gt;&lt;LongDate/&gt;&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;bottom&quot;&gt;&lt;Version/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
-       <Iteration iterationType="SAMPLE"  iterationValue=""  iterationKeyword=""  discriminator=""  panelSize="1"  groupName="workspaceSelection" />
+       <Iteration iterationType="SAMPLE"  iterationValue="5"  iterationKeyword=""  discriminator=""  panelSize="1"  groupName="workspaceSelection" />
      </Table>
    </TableEditor>
    <LayoutEditor title="FlowJo Layouts: workspace.wsp"  current="Layout"  showGrid="0"  showPageBreaks="0"  showGuides="0"  showDebugOutput="0" >
@@ -1765,15 +1772,32 @@
        <PrintLayout flipPattern0="0"  rows="1"  columns="1"  padding="36"  header=""  footer=""  headerActive="0"  footerActive="0"  scalingMode="fj.print.scale.none"  scaling="1"  orientation="1"  width="595.2744"  height="841.8888"  imageableX="72"  imageableY="72"  imageableWidth="451.2744"  imageableHeight="697.8888" />
        <PageSection sectionName="header" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot; valign=&quot;top&quot;&gt;&amp;NBSP&amp;NBSP&amp;NBSP&amp;NBSP&lt;IMG SRC=&quot;file:/C:/Program%20Files/FlowJo%2010.7.1/images/fj_icon.png&quot;&gt;&lt;/IMG&gt;&lt;br/&gt;FlowJo, LLC&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;top&quot;&gt;Page &lt;PageNumber/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
        <PageSection sectionName="footer" >&lt;table width=&quot;100%&quot;&gt;&lt;tr&gt;&lt;td align=&quot;left&quot;  valign=&quot;bottom&quot;&gt;&lt;LongDate/&gt;&lt;/td&gt;&lt;td align=&quot;right&quot; valign=&quot;bottom&quot;&gt;&lt;Version/&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</PageSection>
-       <Iteration iterationType="OFF"  iterationValue=""  iterationKeyword=""  discriminator=""  panelSize="1"  groupName="workspaceSelection" />
+       <Iteration iterationType="OFF"  iterationValue="5"  iterationKeyword=""  discriminator=""  panelSize="1"  groupName="workspaceSelection" />
        <BatchSettings useCurrentGroup="1"  length="3"  name=""  order="ACROSS"  direction="COLUMNS"  append="0"  destination="toLayout"  separatePages="0"  launchApp="1"  header="0"  footer="0"  commandLineBatch="0" />
        <FigList/>
      </Layout>
      <WindowPosition x="0"  y="0"  width="900"  height="600" />
    </LayoutEditor>
    <Scripts>
-     <Script lang="text/javascript"  name="New Script 		 " />
+     <Script lang="text/javascript"  name="New Script    " />
    </Scripts>
+   <Experiment>
+     <PlateModel name="Plate"  color="#00ffffff"  rows="8"  columns="12"  plateID="00000"  expID="000-00000"  format="Plate"  showNEntries="1"  peHeatmap="1"  peShowEnums="1"  peThickBorders="1" >
+       <PrintLayout flipPattern0="0"  rows="1"  columns="1"  padding="36"  header=""  footer=""  headerActive="0"  footerActive="0"  scalingMode="fj.print.scale.none"  scaling="1"  orientation="1"  width="595.2744"  height="841.8888"  imageableX="72"  imageableY="72"  imageableWidth="451.2744"  imageableHeight="697.8888" />
+     </PlateModel>
+     <PlateEditorState>
+       <KeywordList>
+         <Keyword attribute="Assay"  value="GFP Reporter" />
+         <Keyword attribute="Time point"  value="24hr" />
+         <Keyword attribute="Treatment &quot;Drug A&quot;"  value="10ug/L" />
+       </KeywordList>
+       <StagingArea>
+         <StagingWell/>
+         <StagingWell/>
+         <StagingWell/>
+       </StagingArea>
+     </PlateEditorState>
+   </Experiment>
    <Exports/>
    <SOPS/>
    <experiment/>
