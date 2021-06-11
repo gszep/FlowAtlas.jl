@@ -1,6 +1,10 @@
 .*
 !.gitignore
+!.github
+!.travis.yml
 __pycache__
-Manifest.toml
-*.so
+*.jl.*.cov
+*.jl.cov
+*.jl.mem
+/Manifest.toml
 *.som
