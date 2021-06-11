@@ -23,6 +23,26 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 TSne = "24678dba-d5e9-5843-a4c6-250288b04835"
 
+[compat]
+CSVFiles = "1"
+ColorSchemes = "3"
+DataFrames = "0.20, 0.21, 0.22, 1.0, 1.1"
+FileIO = "1"
+FlowWorkspace = "0.1"
+GigaSOM = "0.6"
+GigaScatter = "0.1"
+Glob = "1"
+HTTP = "0.9"
+ImageIO = "0.4"
+Images = "0.24"
+JSON = "0.21"
+JSServe = "1"
+OrderedCollections = "1"
+StaticArrays = "1"
+StatsBase = "0.33"
+TSne = "1"
+julia = "1"
+
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
