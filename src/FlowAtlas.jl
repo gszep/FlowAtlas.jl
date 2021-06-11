@@ -13,6 +13,7 @@ using GigaScatter, ColorSchemes
 
 using Serialization: serialize,deserialize
 using FlowWorkspace: inpolygon
+using Base: NamedTuple
 
 using FlowWorkspace, StaticArrays, DataFrames, OrderedCollections, Glob
 using StatsBase, GigaSOM, TSne
@@ -31,113 +32,77 @@ include("lib/map.jl")
 include("lib/sidebar.jl")
 
 ############################################## javascript dependencies
-const ol = JSServe.Dependency( :ol, # OpenLayers
-    map( path -> joinpath(@__DIR__, path), [
-
-        "assets/ol/ol.js",
-        "assets/ol/ol.css",
-        "assets/ol/sidebar.css"
-    ])
-)
+const ol = JSServe.Dependency( :ol, [# OpenLayers
+    joinpath(@__DIR__,"assets/ol/ol.js"), joinpath(@__DIR__,"assets/ol/ol.css")
+])
 
 const d3 = JSServe.Dependency( :d3, [ # data-driven documents
     joinpath(@__DIR__, "assets/d3/d3.v6.min.js"),
 ])
 
 const style = JSServe.Dependency( :style, [ # custom styling todo(@gszep) remove remote dep
-    "//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css",
-    joinpath(@__DIR__, "assets/style.css"),
+    "//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css", joinpath(@__DIR__, "assets/style.css"),
 ])
 
-############################################## extensions loaded at end of body
-const extensions = map( extension -> HTML("""
-    <script src="$(JSServe.Asset(joinpath(@__DIR__, extension)))" ></script>
-"""), ["assets/ol/sidebar.js","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"])
+const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(@__DIR__,extension),
+    ["assets/ol/sidebar.js","assets/ol/sidebar.css","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"]
+))
 
+function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Vector{String}=String[],
+        nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.flag_gu )
 
-function run(; port = 3141, url = "http://localhost:$port")
+    indexTransform(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels=nlevels)
 
-    #################### data inputs
-    workspace = "data/workspace.wsp"
-    files = glob"data/*/*.cleaned.fcs"
-    channelMap = Dict([
+    @info "Loading FCS files..."
+    data, labels, groups, _ = FlowWorkspace.load( files; workspace = workspace, channelMap = channelMap, cols=cols)
+    select!( labels, Not(drop) )
 
-        "FJComp-355 379_28-A" => "CD3", 
-        "FJComp-355 560_40-A" => "CD8", 
-
-        "FJComp-355 820_60-A" => "CD4",
-        "FJComp-355 670_30-A" => "CD4",
-
-        "FJComp-640 780_60-A" => "CCR7",
-        "FJComp-405 780_60-A" => "CD45RA", 
-
-        "FJComp-561 780_60-A" => "CD127", 
-        "FJComp-640 670_30-A" => "CD25", 
-
-        "FJComp-561 610_20-A" => "Helios", 
-        "FJComp-561 585_15-A" => "Foxp3", 
-        "Foxp3-IgM" => "Foxp3",
-
-        "FJComp-405 710_40-A" => "PD-1", 
-        "FJComp-640 730_35-A" => "CXCR5", 
-
-        "FJComp-405 670_30-A" => "CCR6", 
-        "FJComp-488 715_30-A" => "CXCR3", 
-
-        "FJComp-405 605_40-A" => "CCR4", 
-        "FJComp-488 525_50-A" => "CCR10", 
-
-        "FJComp-405 450_50-A" => "CD103", 
-        "FJComp-355 740_35-A" => "CD69",
-        "FJComp-405 515_20-A" => "HLA-DR"
-    ])
-
-    data, labels, groups, gating = FlowWorkspace.load( files;
-        workspace = workspace, channelMap = channelMap)
-
-    select!( labels, Not([ "CD4","CD8","Memory","Th17 | Th22","CD127- CD25+","non-Tregs"]))
-    select!( labels, Not(filter(name -> occursin("threshold", name), names(labels))))
+    names = (
+        channels = Base.names(data), populations = Base.names(labels),
+        conditions = filter(name -> ~occursin(r"\d", name), Base.names(groups)),
+        groups = filter(name -> occursin(r"\d", name), Base.names(groups))
+    )
 
     ###############################################################################
     ########################################################### calculate embedding
-    clusters, embedding = embed(data,path = "data/workspace.som",
-        perplexity = 300, maxIter = 10000)
-
-    embeddingCoordinates = map(SVector, embedding[2,:], -embedding[1,:])
-    (xmin, xmax), (ymin, ymax) = extrema(embedding, dims = 2)
-    codes = select(hcat(labels, groups), AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding]
+    _, embedding = embed(data,path = "data/workspace.som", perplexity = 300, maxIter = 10000)
+    embedding = (
+        coordinates = map(SVector, embedding[2,:], -embedding[1,:]),
+        array = embedding, extrema = extrema(embedding,dims=2)
+    )
 
     ###############################################################################
     ######################################################### colormaps and filters
+    colors = (
+        labels = (
+            names = OrderedDict([ name=>'#'*hex(get(labelScheme,x)) for (name,x) ∈ zip(Base.names(labels),range(0,1,length=size(labels,2))) ]),
+            rows = channelview(fill(parse(RGBA{Float64},"#DDDDDD"), size(data,1))),
+        
+        ),
+        channels = (
+            levels = range(extrema(channelRange)...,length=nlevels),
+            rows = combine(data, [ col => indexTransform => col for col ∈ Base.names(data) ]),
+            colors = channelview(map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels))),
+            hex = map(x->'#'*hex(x),colorview(RGB,view(channelview(map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels))),1:3,:)))
+            
+        )
+    )
 
-    ##################################################### initialise color settings
-    channelRange, nlevels = range(-3, 7, length = 50), 10
-    indexTransform(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels = nlevels)
-
-    colorIndex = combine(data, [ col => indexTransform => col for col ∈ names(data) ])
-    channelLevels = range(extrema(channelRange)...,length=nlevels)
-
-    labelPalette = OrderedDict([ name=>'#'*hex(get(ColorSchemes.flag_gu,x)) for (name,x) ∈ zip(names(labels),range(0,1,length=size(labels,2))) ])
-    labelColors = channelview(fill(parse(RGBA{Float64}, "#DDDDDD"), size(data, 1)))
-    for (name,color) ∈ labelPalette colors!( Dict([ "name"=>name, "color"=>color ]) ) end
-
-    channelPalette = channelview(map(x -> RGBA(get(reverse(ColorSchemes.matter), x)), range(0, 1, length = nlevels)))
-    channelHexcodes = map(x->'#'*hex(x),colorview(RGB,view(channelPalette,1:3,:)))
+    for (name,color) ∈ colors.labels.names colors!( Dict(["name"=>name,"color"=>color]),labels,groups,colors) end
 
     ##################################################### initalise filter settings
-    selection = OrderedDict([ name => true for name ∈ [names(labels);names(groups)] ])
-    selections = fill(true, size(data, 1))
-
-    populationNames = names(labels)
-    conditionNames = filter(name -> ~occursin(r"\d", name), names(groups))
-    groupNames = filter(name -> occursin(r"\d", name), names(groups))
+    selections = (
+        codes = select(hcat(labels,groups), AsTable(:) => ByRow(encode ∘ values) => "encoding")[:,:encoding],
+        names = OrderedDict([ name => true for name ∈ [Base.names(labels);Base.names(groups)] ]),
+        rows = fill(true, size(data, 1))
+    )
 
     ########################################################################## body
     app = App() do session::Session
         Map = DOM.div(id = "map", class = "sidebar-map")
         
-        JSServe.onload(session, Map, olMap([(xmin, xmax), (ymin, ymax)]; port = port))
-        return DOM.div(id = "application", style, DOM.title("FlowAtlas.jl"), sidebar(session), Map, extensions)
+        JSServe.onload(session, Map, olMap( embedding.extrema, colors; port=port))
+        return DOM.div(id = "application", extensions, style, DOM.title("FlowAtlas.jl"), Map, sidebar(session, names, colors; port=port))
     end
 
     ###############################################################################
@@ -147,8 +112,11 @@ function run(; port = 3141, url = "http://localhost:$port")
             verbose = true, routes = Routes( "/" => app,
                 r"/assetserver/" * r"[\da-f]"^40 * r"-.*" => file_server,
 
-                r"/\d+/\d+/\d+.png" => context -> tile(context;extrema = [(xmin, xmax),(ymin, ymax)]),
-                r"/colors" => colors!, r"/selection" => selection!, r"/gate" => gate, r"/count" => count,
+                r"/\d+/\d+/\d+.png" => x->tile(x,embedding,selections,colors,names),
+                r"/colors" => x->colors!(x,labels,groups,colors), r"/selection" => x->selection!(x,selections,names),
+
+                r"/gate" => x->gate(x,data,embedding,selections;channelRange=channelRange),
+                r"/count" => x->count(x,selections),
 
                 r"/favicon.ico" => context -> HTTP.Response(500),
                 r".*" => context -> response_404() )
@@ -173,9 +141,10 @@ function run(; port = 3141, url = "http://localhost:$port")
     end
 end
 
+export @glob_str
 @info """\n
     Welcome to FlowAtlas 🎈
     Start FlowAtlas server using:
-        julia> FlowAtlas.run()
+        julia> FlowAtlas.run(workspace,files)
 \n"""
 end

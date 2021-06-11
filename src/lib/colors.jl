@@ -1,9 +1,9 @@
-function colors!(context::NamedTuple)
+function colors!(context::NamedTuple,labels::DataFrame,groups::DataFrame,colors::NamedTuple)
     request = context.request
 	try 
 		response = HTTP.Response(200)
         label = JSON.parse(String(request.body))
-        t = @elapsed colors!(label)
+        t = @elapsed colors!(label,labels,groups,colors)
 
 		@info """$(request.method) $(replace(request.target, r"\?.+" => "")) | $t seconds"""
 		return response
@@ -14,9 +14,9 @@ function colors!(context::NamedTuple)
 	end
 end
 
-function colors!(label::Dict)
-	labelColors[1:3, label["name"] ∈ names(labels) ? labels[!,label["name"]] : groups[!,label["name"]]] .= channelview([parse(RGB,label["color"])])
-	return labelColors
+function colors!(label::Dict,labels::DataFrame,groups::DataFrame,colors::NamedTuple)
+	colors.labels.rows[1:3, label["name"] ∈ Base.names(labels) ? labels[!,label["name"]] : groups[!,label["name"]]] .= channelview([parse(RGB,label["color"])])
+	return colors
 end
 
 function toIndex(x::AbstractVector{<:Number},channelRange::AbstractVector{<:Number};nlevels::Int=10)

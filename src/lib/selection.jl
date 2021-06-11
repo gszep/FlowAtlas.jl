@@ -1,9 +1,9 @@
-function selection!(context::NamedTuple)
+function selection!(context::NamedTuple,selections::NamedTuple,names::NamedTuple)
     request = context.request
 	try 
 		response = HTTP.Response(200)
         label = JSON.parse(String(request.body))
-        t = @elapsed selection!(label)
+        t = @elapsed selection!(label,selections,names)
 
 		@info """$(request.method) $(replace(request.target, r"\?.+" => "")) | $t seconds"""
 		return response
@@ -14,34 +14,33 @@ function selection!(context::NamedTuple)
 	end
 end
 
-function selection!(label::Dict)
-	global populationNames,conditionNames,groupNames
+function selection!(label::Dict,selections::NamedTuple,names::NamedTuple)
 
-    if label["name"] ∈ selection.keys
-	    selection[label["name"]] = label["selected"]
+    if label["name"] ∈ selections.names.keys
+	    selections.names[label["name"]] = label["selected"]
 
     elseif label["name"] == "populations"
-        for name ∈ populationNames selection[name]=label["selected"] end
+        for name ∈ names.populations selections.names[name]=label["selected"] end
 
     elseif label["name"] == "conditions"
-        for name ∈ conditionNames selection[name]=label["selected"] end
+        for name ∈ names.conditions selections.names[name]=label["selected"] end
 
     elseif label["name"] == "groups"
-        for name ∈ groupNames selection[name]=label["selected"] end
+        for name ∈ names.groups selections.names[name]=label["selected"] end
 
     elseif typeof(label["name"]) <: Dict
-		populationNames = label["name"]["populations"]
-		conditionNames = label["name"]["conditions"]
-		groupNames = label["name"]["groups"]
+		names.populations = label["name"]["populations"]
+		names.conditions = label["name"]["conditions"]
+		names.groups = label["name"]["groups"]
     end
 
-	populations = encode(map( name -> name ∈ populationNames, selection.keys ))
-	conditions = encode(map( name -> name ∈ conditionNames, selection.keys ))
-	groups = encode(map( name -> name ∈ groupNames, selection.keys ))
+	populations = encode(map( name -> name ∈ names.populations, selections.names.keys ))
+	conditions = encode(map( name -> name ∈ names.conditions, selections.names.keys ))
+	groups = encode(map( name -> name ∈ names.groups, selections.names.keys ))
 
-    selectionCodes = codes .& encode(selection.vals)
-    @. selections = ( selectionCodes & populations ≠ 0 ) & ( selectionCodes & conditions ≠ 0 ) & ( selectionCodes & groups ≠ 0 )
-	return selections
+    selectionCodes = selections.codes .& encode(selections.names.vals)
+    @. selections.rows = ( selectionCodes & populations ≠ 0 ) & ( selectionCodes & conditions ≠ 0 ) & ( selectionCodes & groups ≠ 0 )
+	return selections.rows
 end
 
 function encode( input; T::DataType=Int )
