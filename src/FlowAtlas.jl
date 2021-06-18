@@ -49,7 +49,8 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
 ))
 
 function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Vector{String}=String[],
-        nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.flag_gu )
+        nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.flag_gu,
+        perplexity=300, maxIter=10000 )
 
     indexTransform(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels=nlevels)
 
@@ -65,7 +66,8 @@ function run( workspace::String, files; port::Int = 3141, url::String = "http://
 
     ###############################################################################
     ########################################################### calculate embedding
-    _, embedding = embed(data,path = "data/workspace.som", perplexity = 300, maxIter = 10000)
+    som_path, _ = splitext(workspace)
+    _, embedding = embed(data, path = som_path*".som", perplexity = perplexity, maxIter = maxIter)
     embedding = (
         coordinates = map(SVector, embedding[2,:], -embedding[1,:]),
         array = embedding, extrema = extrema(embedding,dims=2)
