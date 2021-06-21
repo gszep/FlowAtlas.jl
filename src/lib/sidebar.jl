@@ -245,8 +245,8 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
                                     new Set(conditions.map(x=>x.id)),
                                     new Set(groups.map(x=>x.id)),
 
-                                    barcolors = Object.assign( ...populations.map( x => ({[x.id]: x.querySelector('input').value}) )),
-                                    markercolors = Object.assign(   ...groups.map( x => ({[x.id]: x.querySelector('input').value}) ))
+                                    barcolors = populations.length > 0 ? Object.assign( ...populations.map( x => ({[x.id]: x.querySelector('input').value}) )) : {},
+                                    markercolors = groups.length > 0 ? Object.assign( ...groups.map( x => ({[x.id]: x.querySelector('input').value}) )) : {}
                                 )
 
                             }).catch( error => {

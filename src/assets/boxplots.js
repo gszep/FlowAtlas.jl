@@ -5,7 +5,7 @@ function boxplots(data, populations, conditions, groups,
     const svg = d3.select("div#boxplots svg")
     svg.selectAll("*").remove()
 
-    var color = d3.scaleOrdinal().domain(groups).range([...groups].map(x => markercolors[x]))
+    var color = d3.scaleOrdinal().domain( groups.size>0 ? groups : ["Ungrouped"]).range( groups.size>0 ? [...groups].map(x => markercolors[x]) : ['#000000'] )
     var height = populations.size * 256
     var width = 256
 
@@ -52,13 +52,33 @@ function boxplots(data, populations, conditions, groups,
     var frequencies = [], quantiles = []
     populations.forEach(population => {
         conditions.forEach(condition => {
-            groups.forEach(group => {
 
+            if (groups.size > 0) {
+                groups.forEach(group => {
+
+                    var frequency = d3.sum(data,
+                        x => [population, condition, group].every(y => x.names.includes(y)) ? x.count : 0
+
+                    ) / d3.sum(data,
+                        x => [condition, group].every(y => x.names.includes(y)) ? x.count : 0
+                    )
+
+                    if (!Number.isNaN(frequency))
+                        frequencies.push({
+                            frequency: frequency,
+
+                            population: population,
+                            condition: condition,
+                            group: group
+
+                        })
+                })
+            } else {
                 var frequency = d3.sum(data,
-                    x => [population, condition, group].every(y => x.names.includes(y)) ? x.count : 0
+                    x => [population, condition].every(y => x.names.includes(y)) ? x.count : 0
 
                 ) / d3.sum(data,
-                    x => [condition, group].every(y => x.names.includes(y)) ? x.count : 0
+                    x => [condition].every(y => x.names.includes(y)) ? x.count : 0
                 )
 
                 if (!Number.isNaN(frequency))
@@ -67,16 +87,16 @@ function boxplots(data, populations, conditions, groups,
 
                         population: population,
                         condition: condition,
-                        group: group
+                        group: "Ungrouped"
 
                     })
-            })
+            }
 
             var points = frequencies.filter(x => x.population == population).filter(x => x.condition == condition)
             quantiles.push({
 
-                upper: d3.quantile(points.map(x => x.frequency).sort(d3.ascending), 3 / 4),
-                lower: d3.quantile(points.map(x => x.frequency).sort(d3.ascending), 1 / 4),
+                upper: d3.quantile(points.map(x => x.frequency).sort(d3.ascending), 3 / 4)+1e-2*d3.max(points.map(x => x.frequency).sort(d3.ascending)),
+                lower: d3.quantile(points.map(x => x.frequency).sort(d3.ascending), 1 / 4)-1e-2*d3.max(points.map(x => x.frequency).sort(d3.ascending)),
 
                 max: d3.max(points.map(x => x.frequency).sort(d3.ascending)),
                 min: d3.min(points.map(x => x.frequency).sort(d3.ascending)),

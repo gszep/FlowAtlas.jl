@@ -29,17 +29,22 @@ function selection!(label::Dict,selections::NamedTuple,names::NamedTuple)
         for name ∈ names.groups selections.names[name]=label["selected"] end
 
     elseif typeof(label["name"]) <: Dict
-		names.populations = label["name"]["populations"]
-		names.conditions = label["name"]["conditions"]
-		names.groups = label["name"]["groups"]
+		for key ∈ filter(key->key≠:channels,keys(names))
+			
+			for _ ∈ 1:length(names[key]) pop!(names[key]) end
+			append!(names[key],label["name"][String(key)])
+		end
     end
 
-	populations = encode(map( name -> name ∈ names.populations, selections.names.keys ))
-	conditions = encode(map( name -> name ∈ names.conditions, selections.names.keys ))
-	groups = encode(map( name -> name ∈ names.groups, selections.names.keys ))
-
     selectionCodes = selections.codes .& encode(selections.names.vals)
-    @. selections.rows = ( selectionCodes & populations ≠ 0 ) & ( selectionCodes & conditions ≠ 0 ) & ( selectionCodes & groups ≠ 0 )
+	rows = @. selectionCodes ≠ 0
+	for key ∈ filter( key -> (key≠:channels) & ~isempty(names[key]), keys(names) )
+
+		groupCodes = encode(map( x -> x ∈ names[key], selections.names.keys ))
+		@. rows &= ( selectionCodes & groupCodes ≠ 0 )
+	end
+
+    @. selections.rows = rows
 	return selections.rows
 end
 
