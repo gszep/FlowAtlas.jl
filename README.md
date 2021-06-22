@@ -11,7 +11,7 @@ Flow Atlas is an interactive data explorer for `FCS` datasets and their accompan
 
 To install Flow Atlas, Julia 1.5+ is required. Follow [platform specific instructions](https://julialang.org/downloads/platform/). In order to make the `julia` executable available from the command prompt / terminal follow the instructions on adding Julia to the `PATH`/enviroment; make sure this has been done according to the instructions linked above.
 
-Once julia has been added to the environment, open a command prompt / terminal and type `julia`. This opens a julis shell. Then type `]` to enter the package manager, and type `add FlowAtlas` and then hit ⏎ Return at the REPL. You should see `pkg> add FlowAtlas`. This installs the most recent version of Flow Atlas and makes it availalbe in your global Julia enviroment. Finally to exit the package manager hit Backspace; you should see `julia>` again.
+Once julia has been added to the environment, open a command prompt / terminal and type `julia`. This opens a julis shell; you should see `julia>`. Then type `]` to enter the package manager, and type `add FlowAtlas` and then hit Return ⏎. You should see `pkg> add FlowAtlas`. This installs the most recent version of Flow Atlas and makes it availalbe in your global Julia enviroment. Finally to exit the package manager hit Backspace ⌫; you should see `julia>` again.
 
 ## Basic Usage
 > :warning: **FCS files under a workspace must have unique names**. This limitation will be removed in future versions
