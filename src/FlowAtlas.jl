@@ -40,6 +40,10 @@ const d3 = JSServe.Dependency( :d3, [ # data-driven documents
     joinpath(@__DIR__, "assets/d3/d3.v6.min.js"),
 ])
 
+const FileSaver = JSServe.Dependency( :FileSaver, [ # saving files
+    joinpath(@__DIR__, "assets/FileSaver.min.js")
+])
+
 const style = JSServe.Dependency( :style, [ # custom styling todo(@gszep) remove remote dep
     "//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css", joinpath(@__DIR__, "assets/style.css"),
 ])
@@ -49,7 +53,7 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
 ))
 
 function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Vector{String}=String[],
-        nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.flag_gu,
+        nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
         perplexity=300, maxIter=10000 )
 
     indexTransform(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels=nlevels)
@@ -78,7 +82,7 @@ function run( workspace::String, files; port::Int = 3141, url::String = "http://
     colors = (
         labels = (
             names = OrderedDict([ name=>'#'*hex(get(labelScheme,x)) for (name,x) ∈ zip(Base.names(labels),range(0,1,length=size(labels,2))) ]),
-            rows = channelview(fill(parse(RGBA{Float64},"#DDDDDD"), size(data,1))),
+            rows = channelview(fill(parse(RGBA{Float64},"#663F46"), size(data,1))),
         
         ),
         channels = (

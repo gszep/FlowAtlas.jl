@@ -5,7 +5,7 @@ function boxplots(data, populations, conditions, groups,
     const svg = d3.select("div#boxplots svg")
     svg.selectAll("*").remove()
 
-    var color = d3.scaleOrdinal().domain( groups.size>0 ? groups : ["Ungrouped"]).range( groups.size>0 ? [...groups].map(x => markercolors[x]) : ['#000000'] )
+    var color = d3.scaleOrdinal().domain( groups.size>0 ? groups : ["Ungrouped"]).range( groups.size>0 ? [...groups].map(x => markercolors[x]) : ['#663F46'] )
     var height = populations.size * 256
     var width = 256
 

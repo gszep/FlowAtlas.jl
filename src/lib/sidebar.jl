@@ -75,7 +75,7 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
                 var color = document.createElement('input')
                 Object.assign( color, {
 
-                    value: key < $(length(names.populations)) ? colors[key] : '#DDDDDD',
+                    value: key < $(length(names.populations)) ? colors[key] : '#663F46',
                     type: 'color',
 
                     ////////////////////////////////////////////// marker color event
@@ -208,17 +208,27 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
 
             DOM.div(class = "sidebar-pane",id = "expression",
                 HTML("""<h1 class="sidebar-header">Expression<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
-                html"""
-                <div id="js-overlay" style="display:block">
-                    <button id="js-remove">Remove</button>
-                </div>
-                <div id="polygon-interactions" class="option-group">
-                    <button id="pan" type="button" class="primary">Pan</button>
-                    <button id="polygon" type="button" class="success">Polygon</button>
-                    <button id="modify" type="button" class="primary" style="visibility: hidden">Modify</button>
-                    <button id="delete" type="button" class="danger">Delete</button>
-                </div>
-                """,
+                HTML(""" <div id="js-overlay" style="display:block"> <button id="js-remove">Remove</button></div>"""),
+                DOM.div( id="polygon-interactions", class="option-group",
+                    DOM.button( id="pan", type="button", class="primary", "Pan"),
+                    DOM.button( id="polygon", type="button", class="success", "Polygon"),
+                    DOM.button( id="modify", type="button", class="primary", style="visibility: hidden", "Modify"),
+                    DOM.button( id="delete", type="button", class="danger", "Delete"),
+
+                    DOM.button( id="save-boxplots", type="button", "Save",
+                        onclick=js"""
+
+                            var script = document.createElement('script');
+                            Object.assign( script, { type: 'text/javascript', src: $FileSaver })
+                            document.body.appendChild(script)
+
+                            var svg = document.querySelector("#violins svg").innerHTML
+                            var head = '<svg title="violins" version="1.1" xmlns="http://www.w3.org/2000/svg">'
+
+                            var blob = new Blob([head+svg+"</svg>"],{type:"image/svg+xml"})
+                            saveAs(blob,"violins.svg")
+                    """)
+                ),
                 Violins
             ),
 
@@ -259,7 +269,21 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
                         onclick=js"""
                         
                         """
-                    )
+                    ),
+
+                    DOM.button( id="save-boxplots", type="button", "Save",
+                        onclick=js"""
+
+                            var script = document.createElement('script');
+                            Object.assign( script, { type: 'text/javascript', src: $FileSaver })
+                            document.body.appendChild(script)
+
+                            var svg = document.querySelector("#boxplots svg").innerHTML
+                            var head = '<svg title="boxplots" version="1.1" xmlns="http://www.w3.org/2000/svg">'
+
+                            var blob = new Blob([head+svg+"</svg>"],{type:"image/svg+xml"})
+                            saveAs(blob,"boxplots.svg")
+                    """)
                 ),
                 Boxplots
             ),
