@@ -49,7 +49,7 @@ const style = JSServe.Dependency( :style, [ # custom styling todo(@gszep) remove
 ])
 
 const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(@__DIR__,extension),
-    ["assets/ol/sidebar.js","assets/ol/sidebar.css","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"]
+    ["assets/ol/sidebar.css","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"]
 ))
 
 function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Vector{String}=String[],
@@ -108,7 +108,11 @@ function run( workspace::String, files; port::Int = 3141, url::String = "http://
         Map = DOM.div(id = "map", class = "sidebar-map")
         
         JSServe.onload(session, Map, olMap( embedding.extrema, colors; port=port))
-        return DOM.div(id = "application", extensions, style, DOM.title("FlowAtlas.jl"), Map, sidebar(session, names, colors; port=port))
+        return DOM.div(id = "application", extensions, style, DOM.title("FlowAtlas.jl"), Map,
+
+            HTML("""<script src="$(JSServe.Asset(joinpath(@__DIR__,"assets/ol/sidebar.js")))" ></script>"""),
+            sidebar(session, names, colors; port=port)
+        )
     end
 
     ###############################################################################
