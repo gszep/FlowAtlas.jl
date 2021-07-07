@@ -15,7 +15,7 @@ using Serialization: serialize,deserialize
 using FlowWorkspace: inpolygon
 using Base: NamedTuple
 
-using FlowWorkspace, StaticArrays, DataFrames, OrderedCollections, Glob
+using FlowWorkspace, StaticArrays, DataFrames, MetaGraphs, OrderedCollections, Glob
 using StatsBase, GigaSOM, TSne
 using StatsBase: normalize
 
@@ -52,15 +52,17 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
     ["assets/ol/sidebar.css","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"]
 ))
 
-function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Vector{String}=String[],
+function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Union{Vector{String},Nothing}=nothing,
         nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
         perplexity=300, maxIter=10000 )
 
     indexTransform(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels=nlevels)
 
     @info "Loading FCS files..."
-    data, labels, groups, _ = FlowWorkspace.load( files; workspace = workspace, channelMap = channelMap, cols=cols)
-    select!( labels, Not(drop) )
+    data, labels, groups, gating = FlowWorkspace.load( files; workspace = workspace, channelMap = channelMap, cols=cols)
+
+    keep = map( graph -> map( idx -> MetaGraphs.get_prop(graph,idx,:name), filter(idx -> MetaGraphs.outdegree(graph,idx) == 0, 1:MetaGraphs.nv(graph))), values(gating) )
+    select!( labels, isnothing(drop) ? union(keep...) : Not(drop) )
 
     names = (
         channels = Base.names(data), populations = Base.names(labels),
