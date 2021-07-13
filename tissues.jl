@@ -1,7 +1,9 @@
 using FlowAtlas
 channelMap = Dict([
 
-    "FJComp-355 379_28-A" => "CD3", 
+    "FJComp-355 379_28-A" => "CD3-IgD", 
+    "CD3" => "CD3-IgD"
+
     "FJComp-355 560_40-A" => "CD8", 
     "FJComp-405 585_15-A" => "CD19",
 
@@ -15,7 +17,7 @@ channelMap = Dict([
     "FJComp-640 670_30-A" => "CD25", 
 
     "FJComp-561 610_20-A" => "Helios", 
-    "FJComp-561 585_15-A" => "Foxp3", 
+    "FJComp-561 585_15-A" => "Foxp3-IgM", 
     "Foxp3" => "Foxp3-IgM",
 
     "FJComp-405 710_40-A" => "PD-1", 
