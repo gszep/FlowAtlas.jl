@@ -15,9 +15,8 @@ using Serialization: serialize,deserialize
 using FlowWorkspace: inpolygon
 using Base: NamedTuple
 
-using FlowWorkspace, StaticArrays, DataFrames, MetaGraphs, OrderedCollections, Glob
-using StatsBase, GigaSOM, TSne
-using StatsBase: normalize
+using FlowWorkspace, StaticArrays, DataFrames, MetaGraphs, OrderedCollections
+using GigaSOM, TSne, StatsBase, Impute
 
 include("lib/colors.jl")
 include("lib/selection.jl")
@@ -52,17 +51,18 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
     ["assets/ol/sidebar.css","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"]
 ))
 
-function run( workspace::String, files; port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, channelMap::Dict=Dict(), drop::Union{Vector{String},Nothing}=nothing,
+function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), transform::Function=x->asinh(x/250),
+        port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=nothing,
         nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
         perplexity=300, maxIter=10000 )
 
-    indexTransform(x::AbstractVector{<:Number}) = toIndex(x, channelRange; nlevels=nlevels)
+    indexTransform(x::AbstractVector{<:Union{Number,Missing}}) = toIndex(x, channelRange; nlevels=nlevels)
 
     @info "Loading FCS files..."
-    data, labels, groups, gating = FlowWorkspace.load( files; workspace = workspace, channelMap = channelMap, cols=cols)
+    data, labels, groups, gating = FlowWorkspace.load( path; files=files, transform=transform, cols=cols)
 
     keep = map( graph -> map( idx -> MetaGraphs.get_prop(graph,idx,:name), filter(idx -> MetaGraphs.outdegree(graph,idx) == 0, 1:MetaGraphs.nv(graph))), values(gating) )
-    select!( labels, isnothing(drop) ? union(keep...) : Not(drop) )
+    select!( labels, isnothing(drop) ? union(keep...,["Unlabelled"]) : Not(drop) )
 
     names = (
         channels = Base.names(data), populations = Base.names(labels),
@@ -72,7 +72,7 @@ function run( workspace::String, files; port::Int = 3141, url::String = "http://
 
     ###############################################################################
     ########################################################### calculate embedding
-    som_path, _ = splitext(workspace)
+    som_path, _ = splitext(path)
     _, embedding = embed(data, path = som_path*".som", perplexity = perplexity, maxIter = maxIter)
     embedding = (
         coordinates = map(SVector, embedding[2,:], -embedding[1,:]),
@@ -90,7 +90,7 @@ function run( workspace::String, files; port::Int = 3141, url::String = "http://
         channels = (
             levels = range(extrema(channelRange)...,length=nlevels),
             rows = combine(data, [ col => indexTransform => col for col ∈ Base.names(data) ]),
-            colors = channelview(map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels))),
+            colors = channelview([map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels)); RGBA(0,0,0,0)]),
             hex = map(x->'#'*hex(x),colorview(RGB,view(channelview(map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels))),1:3,:)))
             
         )
@@ -153,10 +153,9 @@ function run( workspace::String, files; port::Int = 3141, url::String = "http://
     end
 end
 
-export @glob_str
 @info """\n
     Welcome to FlowAtlas 🎈
     Start FlowAtlas server using:
-        julia> FlowAtlas.run(workspace,files)
+        julia> FlowAtlas.run("workspace.wsp"; files="*.fcs")
 \n"""
 end

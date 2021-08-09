@@ -16,30 +16,9 @@ Once julia has been added to the environment, open a command prompt / terminal a
 ## Basic Usage
 > :warning: **FCS files under a workspace must have unique names**. This limitation will be removed in future versions
 
-Open a julia shell in the directory that contains your workspace file and import Flow Altas using `using FlowAtlas`. The `FlowAtlas.run` method runs the web application in your default broswer. Below is an example of a setup that maps channel names of different datasets and drops intermediate gates.
+Open a julia shell in the directory that contains your workspace file and import Flow Altas using `using FlowAtlas`. The `FlowAtlas.run` method runs the web application in your default broswer. To launch the web application use the `run` method
 ```julia
 using FlowAtlas
-
-############################# paths to workspace and fcs files
-workspace = "workspace.wsp"
-files = glob"workspace/*.fcs"
-
-################################ channel map for concatinating dataframes
-channelMap = Dict([
-
-    "FJComp-355 820_60-A"=>"CD4",
-    "FJComp-355 670_30-A"=>"CD4",
-    "Foxp3"=>"Foxp3-IgM",
-    ...
-])
-
-################################ list of intermediate gate labels to drop
-drop = ["CD4","CD3","CD4 | Memory","Th17-Th22","non-Tregs","non-B", ... ]
-
-################################ launch webapp
-FlowAtlas.run(workspace, files; channelMap=channelMap, drop=drop)
+FlowAtlas.run( "workspace.wsp"; files="workspace/*.fcs")
 ```
-
-### Positional Arguments
-
 ### Keyword Arguments

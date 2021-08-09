@@ -19,13 +19,14 @@ function colors!(label::Dict,labels::DataFrame,groups::DataFrame,colors::NamedTu
 	return colors
 end
 
-function toIndex(x::AbstractVector{<:Number},channelRange::AbstractVector{<:Number};nlevels::Int=10)
+function toIndex(x::AbstractVector{<:Union{Number,Missing}},channelRange::AbstractVector{<:Number};nlevels::Int=10)
 
 	min,max = extrema(channelRange)
 	scaled = ( x .- min ) / ( max - min )
 	
-	@. scaled[scaled<0] = 0
-	@. scaled[1<scaled] = 1
+	@. scaled[(scaled<0)&(~ismissing(scaled))] = 0
+	@. scaled[(1<scaled)&(~ismissing(scaled))] = 1
 
-	return @. trunc(Int,(nlevels-1)*scaled) + 1
+	scaled = @. trunc(Union{Int,Missing},(nlevels-1)*scaled) + 1
+	return replace!(scaled,missing=>nlevels+1)
 end

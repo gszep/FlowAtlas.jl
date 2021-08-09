@@ -27,7 +27,7 @@ function gate(polygon::Vector{SVector{2,Float64}},data::DataFrame,embedding::Nam
         view( data, selections.rows .& map( inside, embedding.coordinates ), : ),
     
         ############## histogram per channel
-        map( channel -> channel => ( x->fit(Histogram,x,channelRange).weights ) => channel, Base.names(data) ))
+        map( channel -> channel => ( x->fit(Histogram,filter(xi->~ismissing(xi),x),channelRange).weights ) => channel, Base.names(data) ))
 
     counts.channelValue = ( channelRange[1:end-1] + channelRange[2:end] ) / 2
     return counts
