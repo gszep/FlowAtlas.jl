@@ -1,6 +1,6 @@
 # Flow Atlas
 
-_an interactive explorer for single-cell flow cytometry data_
+_an interactive explorer for flow cytometry data_
 
 Flow Atlas is an interactive data explorer for `FCS` datasets and their accompanying FlowJo workspace files, such as those coming from the [Human Cell Atlas](https://humancellatlas.org). This tool is built in Julia and allows biologists to interactively inter-operate between FlowJo and modern computational libraries like [`GigaSOM.jl`](https://github.com/LCSB-BioCore/GigaSOM.jl)
 
@@ -11,7 +11,9 @@ Flow Atlas is an interactive data explorer for `FCS` datasets and their accompan
 
 To install Flow Atlas, Julia 1.5+ is required. Follow [platform specific instructions](https://julialang.org/downloads/platform/). In order to make the `julia` executable available from the command prompt / terminal follow the instructions on adding Julia to the `PATH`/enviroment; make sure this has been done according to the instructions linked above.
 
-Once julia has been added to the environment, open a command prompt / terminal and type `julia`. This opens a julis shell; you should see `julia>`. Then type `]` to enter the package manager, and type `add FlowAtlas` and then hit Return ⏎. You should see `pkg> add FlowAtlas`. This installs the most recent version of Flow Atlas and makes it availalbe in your global Julia enviroment. Finally to exit the package manager hit Backspace ⌫; you should see `julia>` again.
+Once julia has been added to the environment, open a command prompt / terminal and type `julia`. This opens a julis shell; you should see `julia>`. Then type `]` to enter the package manager, and type `add FlowAtlas` and then hit Return ⏎. You should see `pkg> add FlowAtlas`.
+
+This installs the most recent version of Flow Atlas and makes it availalbe in your global Julia enviroment. Finally to exit the package manager hit Backspace ⌫; you should see `julia>` again.
 
 ## Update
 Once inside a julia shell, type `]` to enter the package manager and then type `update FlowAtlas` then hit Return ⏎
