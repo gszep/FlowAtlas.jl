@@ -13,6 +13,9 @@ To install Flow Atlas, Julia 1.5+ is required. Follow [platform specific instruc
 
 Once julia has been added to the environment, open a command prompt / terminal and type `julia`. This opens a julis shell; you should see `julia>`. Then type `]` to enter the package manager, and type `add FlowAtlas` and then hit Return ⏎. You should see `pkg> add FlowAtlas`. This installs the most recent version of Flow Atlas and makes it availalbe in your global Julia enviroment. Finally to exit the package manager hit Backspace ⌫; you should see `julia>` again.
 
+## Update
+Once inside a julia shell, type `]` to enter the package manager and then type `update FlowAtlas` then hit Return ⏎
+
 ## Basic Usage
 > :warning: **FCS files under a workspace must have unique names**. This limitation will be removed in future versions
 
