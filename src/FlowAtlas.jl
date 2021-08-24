@@ -52,7 +52,7 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
 ))
 
 function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), transform::Function=x->asinh(x/250),
-        port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=nothing,
+        port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=String[],
         nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
         perplexity=300, maxIter=10000 )
 
