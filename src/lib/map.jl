@@ -22,7 +22,7 @@ function olMap(extrema::Array{<:Tuple}, colors::NamedTuple; port::Int = 3141)
                     tileUrlFunction: function (zxy) {
 
                         [z,x,y] = zxy
-                        return 'http://localhost:$port/'+[z,y,x].join("/")+'.png?'+'channel='+document.getElementById('channel').value+'&seed='+Math.random()
+                        return 'http://localhost:$port/'+[z,y,x].join("/")+'.png?'+'channel='+document.getElementById('channel').value+'&scale='+document.getElementById('scale').value+'&seed='+Math.random()
                     },
 
                     projection: 'raster',
@@ -36,7 +36,6 @@ function olMap(extrema::Array{<:Tuple}, colors::NamedTuple; port::Int = 3141)
                 source: polygons,
 
                 style: new $ol.style.Style({
-                    fill: new $ol.style.Fill({ color: 'rgba(0, 136, 170, 0.2)' }),
                     stroke: new $ol.style.Stroke({ color: 'rgb(0, 136, 170)', width: 3 }),
                 }),
             })

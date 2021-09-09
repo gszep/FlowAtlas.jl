@@ -208,8 +208,10 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
 
             DOM.div(class = "sidebar-pane",id = "expression",
                 HTML("""<h1 class="sidebar-header">Expression<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+
                 HTML(""" <div id="js-overlay" style="display:block"> <button id="js-remove">Remove</button></div>"""),
                 DOM.div( id="polygon-interactions", class="option-group",
+
                     DOM.button( id="pan", type="button", class="primary", "Pan"),
                     DOM.button( id="polygon", type="button", class="success", "Polygon"),
                     DOM.button( id="modify", type="button", class="primary", style="visibility: hidden", "Modify"),
@@ -265,12 +267,6 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
                         """
                     ),
 
-                    DOM.button( id="frequency-gate", type="button", "Gate", style="visibility: hidden",
-                        onclick=js"""
-                        
-                        """
-                    ),
-
                     DOM.button( id="save-boxplots", type="button", "Save",
                         onclick=js"""
 
@@ -289,7 +285,12 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
             ),
 
             DOM.div(class = "sidebar-pane",id = "settings",
-                HTML("""<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>""")
+                HTML("""<h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>"""),
+
+                HTML("""<h2 align="center">Marker Size</h2>"""),
+                DOM.input( type="range", min="0.01", step="0.01", max="5", value="1", class="slider", id="scale", onchange = js"""
+                    document.getElementById("map").tiles.refresh()
+                """)
             )
         )
     )

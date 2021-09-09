@@ -17,7 +17,6 @@ function embed(data::DataFrame;path::AbstractString="",xdim::Int64=20,ydim::Int6
 
 	######################## extract clusters and embedding
 	try 
-		som.grid = tsne(som.codes,2,0,maxIter,perplexity;eta=eta)
 		clusters = mapToGigaSOM(som,imputed)
 		embedding = embedGigaSOM(som,imputed)
 
