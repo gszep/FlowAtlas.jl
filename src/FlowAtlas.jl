@@ -16,7 +16,7 @@ using FlowWorkspace: inpolygon
 using Base: NamedTuple
 
 using FlowWorkspace, StaticArrays, DataFrames, MetaGraphs, OrderedCollections
-using GigaSOM, TSne, StatsBase, Impute
+using GigaSOM, StatsBase, Impute
 
 include("lib/colors.jl")
 include("lib/selection.jl")
