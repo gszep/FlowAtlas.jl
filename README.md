@@ -21,9 +21,9 @@ Once inside a julia shell, type `]` to enter the package manager and then type `
 ## Basic Usage
 > :warning: **FCS files under a workspace must have unique names**. This limitation will be removed in future versions
 
-Open a julia shell in the directory that contains your workspace file and import Flow Altas using `using FlowAtlas`. The `FlowAtlas.run` method runs the web application in your default broswer. To launch the web application use the `run` method
+Open a julia shell in the directory that contains your workspace and all FCS files (not in sub-folders) and import Flow Altas using `using FlowAtlas`. The `FlowAtlas.run` method runs the web application in your default broswer. To launch the web application use the `run` method
 ```julia
 using FlowAtlas
-FlowAtlas.run( "workspace.wsp"; files="workspace/*.fcs")
+FlowAtlas.run("name_of_my_workspace.wsp")
 ```
 ### Keyword Arguments
