@@ -117,7 +117,6 @@ top: 10;
 
 svg.colorbar {
   position: absolute;
-  visibility: hidden;
   z-index: 1;
   transform: translate(-50%,-50%);
   top: 50%;

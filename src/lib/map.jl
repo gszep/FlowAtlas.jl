@@ -4,9 +4,6 @@ function olMap(extrema::Array{<:Tuple}, colors::NamedTuple; port::Int = 3141)
     return js"""
         function (container){
 
-            var colorScale = $d3.scaleLinear().domain($(colors.channels.levels)).range($(colors.channels.hex))
-            $d3.select("#map").call( colorbar( colorScale, height=300, width=20, origin={x:40,y:10} ))
-
             ////////////////////////////////////////////////// tile layer
             var projection = new $ol.proj.Projection({
                 code: 'raster',

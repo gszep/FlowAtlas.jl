@@ -19,9 +19,9 @@ function colors!(label::Dict,labels::DataFrame,groups::DataFrame,colors::NamedTu
 	return colors
 end
 
-function toIndex(x::AbstractVector{<:Union{Number,Missing}},channelRange::AbstractVector{<:Number};nlevels::Int=10)
+function toIndex(x::AbstractVector{<:Union{Number,Missing}};nlevels::Int=10,p::Real=0.1)
 
-	min,max = extrema(channelRange)
+	min,max = quantile(skipmissing(x),(p,1-p))
 	scaled = ( x .- min ) / ( max - min )
 	
 	@. scaled[(scaled<0)&(~ismissing(scaled))] = 0

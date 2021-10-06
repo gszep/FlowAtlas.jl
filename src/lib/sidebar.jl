@@ -198,7 +198,16 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
         
                     "Colour by",
                     DOM.select( DOM.option.(["Labels";names.channels]), id="channel", onchange = js"""
-                        document.querySelector('svg.colorbar').style.visibility = document.getElementById('channel').value == 'Labels' ? 'hidden' : 'visible'
+                        var channel = document.getElementById('channel').value
+                        var channelRange = $(colors.channels.range)
+
+                        document.querySelector('svg.colorbar') ? document.querySelector('svg.colorbar').remove() : null
+                        if (channel != 'Labels'){
+
+                            var colorScale = $d3.scaleLinear().domain(channelRange[channel]).range($(colors.channels.hex))
+                            $d3.select("#map").call( colorbar( colorScale, height=300, width=20, origin={x:40,y:10} ))
+                        }
+
                         document.getElementById("map").tiles.refresh()
                     """)
                 ),

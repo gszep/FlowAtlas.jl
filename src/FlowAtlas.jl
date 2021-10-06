@@ -53,10 +53,12 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
 
 function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), transform::Function=x->asinh(x/250),
         port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=String[],
-        nlevels::Int=10, channelRange = range(-3,7,length=50), channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
+        nlevels::Int=10, nbins::Int=50, p::Real=0.1, channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
         perplexity::Number=300, maxIter::Integer=10000, hold::Bool=true )
 
-    indexTransform(x::AbstractVector{<:Union{Number,Missing}}) = toIndex(x, channelRange; nlevels=nlevels)
+    indexTransform(x::AbstractVector{<:Union{Number,Missing}}) = toIndex(x; nlevels=nlevels)
+    channelRange(x::AbstractVector{<:Union{Number,Missing}}) = range(quantile(skipmissing(x),(p,1-p))...,length=nlevels)
+    
 
     @info "Loading FCS files..."
     data, labels, groups, gating = FlowWorkspace.load( path; files=files, transform=transform, cols=cols)
@@ -88,7 +90,7 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
         
         ),
         channels = (
-            levels = range(extrema(channelRange)...,length=nlevels),
+            range =  Dict([ col => channelRange(data[!,col]) for col ∈ Base.names(data) ]),
             rows = combine(data, [ col => indexTransform => col for col ∈ Base.names(data) ]),
             colors = channelview([map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels)); RGBA(0,0,0,0)]),
             hex = map(x->'#'*hex(x),colorview(RGB,view(channelview(map(x->RGBA(get(channelScheme, x)),range(0,1,length=nlevels))),1:3,:)))
@@ -96,6 +98,8 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
         )
     )
 
+    channelMin = minimum(map(col->minimum(skipmissing(data[!,col])),Base.names(data)))
+    channelMax = maximum(map(col->maximum(skipmissing(data[!,col])),Base.names(data)))
     for (name,color) ∈ colors.labels.names colors!( Dict(["name"=>name,"color"=>color]),labels,groups,colors) end
 
     ##################################################### initalise filter settings
@@ -127,7 +131,7 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
                 r"/\d+/\d+/\d+.png" => x->tile(x,embedding,selections,colors,names),
                 r"/colors" => x->colors!(x,labels,groups,colors), r"/selection" => x->selection!(x,selections,names),
 
-                r"/gate" => x->gate(x,data,embedding,selections;channelRange=channelRange),
+                r"/gate" => x->gate(x,data,embedding,selections;channelRange=range(channelMin,channelMax,length=nbins)),
                 r"/count" => x->count(x,selections),
 
                 r"/favicon.ico" => context -> HTTP.Response(500),
