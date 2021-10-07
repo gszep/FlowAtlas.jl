@@ -7,4 +7,3 @@ __pycache__
 *.jl.cov
 *.jl.mem
 /Manifest.toml
-*.som
