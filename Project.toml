@@ -1,7 +1,7 @@
 name = "FlowAtlas"
 uuid = "ef7debb3-0d09-4604-8960-6109d4c5b3e0"
 authors = ["gszep <gregory.szep@gmail.com>"]
-version = "0.1.7"
+version = "0.1.8"
 
 [deps]
 CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"

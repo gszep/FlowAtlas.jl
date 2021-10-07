@@ -29,7 +29,6 @@ function embed(data::DataFrame;path::AbstractString="",xdim::Int64=20,ydim::Int6
 		som = trainGigaSOM(som,imputed)
 		~isempty(path) && serialize(path,som)
 
-		som.grid = tsne(som.codes,2,0,maxIter,perplexity;eta=eta)
 		clusters = mapToGigaSOM(som,imputed)
 		embedding = embedGigaSOM(som,imputed)
 
