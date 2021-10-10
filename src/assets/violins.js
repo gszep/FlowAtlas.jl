@@ -1,4 +1,4 @@
-function violins(data, color="#0088AA",
+function violins(data, color="#0088AA", alpha=0.1,
   margin=({top:40,right:20,bottom:40,left:60}) ) {
   
   const svg = d3.select("div#violins svg")
@@ -34,7 +34,7 @@ function violins(data, color="#0088AA",
     .x( (x,i)=> binCentre(data.binCentres[i]) )
     .y0( y=>-density(y) ).y1( y=>density(y) )
   
-  group.append("path").attr("fill","none").attr("stroke",color)
+  group.append("path").attr("fill",color).attr("stroke",color).attr("fill-opacity",alpha)
     .attr("id", x=>x.id ).attr("d", x=>violin(x.values) )
 
     ////////////////////////////////////////////// violin color event
@@ -60,7 +60,9 @@ function violins(data, color="#0088AA",
 
             feature.setStyle(style)
             document.querySelectorAll(`#${CSS.escape(data.id)}`).forEach( violin=>{
+
               violin.setAttribute("stroke",color)
+              violin.setAttribute("fill",color)
             })
             
             document.querySelectorAll("#violin-color").forEach(x=>x.remove())
