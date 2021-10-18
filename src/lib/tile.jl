@@ -33,9 +33,12 @@ function tile( z::Int, x::Int, y::Int, embedding::NamedTuple, selections::NamedT
     x = xmin + x*tileSize
     y = ymin + y*tileSize
 
+	X,Y = embedding.array[1,:], embedding.array[2,:]
+	selections = @. selections.rows & (x-padding < X < x+tileSize+padding) & (y-padding < Y < y+tileSize+padding)
+
     return rasterKernelCircle( scale*sqrt(z),
-        rasterize( (256+2padIndex,256+2padIndex), embedding.array[:,selections.rows],
-			channel ∈ names.channels ? colors.channels.colors[:,colors.channels.rows[selections.rows,channel]] : colors.labels.rows[:,selections.rows],
+        rasterize( (256+2padIndex,256+2padIndex), embedding.array[:,selections],
+			channel ∈ names.channels ? colors.channels.colors[:,colors.channels.rows[selections,channel]] : colors.labels.rows[:,selections],
 		
             xlim=( x-padding, x+tileSize+padding),
             ylim=( y-padding, y+tileSize+padding)
