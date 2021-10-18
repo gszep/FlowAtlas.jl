@@ -53,7 +53,7 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
 
 function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), transform::Function=x->asinh(x/250),
         port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=String[],
-        nlevels::Int=10, nbins::Int=50, p::Real=0.1, channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
+        nlevels::Int=10, nbins::Int=50, p::Real=0.1, q::Real=5e-4, channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
         perplexity::Number=300, maxIter::Integer=10000, hold::Bool=true )
 
     indexTransform(x::AbstractVector{<:Union{Number,Missing}}) = toIndex(x; nlevels=nlevels)
@@ -98,8 +98,8 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
         )
     )
 
-    channelMin = minimum(map(col->minimum(skipmissing(data[!,col])),Base.names(data)))
-    channelMax = maximum(map(col->maximum(skipmissing(data[!,col])),Base.names(data)))
+    flattened_data = vcat(map(col->data[!,col],Base.names(data))...)
+    channelMin,channelMax = quantile(skipmissing(flattened_data),(q,1-q))
     for (name,color) ∈ colors.labels.names colors!( Dict(["name"=>name,"color"=>color]),labels,groups,colors) end
 
     ##################################################### initalise filter settings
