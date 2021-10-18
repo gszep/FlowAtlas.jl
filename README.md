@@ -7,6 +7,8 @@ Flow Atlas is an interactive data explorer for `FCS` datasets and their accompan
 [![Build Status](https://travis-ci.com/gszep/FlowAtlas.jl.svg?branch=master)](https://travis-ci.com/gszep/FlowAtlas.jl)
 [![Coverage](https://codecov.io/gh/gszep/FlowAtlas.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/gszep/FlowAtlas.jl)
 
+![Alt Text](https://github.com/gszep/FlowAtlas.jl/blob/master/demo.gif?raw=true)
+
 ## Installation
 
 To install Flow Atlas, Julia 1.5+ is required. Follow [platform specific instructions](https://julialang.org/downloads/platform/). In order to make the `julia` executable available from the command prompt / terminal follow the instructions on adding Julia to the `PATH`/enviroment; make sure this has been done according to the instructions linked above.
