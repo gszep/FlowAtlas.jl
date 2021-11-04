@@ -53,11 +53,12 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
 
 function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), transform::Function=x->asinh(x/250),
         port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=String[],
-        nlevels::Int=10, nbins::Int=50, p::Real=0.1, q::Real=5e-4, channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
-        perplexity::Number=300, maxIter::Integer=10000, hold::Bool=true )
+        nlevels::Int=10, nbins::Int=50, heatmapQuantileEdge::Real=0.1, violinQuantileEdge::Real=5e-5,
+        channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
+        hold::Bool=true )
 
     indexTransform(x::AbstractVector{<:Union{Number,Missing}}) = toIndex(x; nlevels=nlevels)
-    channelRange(x::AbstractVector{<:Union{Number,Missing}}) = range(quantile(skipmissing(x),(p,1-p))...,length=nlevels)
+    channelRange(x::AbstractVector{<:Union{Number,Missing}}) = range(quantile(skipmissing(x),(heatmapQuantileEdge,1-heatmapQuantileEdge))...,length=nlevels)
     
 
     @info "Loading FCS files..."
@@ -75,7 +76,7 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
     ###############################################################################
     ########################################################### calculate embedding
     som_path, _ = splitext(path)
-    _, embedding = embed(data, path = som_path*".som", perplexity = perplexity, maxIter = maxIter)
+    _, embedding = embed(data, path = som_path*".som")
     embedding = (
         coordinates = map(SVector, embedding[2,:], -embedding[1,:]),
         array = embedding, extrema = extrema(embedding,dims=2)
@@ -99,7 +100,7 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
     )
 
     flattened_data = vcat(map(col->data[!,col],Base.names(data))...)
-    channelMin,channelMax = quantile(skipmissing(flattened_data),(q,1-q))
+    channelMin,channelMax = quantile(skipmissing(flattened_data),(violinQuantileEdge,1-violinQuantileEdge))
     for (name,color) ∈ colors.labels.names colors!( Dict(["name"=>name,"color"=>color]),labels,groups,colors) end
 
     ##################################################### initalise filter settings
