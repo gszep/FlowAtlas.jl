@@ -139,12 +139,15 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
                 r".*" => context -> response_404() )
         )
 
-        browser(url)
+        hold && browser(url)
         printstyled("[FlowAtlas] ", color = :blue)
 
         println("Running at $url ~ Happy exploring! ")
         hold && wait()
-            
+
+        sleep(5)
+        close(server)
+
     catch exception
         if exception isa InterruptException
             close(server)
