@@ -2,7 +2,7 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
 
     ############################################################# sortable legend
     Legend = DOM.div( id = "legend", class = "legend", map( group ->
-                DOM.ul( id = group, DOM.h2( class = "legend-header", selected=true, uppercasefirst(group),
+                DOM.ul( id = group, DOM.h2( class = "legend-header", contenteditable = "true", selected=true, uppercasefirst(group),
 
                     ############################################# de/select all in group
                     onclick = js"""
@@ -29,7 +29,7 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
 
                     """
                 )),
-            ["populations","conditions","groups"]
+            ["populations","conditions","batches"]
         )
     )
 
@@ -38,7 +38,7 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
 
             ////////////////////////////////////////////// populate legend with groups and event listeners
             var colors = $(collect(values(colors.labels.names)))
-            for ( const [key,value] of Object.entries($([names.populations;names.conditions;names.groups])) ) {
+            for ( const [key,value] of Object.entries($([names.populations;names.conditions;names.batches])) ) {
 
                 var group = document.createElement('li')
                 group.setAttribute('id',value)
@@ -106,14 +106,14 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
                     document.getElementById('populations').appendChild(group)
 
                 else if ( value.match(/\d+/g) != null)
-                    document.getElementById('groups').appendChild(group)
+                    document.getElementById('batches').appendChild(group)
 
                 else
                     document.getElementById('conditions').appendChild(group)
             }
 
             //////////////////////////////////////////////////// legend groups as sortable lists
-            ['populations','conditions','groups'].map( group => {
+            ['populations','conditions','batches'].map( group => {
 
                 Sortable.create( document.getElementById(group), {
                     group: group == 'populations' ? 'populations' : 'shared',
@@ -132,7 +132,7 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
                                 name: {
                                     'populations': Array.from(document.getElementById('populations').querySelectorAll('li')).map(x=>x.id),
                                     'conditions': Array.from(document.getElementById('conditions').querySelectorAll('li')).map(x=>x.id),
-                                    'groups': Array.from(document.getElementById('groups').querySelectorAll('li')).map(x=>x.id)
+                                    'batches': Array.from(document.getElementById('batches').querySelectorAll('li')).map(x=>x.id)
                                 }
                             })
 
@@ -258,16 +258,16 @@ function sidebar(session::Session, names::NamedTuple, colors::NamedTuple; port::
 
                                 var populations = Array.from(document.getElementById('populations').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
                                 var conditions = Array.from(document.getElementById('conditions').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
-                                var groups = Array.from(document.getElementById('groups').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
+                                var batches = Array.from(document.getElementById('batches').querySelectorAll('li')).filter(x=>x.getAttribute('selected')=='true')
 
                                 boxplots( data,
 
                                     new Set(populations.map(x=>x.id)),
                                     new Set(conditions.map(x=>x.id)),
-                                    new Set(groups.map(x=>x.id)),
+                                    new Set(batches.map(x=>x.id)),
 
                                     barcolors = populations.length > 0 ? Object.assign( ...populations.map( x => ({[x.id]: x.querySelector('input').value}) )) : {},
-                                    markercolors = groups.length > 0 ? Object.assign( ...groups.map( x => ({[x.id]: x.querySelector('input').value}) )) : {}
+                                    markercolors = batches.length > 0 ? Object.assign( ...batches.map( x => ({[x.id]: x.querySelector('input').value}) )) : {}
                                 )
 
                             }).catch( error => {

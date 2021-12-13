@@ -25,8 +25,8 @@ function selection!(label::Dict,selections::NamedTuple,names::NamedTuple)
     elseif label["name"] == "conditions"
         for name ∈ names.conditions selections.names[name]=label["selected"] end
 
-    elseif label["name"] == "groups"
-        for name ∈ names.groups selections.names[name]=label["selected"] end
+    elseif label["name"] == "batches"
+        for name ∈ names.batches selections.names[name]=label["selected"] end
 
     elseif typeof(label["name"]) <: Dict
 		for key ∈ filter(key->key≠:channels,keys(names))

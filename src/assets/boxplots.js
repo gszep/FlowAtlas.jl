@@ -1,11 +1,11 @@
-function boxplots(data, populations, conditions, groups,
+function boxplots(data, populations, conditions, batches,
     barcolors = {}, markercolors = {},
     margin = ({ top: 10, right: 50, bottom: 30, left: 50 }), padding = 1/4 ) {
 
     const svg = d3.select("div#boxplots svg")
     svg.selectAll("*").remove()
 
-    var color = d3.scaleOrdinal().domain( groups.size>0 ? groups : ["Ungrouped"]).range( groups.size>0 ? [...groups].map(x => markercolors[x]) : ['#663F46'] )
+    var color = d3.scaleOrdinal().domain( batches.size>0 ? batches : ["Ungrouped"]).range( batches.size>0 ? [...batches].map(x => markercolors[x]) : ['#663F46'] )
     var height = populations.size * 256
     var width = 256
 
@@ -33,7 +33,7 @@ function boxplots(data, populations, conditions, groups,
                 .attr("transform", "rotate(-45)")).style("text-anchor", "end")
 
     axes.selectAll("legend")
-        .data(groups).enter().call(g => {
+        .data(batches).enter().call(g => {
 
             g.append("circle").attr("cx", width + 10)
                 .attr("cy", function (d, i) { return i * 25 - 3 * populationName.step() / 4 - margin.top + margin.bottom })
@@ -53,8 +53,8 @@ function boxplots(data, populations, conditions, groups,
     populations.forEach(population => {
         conditions.forEach(condition => {
 
-            if (groups.size > 0) {
-                groups.forEach(group => {
+            if (batches.size > 0) {
+                batches.forEach(group => {
 
                     var frequency = d3.sum(data,
                         x => [population, condition, group].every(y => x.names.includes(y)) ? x.count : 0

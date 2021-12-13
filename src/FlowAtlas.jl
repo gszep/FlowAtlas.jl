@@ -70,7 +70,7 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
     names = (
         channels = Base.names(data), populations = Base.names(labels),
         conditions = filter(name -> ~occursin(r"\d", name), Base.names(groups)),
-        groups = filter(name -> occursin(r"\d", name), Base.names(groups))
+        batches = filter(name -> occursin(r"\d", name), Base.names(groups))
     )
 
     ###############################################################################
