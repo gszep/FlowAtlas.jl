@@ -1,7 +1,7 @@
 name = "FlowAtlas"
 uuid = "ef7debb3-0d09-4604-8960-6109d4c5b3e0"
 authors = ["gszep <gregory.szep@gmail.com>"]
-version = "0.1.10"
+version = "0.1.11"
 
 [deps]
 CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
@@ -36,7 +36,7 @@ ImageIO = "0.4, 0.5"
 Images = "0.24, 0.25"
 Impute = "0.6"
 JSON = "0.21"
-JSServe = "1"
+JSServe = "< 1.2.4"
 MetaGraphs = "0.6, 0.7"
 OrderedCollections = "1"
 StaticArrays = "1"
