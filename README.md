@@ -4,7 +4,7 @@ _an interactive explorer for flow cytometry data_
 
 Flow Atlas is an interactive data explorer for `FCS` datasets and their accompanying FlowJo workspace files, such as those coming from the [Human Cell Atlas](https://humancellatlas.org). This tool is built in Julia and allows biologists to interactively inter-operate between FlowJo and modern computational libraries like [`GigaSOM.jl`](https://github.com/LCSB-BioCore/GigaSOM.jl)
 
-[![Build Status](https://travis-ci.com/gszep/FlowAtlas.jl.svg?branch=master)](https://travis-ci.com/gszep/FlowAtlas.jl)
+[![Build Status](https://github.com/gszep/FlowAtlas.jl/workflows/CI/badge.svg)](https://github.com/gszep/FlowAtlas.jl/actions?query=workflow%3ACI)
 [![Coverage](https://codecov.io/gh/gszep/FlowAtlas.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/gszep/FlowAtlas.jl)
 
 ![Alt Text](https://github.com/gszep/FlowAtlas.jl/blob/master/demo.gif?raw=true)
