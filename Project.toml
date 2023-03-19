@@ -1,7 +1,7 @@
 name = "FlowAtlas"
 uuid = "ef7debb3-0d09-4604-8960-6109d4c5b3e0"
-authors = ["gszep <gregory.szep@gmail.com>"]
-version = "0.1.12"
+authors = ["Grisha Szep", "Valerie Coppard", "Felix Feyertag"]
+version = "0.1.13"
 
 [deps]
 CSVFiles = "5d742f6a-9f54-50ce-8119-2520741973ca"
@@ -26,12 +26,12 @@ StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 [compat]
 CSVFiles = "1"
 ColorSchemes = "3"
-DataFrames = "0.20, 0.21, 0.22, 1.0, 1.1"
+DataFrames = "1"
 FileIO = "1"
-FlowWorkspace = "0.1.12"
-GigaSOM = "0.6"
+FlowWorkspace = "0.1.13"
+GigaSOM = "0.7"
 GigaScatter = "0.1"
-HTTP = "0.9"
+HTTP = "1"
 ImageIO = "0.4, 0.5, 0.6"
 Images = "0.24, 0.25"
 Impute = "0.6"
