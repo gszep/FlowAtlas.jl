@@ -51,7 +51,7 @@ const extensions = JSServe.Dependency( :extensions, map(  extension -> joinpath(
     ["assets/ol/sidebar.css","assets/ol/colorbar.js","assets/Sortable.js","assets/violins.js","assets/boxplots.js","assets/utils.js"]
 ))
 
-function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), transform::Function=x->asinh(x/250),
+function run( path::String; files::String=joinpath(dirname(path),"*.fcs"),
         port::Int = 3141, url::String = "http://localhost:$port", cols::Symbol=:union, drop::Union{Vector{String},Nothing}=String[],
         nlevels::Int=10, nbins::Int=50, heatmapQuantileEdge::Real=0.1, violinQuantileEdge::Real=5e-5,
         channelScheme=reverse(ColorSchemes.matter), labelScheme=ColorSchemes.seaborn_colorblind,
@@ -62,7 +62,7 @@ function run( path::String; files::String=joinpath(dirname(path),"*.fcs"), trans
     
 
     @info "Loading FCS files..."
-    data, labels, groups, gating = FlowWorkspace.load( path; files=files, transform=transform, cols=cols)
+    data, labels, groups, gating = FlowWorkspace.load( path; files=files, cols=cols)
 
     keep = map( graph -> map( idx -> MetaGraphs.get_prop(graph,idx,:name), filter(idx -> MetaGraphs.outdegree(graph,idx) == 0, 1:MetaGraphs.nv(graph))), values(gating) )
     select!( labels, isnothing(drop) ? union(keep...,["Unlabelled"]) : Not(drop) )
