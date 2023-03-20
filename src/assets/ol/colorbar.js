@@ -1,5 +1,5 @@
-function colorbar(colorScale, height = 100, width = 50, origin = { x: 0, y: 0 },
-    margin = { top: 5, right: 30, bottom: 5, left: 0 }) {
+function colorbar(colorScale, height = 100, width = 100, origin = { x: 0, y: 0 },
+    margin = { top: 5, right: 60, bottom: 5, left: 0 }) {
 
     function chart(containers) {
         containers.each(function (data) {
