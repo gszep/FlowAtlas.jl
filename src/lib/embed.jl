@@ -4,6 +4,9 @@ function embed(data::DataFrame;path::AbstractString="",xdim::Int64=20,ydim::Int6
 	imputed = Impute.srs(data)
 	disallowmissing!(imputed)
 
+	# standardize imputed data to zero mean and unit variance
+	mapcols!(zscore, imputed)
+
 	if isfile(path)
 		@info """Using embedding saved at $path"""
 		som = deserialize(path)
